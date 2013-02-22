@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.ajkaandrej.smonitor</groupId>
+        <artifactId>smonitor</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <name>smonitor-web</name>
+    <artifactId>smonitor-web</artifactId>
+    <packaging>war</packaging>
+
+    <dependencies>  
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>objectprofiler</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>tomcat-connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>   
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>catalina</artifactId>
+            <version>6.0.36</version>
+            <scope>provided</scope>
+        </dependency>                                                                                    
+        <!-- GWT -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>2.5.0</version>
+            <scope>provided</scope>            
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.smartgwt</groupId>
+            <artifactId>smartgwt</artifactId>
+            <version>3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!--
+        <dependency>
+            <groupId>com.smartgwt</groupId>
+            <artifactId>smartgwt</artifactId>
+            <version>3.0</version>
+        </dependency>
+        -->        
+        <!--
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <scope>compile</scope>
+            <version>2.5.0</version>
+        </dependency>  
+        -->      
+    </dependencies>
+
+
+    <build>
+        <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>        
+        <finalName>smonitor</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.3.Final</version>
+            </plugin>   
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <configuration>            
+                    <draftCompile>true</draftCompile>
+                    <disableAggressiveOptimization>true</disableAggressiveOptimization>
+                    <inplace>true</inplace>
+                    <logLevel>INFO</logLevel>
+                    <extraJvmArgs>-Xmx1000m -XX:MaxPermSize=500m</extraJvmArgs>
+                    <noServer>true</noServer>
+                    <runTarget>http://localhost:8080/smonitor/index.html</runTarget>
+                </configuration>        
+                <executions>
+                    <execution>
+                        <id>gwt-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>gwt-compile</id>
+                        <goals>
+                            <goal>resources</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>  
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <warName>smonitor</warName>
+                    <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@</outputFileNameMapping>
+                    <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class</packagingExcludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}</directory>
+                            <includes>
+                                <include>www-test/**</include>
+                                <include>.gwt/**</include>
+                                <include>.errai/**</include>
+                                <include>src/main/webapp/private.Admin/**</include>
+                                <include>src/main/webapp/WEB-INF/deploy/**</include>
+                                <include>src/main/webapp/WEB-INF/lib/**</include>
+                                <include>src/main/webapp/WEB-INF/classes/**</include>
+                                <include>**/gwt-unitCache/**</include>
+                                <include>**/*.JUnit/**</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>target</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>.errai</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>   
+       
+    </build>
+
+</project>
