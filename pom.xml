@@ -12,6 +12,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <id>andrej</id>
+            <email>andrej@ajka-andrej.com</email>
+        </developer>
+    </developers>
+	
     <modules>
         <module>objectprofiler</module>
         <module>connector</module>
