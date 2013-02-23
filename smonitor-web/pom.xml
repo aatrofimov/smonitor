@@ -15,15 +15,20 @@
     <dependencies>  
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>         
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector-tomcat</artifactId>
+            <version>${project.version}</version>
+        </dependency>   
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>objectprofiler</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.ajkaandrej.smonitor</groupId>
-            <artifactId>tomcat-connector</artifactId>
-            <version>${project.version}</version>
-        </dependency>   
-
+        	
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>

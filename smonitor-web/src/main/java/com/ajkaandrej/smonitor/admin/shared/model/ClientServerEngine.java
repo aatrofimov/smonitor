@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.connector.model;
+package com.ajkaandrej.smonitor.admin.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,20 +23,30 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HttpSessionUser implements Serializable {
+public class ClientServerEngine implements Serializable {
     
-    private static final long serialVersionUID = -6173814656363768685L;
+    private static final long serialVersionUID = -1653824216914780157L;
     
-    private String name;
-    
-    private String password;
-    
-    private List<String> roles;
+    private List<ClientServerHost> hosts;
 
-    public HttpSessionUser() {
-        roles = new ArrayList<String>();
-    }
+    private String name;
+        
+    private String defaultHost;
+
+    private String jvmRoute;
     
+    public ClientServerEngine() {
+        hosts = new ArrayList<ClientServerHost>();
+    }
+
+    public String getJvmRoute() {
+        return jvmRoute;
+    }
+
+    public void setJvmRoute(String jvmRoute) {
+        this.jvmRoute = jvmRoute;
+    }
+        
     public String getName() {
         return name;
     }
@@ -44,21 +54,22 @@ public class HttpSessionUser implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getPassword() {
-        return password;
+    
+    public void setDefaultHost(String defaultHost) {
+        this.defaultHost = defaultHost;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getDefaultHost() {
+        return defaultHost;
+    }
+    
+    
+    public List<ClientServerHost> getHosts() {
+        return hosts;
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setHosts(List<ClientServerHost> hosts) {
+        this.hosts = hosts;
     }
         
 }

@@ -1,14 +1,24 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.view;
 
-import com.ajkaandrej.smonitor.admin.client.factory.ListGridRecordFactory;
 import com.ajkaandrej.smonitor.admin.client.model.EngineTreeNode;
-import com.ajkaandrej.smonitor.admin.shared.model.EngineInfo;
-import com.ajkaandrej.smonitor.admin.shared.model.HostInfo;
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientServerEngine;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientServerHost;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplication;
 import com.smartgwt.client.types.TreeModelType;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -30,7 +40,7 @@ public class EngineTree extends TreeGrid {
         setShowConnectors(true);    
     }
     
-    public void loadData(EngineInfo info) {
+    public void loadData(ClientServerEngine info) {
         Tree tree = createTree();
         tree.setData(createEngineTreeNode(info));
         this.setData(tree);
@@ -46,20 +56,20 @@ public class EngineTree extends TreeGrid {
         return tree;
     }
     
-    private static EngineTreeNode[] createEngineTreeNode(EngineInfo info) {
+    private static EngineTreeNode[] createEngineTreeNode(ClientServerEngine info) {
         EngineTreeNode[] result = new EngineTreeNode[0];
 
         if (info != null) {
             List<EngineTreeNode> tmp = new ArrayList<EngineTreeNode>();
             tmp.add(new EngineTreeNode(info));
 
-            HostInfo[] hosts = info.getHosts();
+            List<ClientServerHost> hosts = info.getHosts();
             if (hosts != null) {
-                for (HostInfo host : hosts) {
+                for (ClientServerHost host : hosts) {
                     tmp.add(new EngineTreeNode(info, host));
-                    WebApplicationInfo[] webApps = host.getApplications();
+                    List<ClientWebApplication> webApps = host.getApplications();
                     if (webApps != null) {
-                        for (WebApplicationInfo app : webApps) {
+                        for (ClientWebApplication app : webApps) {
                             tmp.add(new EngineTreeNode(host, app));
                         }
                     }

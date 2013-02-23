@@ -1,11 +1,23 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.view;
 
 import com.ajkaandrej.smonitor.admin.client.model.WebAppDetailViewerRecord;
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationDetails;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplicationWrapper;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.StaticTextItem;
@@ -18,7 +30,7 @@ import java.util.List;
  */
 public class WebAppDetailForm extends DynamicForm {
     
-    private WebApplicationDetails object;
+    private ClientWebApplicationWrapper object;
     
     public WebAppDetailForm() {
         setCanEdit(false);
@@ -28,13 +40,17 @@ public class WebAppDetailForm extends DynamicForm {
         setFields(createFields());
     }
 
-    public void editWebApplicationDetails(WebApplicationDetails webApp) {
+    public void loadData(ClientWebApplicationWrapper webApp) {
         object = webApp;
-        WebAppDetailViewerRecord record = new WebAppDetailViewerRecord(webApp);
-        editRecord(record);
+        if (webApp != null) {            
+            WebAppDetailViewerRecord record = new WebAppDetailViewerRecord(webApp);
+            editRecord(record);
+        } else {
+            editRecord(null);
+        }
     }
     
-    public WebApplicationDetails getObject() {
+    public ClientWebApplicationWrapper getObject() {
         return object;
     }
     

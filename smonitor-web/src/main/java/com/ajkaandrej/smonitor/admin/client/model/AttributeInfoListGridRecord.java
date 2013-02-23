@@ -1,11 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.model;
 
-import com.ajkaandrej.smonitor.admin.shared.model.AttributeInfo;
-import com.ajkaandrej.smonitor.admin.shared.model.SessionInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientHttpSessionAttribute;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 /**
@@ -26,7 +36,7 @@ public class AttributeInfoListGridRecord extends ListGridRecord {
     
     public static final String ATTR_OBJECT = "object";
     
-    public AttributeInfoListGridRecord(AttributeInfo attr) {
+    public AttributeInfoListGridRecord(ClientHttpSessionAttribute attr) {
         setAttribute(ATTR_NAME, attr.getName());
         setAttribute(ATTR_CLASS, attr.getClazz());
         setAttribute(ATTR_SIZE, attr.getSize());
@@ -35,7 +45,7 @@ public class AttributeInfoListGridRecord extends ListGridRecord {
         setAttribute(ATTR_OBJECT, attr);
     }
     
-    public AttributeInfo getObject() {
-        return (AttributeInfo) getAttributeAsObject(ATTR_OBJECT);
+    public ClientHttpSessionAttribute getObject() {
+        return (ClientHttpSessionAttribute) getAttributeAsObject(ATTR_OBJECT);
     }
 }

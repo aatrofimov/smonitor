@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.connector.model;
+package com.ajkaandrej.smonitor.admin.shared.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HttpSessionUser implements Serializable {
+public class ClientHttpSessionUser implements Serializable {
     
     private static final long serialVersionUID = -6173814656363768685L;
     
@@ -33,7 +33,7 @@ public class HttpSessionUser implements Serializable {
     
     private List<String> roles;
 
-    public HttpSessionUser() {
+    public ClientHttpSessionUser() {
         roles = new ArrayList<String>();
     }
     

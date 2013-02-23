@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.ajkaandrej.smonitor.admin.client;
 
 import com.ajkaandrej.smonitor.admin.client.model.EngineTreeNode;
@@ -7,30 +22,29 @@ import com.ajkaandrej.smonitor.admin.client.view.EngineTree;
 import com.ajkaandrej.smonitor.admin.client.view.SessionDetailsForm;
 import com.ajkaandrej.smonitor.admin.client.view.SessionsTable;
 import com.ajkaandrej.smonitor.admin.client.view.WebAppDetailForm;
-import com.ajkaandrej.smonitor.admin.shared.model.EngineInfo;
-import com.ajkaandrej.smonitor.admin.shared.model.SessionDetails;
-import com.ajkaandrej.smonitor.admin.shared.model.SessionInfo;
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationDetails;
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientHttpSessionHeader;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientHttpSessionWrapper;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientServerEngine;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplication;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplicationWrapper;
 import com.ajkaandrej.smonitor.admin.shared.services.ContainerService;
 import com.ajkaandrej.smonitor.admin.shared.services.ContainerServiceAsync;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
+import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
@@ -40,12 +54,12 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class Admin implements EntryPoint {
 
-    private final IButton refreshButton = new IButton("Refresh12");
+    private final IButton refreshButton = new IButton("Refresh");
     private final EngineTree tree = new EngineTree();
     private ContainerServiceAsync containerService;
     private final SessionsTable table = new SessionsTable();
     private final AttributesTable attrTable = new AttributesTable();
-       
+        
     private WebAppDetailForm wepAppDetailForm = new WebAppDetailForm();
     private SessionDetailsForm sessionDetailForm = new SessionDetailsForm();
     
@@ -65,8 +79,11 @@ public class Admin implements EntryPoint {
             public void onSelectionChanged(com.smartgwt.client.widgets.grid.events.SelectionEvent event) {
                 EngineTreeNode node = (EngineTreeNode) event.getRecord();
                 Object object = node.getUserObject();
-                if (object instanceof WebApplicationInfo) {
-                    loadWebApplicationInfoDetail((WebApplicationInfo) object);
+                if (object instanceof ClientWebApplication) {
+                    loadWebApplicationInfoDetail((ClientWebApplication) object);
+                } else {
+                    table.loadData(null);
+                    wepAppDetailForm.loadData(null);
                 }
             }
         });
@@ -126,25 +143,27 @@ public class Admin implements EntryPoint {
         mainLayout.addMember(sectionStack);
 
         RootPanel.get().add(mainLayout);
+        
+        loadEngine();
     }
 
-    private void loadWebApplicationInfoDetail(WebApplicationInfo webApp) {
+    private void loadWebApplicationInfoDetail(ClientWebApplication webApp) {
         if (containerService == null) {
             containerService = GWT.create(ContainerService.class);
         }
 
-        AsyncCallback<WebApplicationDetails> callback = new AsyncCallback<WebApplicationDetails>() {
+        AsyncCallback<ClientWebApplicationWrapper> callback = new AsyncCallback<ClientWebApplicationWrapper>() {
             public void onFailure(Throwable caught) {
                 // TODO: Do something with errors.
             }
 
-            public void onSuccess(WebApplicationDetails result) {
-                wepAppDetailForm.editWebApplicationDetails(result);
+            public void onSuccess(ClientWebApplicationWrapper result) {
+                wepAppDetailForm.loadData(result);
                 table.loadData(result.getSessions());
             }
         };
 
-        containerService.getWebApplication(webApp, callback);
+        containerService.getWebApplicationWrapper(webApp, callback);
     }
 
     private void loadEngine() {
@@ -152,35 +171,35 @@ public class Admin implements EntryPoint {
             containerService = GWT.create(ContainerService.class);
         }
 
-        AsyncCallback<EngineInfo> callback = new AsyncCallback<EngineInfo>() {
+        AsyncCallback<ClientServerEngine> callback = new AsyncCallback<ClientServerEngine>() {
             public void onFailure(Throwable caught) {
                 // TODO: Do something with errors.
             }
 
-            public void onSuccess(EngineInfo result) {
+            public void onSuccess(ClientServerEngine result) {
                 tree.loadData(result);
             }
         };
 
-        containerService.getEngine(callback);
+        containerService.getServerEngine(callback);
     }
     
-    private void loadSessionInfoDetail(WebApplicationInfo webApp, SessionInfo sessionInfo) {
+    private void loadSessionInfoDetail(ClientWebApplication webApp, ClientHttpSessionHeader sessionHeader) {
          if (containerService == null) {
             containerService = GWT.create(ContainerService.class);
         }
 
-        AsyncCallback<SessionDetails> callback = new AsyncCallback<SessionDetails>() {
+        AsyncCallback<ClientHttpSessionWrapper> callback = new AsyncCallback<ClientHttpSessionWrapper>() {
             public void onFailure(Throwable caught) {
                 // TODO: Do something with errors.
             }
 
-            public void onSuccess(SessionDetails result) {
+            public void onSuccess(ClientHttpSessionWrapper result) {
                 sessionDetailForm.loadData(result);
-                attrTable.loadAttributes(result.getAttributes());
+                attrTable.loadData(result.getAttributes());
             }
         };
 
-        containerService.getSessionDetails(webApp, sessionInfo, callback);
+        containerService.getHttpSessionWrapper(webApp, sessionHeader, callback);
     }
 }

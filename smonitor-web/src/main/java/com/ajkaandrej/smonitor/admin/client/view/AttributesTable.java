@@ -1,11 +1,22 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.view;
 
 import com.ajkaandrej.smonitor.admin.client.model.AttributeInfoListGridRecord;
-import com.ajkaandrej.smonitor.admin.shared.model.AttributeInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientHttpSessionAttribute;
 import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -25,13 +36,15 @@ public class AttributesTable extends ListGrid {
         setFields(createFields());
     }
 
-    public void loadAttributes(AttributeInfo[] attributes) {
-        AttributeInfoListGridRecord[] result = new AttributeInfoListGridRecord[0];
+    public void loadData(List<ClientHttpSessionAttribute> attributes) {
+        AttributeInfoListGridRecord[] result = null;
         if (attributes != null) {
-            result = new AttributeInfoListGridRecord[attributes.length];
-            for (int i = 0; i < attributes.length; i++) {
-                result[i] = new AttributeInfoListGridRecord(attributes[i]);
+            result = new AttributeInfoListGridRecord[attributes.size()];
+            for (int i = 0; i < attributes.size(); i++) {
+                result[i] = new AttributeInfoListGridRecord(attributes.get(i));
             }
+        } else {
+            result = new AttributeInfoListGridRecord[0];
         }
         setData(result);
     }

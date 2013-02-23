@@ -13,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.connector.model;
+package com.ajkaandrej.smonitor.admin.shared.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class WebApplication implements Serializable {
+public class ClientServerHost implements Serializable {
     
-    private static final long serialVersionUID = -6698254608724144536L;
+    private static final long serialVersionUID = -3600295211742829057L;
     
     private String name;
-    
+        
     private String engine;
+      
+    private String info;
     
-    private String host;
+    private List<ClientWebApplication> applications;
 
-    private String info;    
-
+    public ClientServerHost()  {
+        applications = new ArrayList<ClientWebApplication>();
+    }
+            
     public String getEngine() {
         return engine;
     }
@@ -41,20 +47,12 @@ public class WebApplication implements Serializable {
         this.engine = engine;
     }
     
-    public String getHost() {
-        return host;
+    public List<ClientWebApplication> getApplications() {
+        return applications;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
+    public void setApplications(List<ClientWebApplication> applications) {
+        this.applications = applications;
     }
 
     public void setName(String name) {
@@ -63,6 +61,14 @@ public class WebApplication implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
 }

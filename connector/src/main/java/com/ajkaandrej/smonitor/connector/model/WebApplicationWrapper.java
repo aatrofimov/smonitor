@@ -1,6 +1,23 @@
+/*
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.ajkaandrej.smonitor.connector.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -10,7 +27,7 @@ public class WebApplicationWrapper implements Serializable {
 
     private static final long serialVersionUID = -6698254608724144536L;
     private WebApplication info;
-    private HttpSessionHeader[] sessions;
+    private List<HttpSessionHeader> sessions;
     private int activeSessions;
     private boolean distributable;
     private int expiredSessions;
@@ -22,6 +39,10 @@ public class WebApplicationWrapper implements Serializable {
     private int sessionIdLength;
     private int SessionMaxAliveTime;
 
+    public WebApplicationWrapper() {
+        sessions = new ArrayList<HttpSessionHeader>();
+    }
+    
     public int getActiveSessions() {
         return activeSessions;
     }
@@ -30,11 +51,11 @@ public class WebApplicationWrapper implements Serializable {
         this.activeSessions = activeSessions;
     }
 
-    public HttpSessionHeader[] getSessions() {
+    public List<HttpSessionHeader> getSessions() {
         return sessions;
     }
 
-    public void setSessions(HttpSessionHeader[] sessions) {
+    public void setSessions(List<HttpSessionHeader> sessions) {
         this.sessions = sessions;
     }
 

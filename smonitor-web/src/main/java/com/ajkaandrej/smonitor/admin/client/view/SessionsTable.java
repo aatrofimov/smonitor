@@ -1,11 +1,22 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.view;
 
 import com.ajkaandrej.smonitor.admin.client.model.SessionInfoListGridRecord;
-import com.ajkaandrej.smonitor.admin.shared.model.SessionInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientHttpSessionHeader;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.smartgwt.client.types.AutoFitWidthApproach;
 import com.smartgwt.client.widgets.grid.CellFormatter;
@@ -31,15 +42,16 @@ public class SessionsTable extends ListGrid {
         setFields(createFields());
     }
 
-    public void loadData(SessionInfo[] sessions) {
-        SessionInfoListGridRecord[] result = new SessionInfoListGridRecord[0];
+    public void loadData(List<ClientHttpSessionHeader> sessions) {
         if (sessions != null) {
-            result = new SessionInfoListGridRecord[sessions.length];
-            for (int i = 0; i < sessions.length; i++) {
-                result[i] = new SessionInfoListGridRecord(sessions[i]);
+            SessionInfoListGridRecord[] result = new SessionInfoListGridRecord[sessions.size()];
+            for (int i = 0; i < sessions.size(); i++) {
+                result[i] = new SessionInfoListGridRecord(sessions.get(i));
             }
-        }
-        setData(result);
+            setData(result);
+        } else {
+            setData(new SessionInfoListGridRecord[0]);
+        }        
     }
 
     private static ListGridField[] createFields() {

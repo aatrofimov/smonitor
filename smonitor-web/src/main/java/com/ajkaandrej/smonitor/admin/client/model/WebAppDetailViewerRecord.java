@@ -1,11 +1,22 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ajkaandrej.smonitor.admin.client.model;
 
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationDetails;
-import com.ajkaandrej.smonitor.admin.shared.model.WebApplicationInfo;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplication;
+import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplicationWrapper;
 import com.smartgwt.client.widgets.viewer.DetailViewerRecord;
 
 /**
@@ -41,9 +52,9 @@ public class WebAppDetailViewerRecord extends DetailViewerRecord {
     public static final String ATTR_OBJECT = "object";
     
     
-    public WebAppDetailViewerRecord(WebApplicationDetails webApp) {
+    public WebAppDetailViewerRecord(ClientWebApplicationWrapper webApp) {
         
-        WebApplicationInfo info = webApp.getInfo();
+        ClientWebApplication info = webApp.getInfo();
         setAttribute(ATTR_NAME, info.getName());
         setAttribute(ATTR_HOST, info.getHost());
         setAttribute(ATTR_INFO, info.getInfo());  
@@ -60,7 +71,7 @@ public class WebAppDetailViewerRecord extends DetailViewerRecord {
         setAttribute(ATTR_OBJECT, webApp);
     }
     
-    public WebApplicationDetails getObject() {
-        return (WebApplicationDetails) getAttributeAsObject(ATTR_OBJECT);
+    public ClientWebApplicationWrapper getObject() {
+        return (ClientWebApplicationWrapper) getAttributeAsObject(ATTR_OBJECT);
     }
 }
