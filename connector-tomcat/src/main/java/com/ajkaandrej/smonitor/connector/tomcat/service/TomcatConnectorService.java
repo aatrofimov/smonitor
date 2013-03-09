@@ -15,16 +15,14 @@
  */
 package com.ajkaandrej.smonitor.connector.tomcat.service;
 
-import com.ajkaandrej.smonitor.connector.model.HttpSessionHeader;
 import com.ajkaandrej.smonitor.connector.model.HttpSessionWrapper;
 import com.ajkaandrej.smonitor.connector.model.ServerEngine;
-import com.ajkaandrej.smonitor.connector.model.WebApplication;
 import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
 import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import com.ajkaandrej.smonitor.tomcat.mapper.TomcatMapper;
 import com.ajkaandrej.smonitor.tomcat.server.TomcatServer;
+import org.apache.catalina.Container;
 import org.apache.catalina.Engine;
-import org.apache.catalina.Manager;
 import org.apache.catalina.Service;
 import org.apache.catalina.Session;
 
@@ -34,25 +32,21 @@ import org.apache.catalina.Session;
  */
 public class TomcatConnectorService implements ConnectorService {
 
-    public HttpSessionWrapper getHttpSessionWrapper(WebApplication webApp, HttpSessionHeader header) {
+    public HttpSessionWrapper getHttpSessionWrapper(String engine, String host, String name, String session) {
         HttpSessionWrapper result = null;
-        if (webApp != null && header != null) {
-            Session session = TomcatServer.getInstance().findSession(webApp.getEngine(), webApp.getHost(), webApp.getName(), header.getId());
-            if (session != null) {
-                result = TomcatMapper.createHttpSessionWrapper(session);
-            }
+        Session tmp = TomcatServer.getInstance().findSession(engine, host, name, session);
+        if (tmp != null) {
+            result = TomcatMapper.createHttpSessionWrapper(tmp);
         }
         return result;
     }
 
-    public WebApplicationWrapper getWebApplicationWrapper(WebApplication webApp) {
+    public WebApplicationWrapper getWebApplicationWrapper(String engine, String host, String name) {
         WebApplicationWrapper result = null;
-        if (webApp != null) {
-            Manager manager = TomcatServer.getInstance().findWebAppManager(webApp.getEngine(), webApp.getHost(), webApp.getName());
-            if (manager != null) {
-                result = TomcatMapper.createWebApplicationWrapper(webApp, manager);
-            }
-        }        
+        Container container = TomcatServer.getInstance().findWebAppContainer(engine, host, name);
+        if (container != null) {
+            result = TomcatMapper.createWebApplicationWrapper(engine, host, container);
+        }
         return result;
     }
 
@@ -62,11 +56,10 @@ public class TomcatConnectorService implements ConnectorService {
         if (service != null) {
             Engine engine = (Engine) service.getContainer();
             if (engine != null) {
-                
+
                 result = TomcatMapper.createServerEngine(engine);
             }
         }
         return result;
     }
-
 }

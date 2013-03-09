@@ -22,10 +22,8 @@ import com.ajkaandrej.smonitor.admin.shared.model.ClientServerEngine;
 import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplication;
 import com.ajkaandrej.smonitor.admin.shared.model.ClientWebApplicationWrapper;
 import com.ajkaandrej.smonitor.admin.shared.services.ContainerService;
-import com.ajkaandrej.smonitor.connector.model.HttpSessionHeader;
 import com.ajkaandrej.smonitor.connector.model.HttpSessionWrapper;
 import com.ajkaandrej.smonitor.connector.model.ServerEngine;
-import com.ajkaandrej.smonitor.connector.model.WebApplication;
 import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
 import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import com.ajkaandrej.smonitor.connector.tomcat.service.TomcatConnectorService;
@@ -67,8 +65,7 @@ public class ContainerServiceImpl extends RemoteServiceServlet implements Contai
     public ClientWebApplicationWrapper getWebApplicationWrapper(ClientWebApplication info) throws ServiceException {
         ClientWebApplicationWrapper result = null;                
         if (info != null) {
-            WebApplication webApp = ObjectMapper.getInstance().map(info, WebApplication.class);            
-            WebApplicationWrapper wrapper = connectorService.getWebApplicationWrapper(webApp);
+            WebApplicationWrapper wrapper = connectorService.getWebApplicationWrapper(info.getEngine(), info.getHost(), info.getName());
             
             if (wrapper != null) {
                 result = ObjectMapper.getInstance().map(wrapper, ClientWebApplicationWrapper.class);
@@ -81,9 +78,7 @@ public class ContainerServiceImpl extends RemoteServiceServlet implements Contai
     public ClientHttpSessionWrapper getHttpSessionWrapper(ClientWebApplication webApp, ClientHttpSessionHeader info) throws ServiceException {
         ClientHttpSessionWrapper result = null;
         if (webApp != null && info != null) {            
-            WebApplication wApp = ObjectMapper.getInstance().map(webApp, WebApplication.class);
-            HttpSessionHeader header = ObjectMapper.getInstance().map(info, HttpSessionHeader.class);            
-            HttpSessionWrapper wrapper = connectorService.getHttpSessionWrapper(wApp, header);            
+            HttpSessionWrapper wrapper = connectorService.getHttpSessionWrapper(webApp.getEngine(), webApp.getHost(), webApp.getName(), info.getId());            
             if (wrapper != null) {
                 result = ObjectMapper.getInstance().map(wrapper, ClientHttpSessionWrapper.class);
             }

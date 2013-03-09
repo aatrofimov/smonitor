@@ -15,10 +15,8 @@
  */
 package com.ajkaandrej.smonitor.connector.service;
 
-import com.ajkaandrej.smonitor.connector.model.HttpSessionHeader;
 import com.ajkaandrej.smonitor.connector.model.HttpSessionWrapper;
 import com.ajkaandrej.smonitor.connector.model.ServerEngine;
-import com.ajkaandrej.smonitor.connector.model.WebApplication;
 import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
 
 /**
@@ -27,9 +25,9 @@ import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
  */
 public interface ConnectorService {
 
-    HttpSessionWrapper getHttpSessionWrapper(WebApplication webApplication, HttpSessionHeader header);
+    HttpSessionWrapper getHttpSessionWrapper(String engine, String host, String name, String session);
     
-    WebApplicationWrapper getWebApplicationWrapper(WebApplication webApplication);
+    WebApplicationWrapper getWebApplicationWrapper(String engine, String host, String name);
   
     ServerEngine getServerEngine();
 

@@ -33,7 +33,6 @@ import org.apache.catalina.Session;
 public class TomcatServer {
 
     private static final Logger LOGGER = Logger.getLogger(TomcatServer.class.getName());
-    
     private static TomcatServer INSTANCE;
     private Server server;
     private Service service;
@@ -58,28 +57,34 @@ public class TomcatServer {
     public Service getService() {
         return service;
     }
-    
-    public Manager findWebAppManager(String engine, String host, String webApp) {
-        Manager result = null;
+
+    public Container findWebAppContainer(String engine, String host, String webApp) {
+        Container result = null;
         Engine engineService = (Engine) service.getContainer();
         if (engineService != null) {
             if (engineService.getName().equals(engine)) {
                 Container hostContainer = engineService.findChild(host);
                 if (hostContainer != null) {
-                    Container container = hostContainer.findChild(webApp);
-                    if (container != null) {
-                        result = container.getManager();
-                    } else {
-                        LOGGER.log(Level.WARNING, "No web application {0} found in the host {1} and engine {2}",new Object[]{ webApp, host, engine} );
-                    }
+                    result = hostContainer.findChild(webApp);
                 } else {
-                    LOGGER.log(Level.WARNING, "No host {0} found in the engine {1}",new Object[]{ host, engine} );
+                    LOGGER.log(Level.WARNING, "No host {0} found in the engine {1}", new Object[]{host, engine});
                 }
             }
         }
         return result;
-    }    
-    
+    }
+
+    public Manager findWebAppManager(String engine, String host, String webApp) {
+        Manager result = null;
+        Container container = findWebAppContainer(engine, host, webApp);
+        if (container != null) {
+            result = container.getManager();
+        } else {
+            LOGGER.log(Level.WARNING, "No web application {0} found in the host {1} and engine {2}", new Object[]{webApp, host, engine});
+        }
+        return result;
+    }
+
     public Session findSession(String engine, String host, String webApp, String sessionId) {
         Session result = null;
         Manager manager = findWebAppManager(engine, host, webApp);
@@ -90,7 +95,7 @@ public class TomcatServer {
                 LOGGER.log(Level.SEVERE, "Error by reading the session " + sessionId, ex);
             }
         } else {
-            LOGGER.log(Level.WARNING, "No mananager found for web application {0}, host {1} and engine {2}",new Object[]{ webApp, host, engine} );
+            LOGGER.log(Level.WARNING, "No mananager found for web application {0}, host {1} and engine {2}", new Object[]{webApp, host, engine});
         }
         return result;
     }

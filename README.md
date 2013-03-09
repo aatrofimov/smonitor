@@ -1,4 +1,4 @@
 smonitor
 ========
 
-Tomcat session monitor
+JBoss/Tomcat session monitor

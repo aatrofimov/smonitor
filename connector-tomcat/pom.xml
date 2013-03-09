@@ -13,7 +13,6 @@
     <artifactId>connector-tomcat</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
@@ -26,24 +25,21 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>                
+        <!-- TOMCAT -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>catalina</artifactId>
-            <version>6.0.36</version>
             <scope>provided</scope>
-        </dependency>        
+        </dependency>   
+        <!-- JBOSS -->     
         <dependency>
             <groupId>org.jboss.msc</groupId>
             <artifactId>jboss-msc</artifactId>
-            <version>1.0.2.GA</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>  
         <dependency>
             <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-web</artifactId>
-            <version>7.1.2.Final</version>
-            <type>jar</type>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

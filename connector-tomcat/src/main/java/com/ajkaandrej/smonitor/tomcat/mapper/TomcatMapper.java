@@ -64,22 +64,27 @@ public class TomcatMapper {
         return result;
     }
 
-    public static WebApplicationWrapper createWebApplicationWrapper(WebApplication webApp, Manager manager) {
+    public static WebApplicationWrapper createWebApplicationWrapper(String engine, String host, Container container) {
         WebApplicationWrapper result = null;
-        if (manager != null) {
+        if (container != null) {
+            
             result = new WebApplicationWrapper();
-            result.setInfo(webApp);
-            result.setDistributable(manager.getDistributable());
-            result.setExpiredSessions(manager.getExpiredSessions());
-            result.setMaxActive(manager.getMaxActive());
-            result.setMaxInactiveInterval(manager.getMaxInactiveInterval());
-            result.setRejectedSessions(manager.getRejectedSessions());
-            result.setSessionAverageAliveTime(manager.getSessionAverageAliveTime());
-            result.setSessionCounter(manager.getSessionCounter());
-            result.setSessionIdLength(manager.getSessionIdLength());
-            result.setSessionMaxAliveTime(manager.getSessionMaxAliveTime());
-            result.setActiveSessions(manager.getActiveSessions());
-            result.setSessions(createHttpSessionHeaders(manager.findSessions()));
+            result.setInfo(createWebApplication(engine, host, container));
+            
+            Manager manager = container.getManager();
+            if (manager != null) {
+                result.setDistributable(manager.getDistributable());
+                result.setExpiredSessions(manager.getExpiredSessions());
+                result.setMaxActive(manager.getMaxActive());
+                result.setMaxInactiveInterval(manager.getMaxInactiveInterval());
+                result.setRejectedSessions(manager.getRejectedSessions());
+                result.setSessionAverageAliveTime(manager.getSessionAverageAliveTime());
+                result.setSessionCounter(manager.getSessionCounter());
+                result.setSessionIdLength(manager.getSessionIdLength());
+                result.setSessionMaxAliveTime(manager.getSessionMaxAliveTime());
+                result.setActiveSessions(manager.getActiveSessions());
+                result.setSessions(createHttpSessionHeaders(manager.findSessions()));
+            }
         }
         return result;
     }
