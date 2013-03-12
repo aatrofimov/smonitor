@@ -30,23 +30,79 @@
         <module>objectprofiler</module>
         <module>connector</module>
         <module>connector-tomcat</module>        
+        <module>smonitor-agent</module>
+        <module>smonitor-agent-web</module>
         <module>smonitor-web</module>
     </modules>
 
-    <dependencyManagement>
+    <dependencyManagement>       
         <dependencies>
             <dependency>
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
                 <version>0.5.5</version>
             </dependency>
+            <!-- ERRAI -->
+            <dependency>
+                <groupId>org.jboss.errai</groupId>
+                <artifactId>errai-common</artifactId>
+                <version>3.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.errai</groupId>
+                <artifactId>errai-ioc</artifactId>
+                <version>3.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.errai</groupId>
+                <artifactId>errai-jaxrs-client</artifactId>
+                <version>3.0-SNAPSHOT</version>
+                <scope>provided</scope>
+            </dependency> 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.6.1</version>
+                <scope>provided</scope>
+            </dependency> 
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.6.1</version>
+                <scope>provided</scope>
+            </dependency> 
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.8.1</version>
+                <scope>provided</scope>
+            </dependency>  
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>1.0.0.GA</version>
+                <scope>provided</scope>
+            </dependency>        
+            <dependency>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>1.0-SP4</version>
+                <scope>provided</scope>
+            </dependency>                                        
+            <!-- RESTEASY -->
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
                 <version>2.3.5.Final</version>
                 <scope>provided</scope>
-            </dependency>
-            <!-- JBOSS -->
+            </dependency>            
+            <!-- JBOSS SERVER -->
             <dependency>
                 <groupId>org.jboss.msc</groupId>
                 <artifactId>jboss-msc</artifactId>
@@ -78,24 +134,88 @@
             <dependency>
                 <groupId>com.smartgwt</groupId>
                 <artifactId>smartgwt</artifactId>
-                <version>3.0</version>
+                <version>3.1</version>
                 <scope>provided</scope>
-            </dependency> 
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-servlet</artifactId>
-                <version>2.5.0</version>
             </dependency>
             <dependency>
                 <groupId>com.google.gwt</groupId>
                 <artifactId>gwt-user</artifactId>
-                <version>2.5.0</version>
+                <version>2.5.1-rc1</version>
                 <scope>provided</scope>            
-            </dependency>
-                                                  
+            </dependency>                                                  
         </dependencies>
     </dependencyManagement>    
     
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>  
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>          
+        </plugins>    
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version>
+                    <inherited>true</inherited>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>                
+                <plugin>
+                    <groupId>org.jboss.as.plugins</groupId>
+                    <artifactId>jboss-as-maven-plugin</artifactId>
+                    <version>7.3.Final</version>
+                </plugin> 
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>gwt-maven-plugin</artifactId>
+                    <version>2.5.1-rc1</version>
+                </plugin> 
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.3</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.12.4</version>
+                    <configuration>
+                        <skipTests>true</skipTests>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>                                                                                           
+            </plugins>
+        </pluginManagement>
+    </build>
     
     <!-- Repositories -->
     <repositories>

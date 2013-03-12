@@ -32,6 +32,7 @@ import org.jboss.msc.service.ServiceName;
  */
 public class JBoss7TomcatServiceLookup implements TomcatServiceLookup {
 
+    @Override
     public Server getServer() {
         StandardServer result = null;
         WebServer webServer = getWebServer();
@@ -43,12 +44,13 @@ public class JBoss7TomcatServiceLookup implements TomcatServiceLookup {
         return result;
     }
     
+    @Override
     public Service getService() {
         StandardService result = null;
         WebServer webServer = getWebServer();
         if (webServer == null) {
             System.out.println("webServer NULL!");
-        } else {            
+        } else {     
             result = webServer.getService();
         }
         return result;

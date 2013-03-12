@@ -36,13 +36,19 @@ public class TomcatServer {
     private static TomcatServer INSTANCE;
     private Server server;
     private Service service;
-
+    private Class<?> utilityClass;
+    
     private TomcatServer() {
         TomcatServiceLookup util = TomcatServiceLookupFactory.createServiceLookup();
+        utilityClass = util.getClass();
         server = util.getServer();
         service = util.getService();
     }
 
+    public Class<?> getUtilityClass() {
+        return utilityClass;
+    }
+    
     public static TomcatServer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TomcatServer();

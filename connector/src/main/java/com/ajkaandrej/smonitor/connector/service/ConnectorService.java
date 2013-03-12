@@ -15,20 +15,31 @@
  */
 package com.ajkaandrej.smonitor.connector.service;
 
-import com.ajkaandrej.smonitor.connector.model.HttpSessionWrapper;
-import com.ajkaandrej.smonitor.connector.model.ServerEngine;
-import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
+import com.ajkaandrej.smonitor.connector.model.Application;
+import com.ajkaandrej.smonitor.connector.model.ApplicationDetails;
+import com.ajkaandrej.smonitor.connector.model.AttributeDetails;
+import com.ajkaandrej.smonitor.connector.model.Server;
+import com.ajkaandrej.smonitor.connector.model.Session;
+import com.ajkaandrej.smonitor.connector.model.SessionDetails;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public interface ConnectorService {
-
-    HttpSessionWrapper getHttpSessionWrapper(String engine, String host, String name, String session);
     
-    WebApplicationWrapper getWebApplicationWrapper(String engine, String host, String name);
-  
-    ServerEngine getServerEngine();
-
+    String getName();
+    
+    Server getServer();
+    
+    List<Application> getApplications();
+    
+    ApplicationDetails getApplicationDetails(String application);
+    
+    List<Session> getSessions(String application);
+    
+    SessionDetails getSessionDetails(String application, String session);
+    
+    AttributeDetails getAttributeDetails(String application, String session, String attribute);
 }

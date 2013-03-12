@@ -15,14 +15,12 @@
  */
 package com.ajkaandrej.smonitor.tomcat.mapper;
 
-import com.ajkaandrej.smonitor.connector.model.HttpSessionAttribute;
-import com.ajkaandrej.smonitor.connector.model.HttpSessionHeader;
-import com.ajkaandrej.smonitor.connector.model.HttpSessionUser;
-import com.ajkaandrej.smonitor.connector.model.HttpSessionWrapper;
-import com.ajkaandrej.smonitor.connector.model.ServerEngine;
-import com.ajkaandrej.smonitor.connector.model.ServerHost;
-import com.ajkaandrej.smonitor.connector.model.WebApplication;
-import com.ajkaandrej.smonitor.connector.model.WebApplicationWrapper;
+import com.ajkaandrej.smonitor.connector.model.Application;
+import com.ajkaandrej.smonitor.connector.model.ApplicationDetails;
+import com.ajkaandrej.smonitor.connector.model.Attribute;
+import com.ajkaandrej.smonitor.connector.model.Server;
+import com.ajkaandrej.smonitor.connector.model.Session;
+import com.ajkaandrej.smonitor.connector.model.SessionDetails;
 import com.ajkaandrej.smonitor.profiler.utils.ObjectProfile;
 import com.ajkaandrej.smonitor.profiler.utils.ObjectProfiler;
 import java.security.Principal;
@@ -35,7 +33,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.catalina.Container;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
-import org.apache.catalina.Session;
+import org.apache.catalina.Service;
 import org.apache.catalina.realm.GenericPrincipal;
 
 /**
@@ -44,33 +42,100 @@ import org.apache.catalina.realm.GenericPrincipal;
  */
 public class TomcatMapper {
 
-    public static HttpSessionWrapper createHttpSessionWrapper(Session session) {
-        HttpSessionWrapper result = null;
-        if (session != null) {
-            result = new HttpSessionWrapper();
-            result.setSessionInfo(createHttpSessionHeader(session));
-            result.setInfo(session.getInfo());
-            result.setAuthType(session.getAuthType());
-            // load user information
-            result.setUserInfo(createHttpSessionUser((GenericPrincipal) session.getPrincipal()));
-            // load HTTP session
-            HttpSession httpSession = session.getSession();
-            if (httpSession != null) {
-                createHttpSessionAttribute(result, httpSession);
-                // is new session flag
-                result.setNewSession(httpSession.isNew());
-            }            
+    private static Container findApplicationContainer(Service service, String application) {
+        Container result = null;
+        if (service != null) {
+            Container root = service.getContainer();
+            if (root != null) {
+                result = root.findChild(application);
+            }
         }
         return result;
     }
 
-    public static WebApplicationWrapper createWebApplicationWrapper(String engine, String host, Container container) {
-        WebApplicationWrapper result = null;
+    public static SessionDetails createSessionDetails(Service service, String application, String id) {
+        SessionDetails result = null;
+        Container container = findApplicationContainer(service, application);
         if (container != null) {
-            
-            result = new WebApplicationWrapper();
-            result.setInfo(createWebApplication(engine, host, container));
-            
+            Manager manager = container.getManager();
+            if (manager != null) {
+                org.apache.catalina.Session session = null;
+                try {
+                    session = manager.findSession(id);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                if (session != null) {
+                    result = new SessionDetails();
+                    // session info
+                    result.setInfo(session.getInfo());
+
+                    // create session basic information
+                    Session tmp = createSession(session);
+                    result.setSession(tmp);
+
+                    // load user roles
+                    GenericPrincipal principal = (GenericPrincipal) session.getPrincipal();
+                    if (principal != null) {
+                        String[] roles = principal.getRoles();
+                        if (roles != null) {
+                            result.setRoles(Arrays.asList(roles));
+                        }
+                    }
+
+                    // load HTTP session HttpSession                    
+                    HttpSession httpSession = session.getSession();
+                    if (httpSession != null) {
+                        // is new session flag
+                        result.setNewSession(httpSession.isNew());
+
+                        double size = 0;
+                        double sizeSerializable = 0;
+
+                        List<Attribute> attributes = new ArrayList<Attribute>();
+
+                        Enumeration enumerator = httpSession.getAttributeNames();
+                        while (enumerator.hasMoreElements()) {
+                            String name = (String) enumerator.nextElement();
+                            Attribute attr = createAttribute(name, httpSession.getAttribute(name));
+                            attributes.add(attr);
+                            size = size + attr.getSize();
+                            sizeSerializable = sizeSerializable + attr.getSerializableSize();
+                        }
+
+                        result.setSize(size);
+                        result.setSizeSerializable(sizeSerializable);
+                        result.setAttributes(attributes);
+
+                    }
+
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Attribute createAttribute(String name, Object value) {
+        Attribute attr = new Attribute();
+        attr.setName(name);
+        // load object information  
+        ObjectProfile objectInfo = ObjectProfiler.createObjectInfo(value);
+        attr.setClazz(objectInfo.getClazz());
+        attr.setSize(objectInfo.getSize());
+        attr.setSerializable(objectInfo.isSerializable());
+        attr.setSerializableSize(objectInfo.getSerializableSize());
+        return attr;
+    }
+
+    public static ApplicationDetails createApplicationDetails(Service service, String application) {
+        ApplicationDetails result = null;
+        Container container = findApplicationContainer(service, application);
+        if (container != null) {
+
+            result = new ApplicationDetails();
+            result.setName(container.getName());
+
             Manager manager = container.getManager();
             if (manager != null) {
                 result.setDistributable(manager.getDistributable());
@@ -83,82 +148,19 @@ public class TomcatMapper {
                 result.setSessionIdLength(manager.getSessionIdLength());
                 result.setSessionMaxAliveTime(manager.getSessionMaxAliveTime());
                 result.setActiveSessions(manager.getActiveSessions());
-                result.setSessions(createHttpSessionHeaders(manager.findSessions()));
+
+                // load sessions
+                List<Session> tmp = getSessions(manager);
+                result.setSessions(tmp);
             }
         }
         return result;
     }
 
-    public static ServerEngine createServerEngine(Engine engine) {
-        ServerEngine result = null;
-        if (engine != null) {
-            result = new ServerEngine();
-            result.setDefaultHost(engine.getDefaultHost());
-            result.setName(engine.getName());
-            result.setJvmRoute(engine.getJvmRoute());
-            result.setHosts(createServerHosts(result.getName(), engine.findChildren()));
-        }
-        return result;
-    }
-
-    private static List<ServerHost> createServerHosts(String engine, Container[] containers) {
-        List<ServerHost> result = new ArrayList<ServerHost>();
-        if (containers != null) {
-            for (Container container : containers) {
-                result.add(createServerHost(engine, container));
-            }
-        }
-        return result;
-    }
-
-    private static ServerHost createServerHost(String engine, Container container) {
-        ServerHost result = null;
-        if (container != null) {
-            result = new ServerHost();
-            result.setName(container.getName());
-            result.setInfo(container.getInfo());
-            result.setEngine(engine);
-            result.setApplications(createWebApplications(engine, result.getName(), container.findChildren()));
-        }
-        return result;
-    }
-
-    private static List<WebApplication> createWebApplications(String engine, String host, Container[] containers) {
-        List<WebApplication> result = new ArrayList<WebApplication>();
-        if (containers != null) {
-            for (Container container : containers) {
-                result.add(createWebApplication(engine, host, container));
-            }
-        }
-        return result;
-    }
-
-    private static WebApplication createWebApplication(String engine, String host, Container container) {
-        WebApplication result = null;
-        if (container != null) {
-            result = new WebApplication();
-            result.setName(container.getName());
-            result.setInfo(container.getInfo());
-            result.setHost(host);
-            result.setEngine(engine);
-        }
-        return result;
-    }
-
-    private static List<HttpSessionHeader> createHttpSessionHeaders(Session[] sessions) {
-        List<HttpSessionHeader> result = new ArrayList<HttpSessionHeader>();
-        if (sessions != null) {
-            for (Session session : sessions) {
-                result.add(createHttpSessionHeader(session));
-            }
-        }
-        return result;
-    }
-
-    private static HttpSessionHeader createHttpSessionHeader(Session session) {
-        HttpSessionHeader result = null;
+    private static Session createSession(org.apache.catalina.Session session) {
+        Session result = null;
         if (session != null) {
-            result = new HttpSessionHeader();
+            result = new Session();
             //Return the session identifier for this session.
             result.setId(session.getId());
             //Return the creation time for this session.
@@ -180,48 +182,69 @@ public class TomcatMapper {
         return result;
     }
 
-    private static HttpSessionUser createHttpSessionUser(GenericPrincipal principal) {
-        HttpSessionUser result = null;
-        if (principal != null) {
-            result = new HttpSessionUser();
-            result.setName(principal.getName());
-//                result.setPassword(principal.getPassword());
-            result.setRoles(Arrays.asList(principal.getRoles()));
+    public static Server createServer(Service service) {
+        Server result = null;
+        if (service != null) {
+            Container root = service.getContainer();
+            if (root instanceof Engine) {
+                Engine engine = (Engine) root;
+                result = new Server();
+                result.setName(engine.getName());
+
+                List<Application> applications = new ArrayList<Application>();
+                for (Container container : engine.findChildren()) {
+                    for (Container appContainer : container.findChildren()) {
+                        Application app = new Application();
+                        app.setName(appContainer.getName());
+                        applications.add(app);
+                    }
+                }
+                result.setApplications(applications);
+            }
         }
         return result;
     }
 
-    private static void createHttpSessionAttribute(HttpSessionWrapper wrapper, HttpSession session) {
-        
-        if (wrapper != null && session != null) {
-
-            double size = 0;
-            double sizeSerializable = 0;
-            
-            List<HttpSessionAttribute> result = new ArrayList<HttpSessionAttribute>();
-            
-            Enumeration enumerator = session.getAttributeNames();
-            while (enumerator.hasMoreElements()) {
-                String name = (String) enumerator.nextElement();
-                Object value = session.getAttribute(name);
-
-                HttpSessionAttribute attr = new HttpSessionAttribute();
-                attr.setName(name);
-                // load object information
-                ObjectProfile objectInfo = ObjectProfiler.createObjectInfo(value);
-                attr.setClazz(objectInfo.getClazz());
-                attr.setSize(objectInfo.getSize());
-                attr.setSerializable(objectInfo.isSerializable());
-                attr.setSerializableSize(objectInfo.getSerializableSize());
-                result.add(attr);
-
-                size = size + attr.getSize();
-                sizeSerializable = sizeSerializable + attr.getSerializableSize();
+    private static List<Session> getSessions(Manager manager) {
+        List<Session> result = new ArrayList<Session>();
+        if (manager != null) {
+            org.apache.catalina.Session[] sessions = manager.findSessions();
+            if (sessions != null) {
+                for (org.apache.catalina.Session session : sessions) {
+                    Session item = createSession(session);
+                    if (item != null) {
+                        result.add(item);
+                    }
+                }
             }
-            
-            wrapper.setSize(size);
-            wrapper.setSizeSerializable(sizeSerializable);        
-            wrapper.setAttributes(result);            
         }
+        return result;
+    }
+
+    public static List<Session> getSessions(Service service, String application) {
+        List<Session> result = new ArrayList<Session>();
+        Container container = findApplicationContainer(service, application);
+        if (container != null) {
+            Manager manager = container.getManager();
+            if (manager != null) {
+                result = getSessions(manager);
+            }
+        }
+        return result;
+    }
+
+    public static List<Application> getApplications(Service service) {
+        List<Application> result = new ArrayList<Application>();
+        if (service != null) {
+            Container root = service.getContainer();
+            for (Container container : root.findChildren()) {
+                for (Container appContainer : container.findChildren()) {
+                    Application app = new Application();
+                    app.setName(appContainer.getName());
+                    result.add(app);
+                }
+            }
+        }
+        return result;
     }
 }

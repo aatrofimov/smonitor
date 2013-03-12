@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.ajkaandrej.smonitor</groupId>
+        <artifactId>smonitor</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <name>smonitor-agent</name>
+    <artifactId>smonitor-agent</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector</artifactId>
+            <version>${project.version}</version>
+        </dependency>           
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector-tomcat</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>objectprofiler</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- MAPPER -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>        
+        <!-- RESTEASY -->                   
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <scope>provided</scope>
+        </dependency>             
+    </dependencies>
+    
+    <build>      
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.xml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>            
+        </plugins>
+    </build>
+</project>
