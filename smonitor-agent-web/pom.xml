@@ -32,9 +32,45 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warName>smonitor-agent</warName>
+                    <webResources>
+                        <resource>
+                            <!-- this is relative to the pom.xml directory -->
+                            <directory>src/main/${webDescriptor}</directory>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>           
         </plugins>       
     </build>
 
+    <profiles>
+        <profile>
+            <id>jboss7</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <webDescriptor>webapp</webDescriptor>
+            </properties>
+        </profile>
+        <profile>
+            <id>jboss4</id>
+            <properties>
+                <webDescriptor>webapp-jboss4</webDescriptor>
+            </properties>
+            <dependencies>
+                <!-- RESTEASY -->                   
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                    <scope>compile</scope>
+                </dependency> 
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jackson-provider</artifactId>
+                    <version>2.3.5.Final</version>
+                </dependency>                
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
