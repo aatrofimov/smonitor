@@ -20,6 +20,9 @@ import com.ajkaandrej.smonitor.connector.factory.ConnectorServiceFactory;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
+import com.ajkaandrej.smonitor.agent.rs.model.AttributeDetails;
+import com.ajkaandrej.smonitor.agent.rs.model.Session;
+import com.ajkaandrej.smonitor.agent.rs.model.SessionDetails;
 import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -44,6 +47,28 @@ public class ApplicationServiceImpl implements ApplicationService {
         ConnectorService service = ConnectorServiceFactory.getService();
         ApplicationDetails result = ObjectMapper.getInstance().map(service.getApplicationDetails(name), ApplicationDetails.class);
         return result;
+    }
+    
+    @Override
+    public SessionDetails getSession(String application, String id) throws ServiceException {
+        ConnectorService service = ConnectorServiceFactory.getService();
+        SessionDetails result = ObjectMapper.getInstance().map(service.getSessionDetails(application, id), SessionDetails.class);
+        return result;
+    }    
+
+    @Override
+    public AttributeDetails getAttribute(String application, String session, String name) throws ServiceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AttributeDetails updateAttribute(String application, String session, String name, AttributeDetails attribute) throws ServiceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteAttribute(String application, String session, String name) throws ServiceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

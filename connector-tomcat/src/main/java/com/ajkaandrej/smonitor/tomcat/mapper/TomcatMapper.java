@@ -42,12 +42,19 @@ import org.apache.catalina.realm.GenericPrincipal;
  */
 public class TomcatMapper {
 
+    private static final String APP_PREFIX = "/";
+    
     private static Container findApplicationContainer(Service service, String application) {
         Container result = null;
         if (service != null) {
             Container root = service.getContainer();
             if (root != null) {
-                result = root.findChild(application);
+                Container[] hosts = root.findChildren();
+                if (hosts != null) {
+                    for (int i=0; i<hosts.length && result==null; i++) {
+                        result = hosts[i].findChild(application);
+                    }
+                }
             }
         }
         return result;
@@ -55,7 +62,8 @@ public class TomcatMapper {
 
     public static SessionDetails createSessionDetails(Service service, String application, String id) {
         SessionDetails result = null;
-        Container container = findApplicationContainer(service, application);
+        String appName = updateApplicationName(application);
+        Container container = findApplicationContainer(service, appName);
         if (container != null) {
             Manager manager = container.getManager();
             if (manager != null) {
@@ -121,7 +129,7 @@ public class TomcatMapper {
         attr.setName(name);
         // load object information  
         ObjectProfile objectInfo = ObjectProfiler.createObjectInfo(value);
-        attr.setClazz(objectInfo.getClazz());
+        attr.setType(objectInfo.getClazz());
         attr.setSize(objectInfo.getSize());
         attr.setSerializable(objectInfo.isSerializable());
         attr.setSerializableSize(objectInfo.getSerializableSize());
@@ -130,7 +138,8 @@ public class TomcatMapper {
 
     public static ApplicationDetails createApplicationDetails(Service service, String application) {
         ApplicationDetails result = null;
-        Container container = findApplicationContainer(service, application);
+        String appName = updateApplicationName(application);
+        Container container = findApplicationContainer(service, appName);
         if (container != null) {
 
             result = new ApplicationDetails();
@@ -223,7 +232,8 @@ public class TomcatMapper {
 
     public static List<Session> getSessions(Service service, String application) {
         List<Session> result = new ArrayList<Session>();
-        Container container = findApplicationContainer(service, application);
+        String appName = updateApplicationName(application);
+        Container container = findApplicationContainer(service, appName);
         if (container != null) {
             Manager manager = container.getManager();
             if (manager != null) {
@@ -243,6 +253,16 @@ public class TomcatMapper {
                     app.setName(appContainer.getName());
                     result.add(app);
                 }
+            }
+        }
+        return result;
+    }
+    
+    private static String updateApplicationName(String name) {
+        String result = name;
+        if (name != null && !name.isEmpty()) {
+            if (!name.startsWith(APP_PREFIX)) {
+                result = APP_PREFIX + name;
             }
         }
         return result;

@@ -22,7 +22,7 @@ package com.ajkaandrej.smonitor.agent.rs.model;
 public class Attribute {
 
     private String name;
-    private String clazz;
+    private String type;
     private long size;
     private boolean serializable;
     private long serializableSize;
@@ -43,12 +43,12 @@ public class Attribute {
         return serializableSize;
     }
 
-    public String getClazz() {
-        return clazz;
+    public String getType() {
+        return type;
     }
 
-    public void setClazz(String clazz) {
-        this.clazz = clazz;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
