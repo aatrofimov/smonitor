@@ -21,7 +21,6 @@ import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.AttributeDetails;
-import com.ajkaandrej.smonitor.agent.rs.model.Session;
 import com.ajkaandrej.smonitor.agent.rs.model.SessionDetails;
 import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import java.lang.reflect.Type;

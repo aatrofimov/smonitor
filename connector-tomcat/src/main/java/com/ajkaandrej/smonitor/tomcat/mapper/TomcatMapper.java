@@ -34,6 +34,7 @@ import org.apache.catalina.Container;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Service;
+import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.realm.GenericPrincipal;
 
 /**
@@ -44,15 +45,17 @@ public class TomcatMapper {
 
     private static final String APP_PREFIX = "/";
     
-    private static Container findApplicationContainer(Service service, String application) {
-        Container result = null;
+    private static final String ROOT = "ROOT";
+    
+    private static StandardContext findApplicationStandardContext(Service service, String application) {
+        StandardContext result = null;
         if (service != null) {
             Container root = service.getContainer();
             if (root != null) {
                 Container[] hosts = root.findChildren();
                 if (hosts != null) {
                     for (int i=0; i<hosts.length && result==null; i++) {
-                        result = hosts[i].findChild(application);
+                        result = (StandardContext) hosts[i].findChild(application);
                     }
                 }
             }
@@ -62,8 +65,8 @@ public class TomcatMapper {
 
     public static SessionDetails createSessionDetails(Service service, String application, String id) {
         SessionDetails result = null;
-        String appName = updateApplicationName(application);
-        Container container = findApplicationContainer(service, appName);
+        String appName = getApplicationId(application);
+        StandardContext container = findApplicationStandardContext(service, appName);
         if (container != null) {
             Manager manager = container.getManager();
             if (manager != null) {
@@ -138,24 +141,35 @@ public class TomcatMapper {
 
     public static ApplicationDetails createApplicationDetails(Service service, String application) {
         ApplicationDetails result = null;
-        String appName = updateApplicationName(application);
-        Container container = findApplicationContainer(service, appName);
+        String appName = getApplicationId(application);
+        StandardContext container = findApplicationStandardContext(service, appName);
         if (container != null) {
 
             result = new ApplicationDetails();
-            result.setName(container.getName());
+            // The name string (suitable for use by humans)
+            result.setName(getApplicationName(container.getName()));
 
             Manager manager = container.getManager();
             if (manager != null) {
+                // The distributable flag for the sessions supported by this Manager
                 result.setDistributable(manager.getDistributable());
+                // Gets the number of sessions that have expired
                 result.setExpiredSessions(manager.getExpiredSessions());
+                // Gets the maximum number of sessions that have been active at the same time
                 result.setMaxActive(manager.getMaxActive());
+                // Return the default maximum inactive interval (in seconds) for Sessions created by this Manager.
                 result.setMaxInactiveInterval(manager.getMaxInactiveInterval());
+                // Gets the number of sessions that were not created because the maximum number of active sessions was reached.
                 result.setRejectedSessions(manager.getRejectedSessions());
+                // Gets the average time (in seconds) that expired sessions had been alive.
                 result.setSessionAverageAliveTime(manager.getSessionAverageAliveTime());
+                // Returns the total number of sessions created by this manager.
                 result.setSessionCounter(manager.getSessionCounter());
+                // Gets the session id length (in bytes) of Sessions created by this Manager.
                 result.setSessionIdLength(manager.getSessionIdLength());
+                // Gets the longest time (in seconds) that an expired session had been alive.
                 result.setSessionMaxAliveTime(manager.getSessionMaxAliveTime());
+                // Gets the number of currently active sessions.
                 result.setActiveSessions(manager.getActiveSessions());
 
                 // load sessions
@@ -204,7 +218,7 @@ public class TomcatMapper {
                 for (Container container : engine.findChildren()) {
                     for (Container appContainer : container.findChildren()) {
                         Application app = new Application();
-                        app.setName(appContainer.getName());
+                        app.setName(getApplicationName(appContainer.getName()));
                         applications.add(app);
                     }
                 }
@@ -232,8 +246,8 @@ public class TomcatMapper {
 
     public static List<Session> getSessions(Service service, String application) {
         List<Session> result = new ArrayList<Session>();
-        String appName = updateApplicationName(application);
-        Container container = findApplicationContainer(service, appName);
+        String appName = getApplicationId(application);
+        StandardContext container = findApplicationStandardContext(service, appName);
         if (container != null) {
             Manager manager = container.getManager();
             if (manager != null) {
@@ -250,7 +264,7 @@ public class TomcatMapper {
             for (Container container : root.findChildren()) {
                 for (Container appContainer : container.findChildren()) {
                     Application app = new Application();
-                    app.setName(appContainer.getName());
+                    app.setName(getApplicationName(appContainer.getName()));
                     result.add(app);
                 }
             }
@@ -258,11 +272,26 @@ public class TomcatMapper {
         return result;
     }
     
-    private static String updateApplicationName(String name) {
+    private static String getApplicationName(String name) {
         String result = name;
-        if (name != null && !name.isEmpty()) {
-            if (!name.startsWith(APP_PREFIX)) {
-                result = APP_PREFIX + name;
+        if (name == null || name.isEmpty()) {
+            result = ROOT;
+        } else {
+            if (name.startsWith(APP_PREFIX)) {
+                result = name.substring(APP_PREFIX.length());
+            }
+        }
+        return result;
+    }
+    private static String getApplicationId(String name) {
+        String result = name;
+        if (ROOT.equals(name)) {
+            result = "";
+        } else {
+            if (name != null && !name.isEmpty()) {
+                if (!name.startsWith(APP_PREFIX)) {
+                    result = APP_PREFIX + name;
+                }
             }
         }
         return result;
