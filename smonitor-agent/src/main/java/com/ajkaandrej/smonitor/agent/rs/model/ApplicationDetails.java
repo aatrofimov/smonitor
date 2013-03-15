@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetails {
+public class ApplicationDetails extends Application {
     
     private int activeSessions;
     private boolean distributable;

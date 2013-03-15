@@ -97,7 +97,7 @@ public class Admin {
 
     private void loadServer() {
         try {
-            serverService.call(serverCallback).getServer();
+            serverService.call(serverCallback).getServer(null);
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }

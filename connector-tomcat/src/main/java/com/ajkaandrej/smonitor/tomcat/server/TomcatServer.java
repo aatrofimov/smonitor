@@ -15,16 +15,23 @@
  */
 package com.ajkaandrej.smonitor.tomcat.server;
 
+import com.ajkaandrej.smonitor.tomcat.lookup.JBoss7TomcatServiceLookup;
+import com.ajkaandrej.smonitor.tomcat.lookup.JBossTomcatServiceLookup;
 import com.ajkaandrej.smonitor.tomcat.lookup.TomcatServiceLookup;
-import com.ajkaandrej.smonitor.tomcat.lookup.TomcatServiceLookupFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectName;
 import org.apache.catalina.Container;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.Session;
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.core.StandardHost;
+import org.apache.catalina.session.StandardSession;
 
 /**
  *
@@ -36,24 +43,50 @@ public class TomcatServer {
     private static TomcatServer INSTANCE;
     private Server server;
     private Service service;
-    private Class<?> utilityClass;
-    
+    private String version;
+    private String name;
+
     private TomcatServer() {
-        TomcatServiceLookup util = TomcatServiceLookupFactory.createServiceLookup();
-        utilityClass = util.getClass();
-        server = util.getServer();
-        service = util.getService();
+        TomcatServiceLookup util = null;
+
+        MBeanServer mBeanServer = MBeanServerFactory.findMBeanServer(null).get(0);
+
+        // check jboss 7
+        try {
+            version = (String) mBeanServer.getAttribute(new ObjectName("jboss.as:management-root=server"), "releaseVersion");
+            util = new JBoss7TomcatServiceLookup();
+        } catch (Exception ex) {
+            // do nothing
+        }
+
+        // check jboss 6
+        if (util == null) {
+            try {
+                version = (String) mBeanServer.getAttribute(new ObjectName("jboss.system:type=Server"), "Version");
+                util = new JBossTomcatServiceLookup();
+            } catch (Exception ex) {
+                // do nothing
+            }
+        }
+
+        if (util != null) {
+            server = util.getServer();
+            service = util.getService();
+            name = util.getName();
+        } else {
+            throw new RuntimeException("No supported server found!");
+        }
     }
 
-    public Class<?> getUtilityClass() {
-        return utilityClass;
-    }
-    
     public static TomcatServer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TomcatServer();
         }
         return INSTANCE;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public Server getServer() {
@@ -64,45 +97,87 @@ public class TomcatServer {
         return service;
     }
 
-    public Container findWebAppContainer(String engine, String host, String webApp) {
-        Container result = null;
+    public String getName() {
+        return name;
+    }
+
+    public Container[] getHosts() {
+        Container[] result = null;
         Engine engineService = (Engine) service.getContainer();
         if (engineService != null) {
-            if (engineService.getName().equals(engine)) {
-                Container hostContainer = engineService.findChild(host);
-                if (hostContainer != null) {
-                    result = hostContainer.findChild(webApp);
-                } else {
-                    LOGGER.log(Level.WARNING, "No host {0} found in the engine {1}", new Object[]{host, engine});
+            result = engineService.findChildren();
+        }
+        return result;        
+    }
+    
+    public StandardHost getHost(String host) {
+        StandardHost result = null;
+        Engine engineService = (Engine) service.getContainer();
+        if (engineService != null) {
+            result = (StandardHost) engineService.findChild(host);
+        }
+        return result;
+    }
+
+    public Container[] getContexts(String host) {
+        Container[] result = null;
+        StandardHost hostContainer = getHost(host);
+        if (hostContainer != null) {
+            result = hostContainer.findChildren();
+        } else {
+            LOGGER.log(Level.SEVERE, "No host {0} found", new Object[]{host});
+        }
+        return result;        
+    }
+    
+    public StandardContext getContext(String host, String webApp) {
+        StandardContext result = null;
+        StandardHost hostContainer = getHost(host);
+        if (hostContainer != null) {
+            result = (StandardContext) hostContainer.findChild(webApp);
+        } else {
+            LOGGER.log(Level.SEVERE, "No host {0} found", new Object[]{host});
+        }
+        return result;
+    }
+
+    public StandardSession getSession(String host, String webApp, String sessionId) {
+        StandardSession result = null;
+        StandardContext context = getContext(host, webApp);
+        if (context != null) {
+            Manager manager = context.getManager();
+            if (manager != null) {
+                try {
+                    result = (StandardSession) manager.findSession(sessionId);
+                } catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, "Error by reading the session " + sessionId, ex);
                 }
+            } else {
+                LOGGER.log(Level.SEVERE, "No mananager found for web application {0}, host {1}", new Object[]{webApp, host});
             }
+        } else {
+            LOGGER.log(Level.SEVERE, "No context found for web application {0}, host {1}", new Object[]{webApp, host});
         }
         return result;
     }
-
-    public Manager findWebAppManager(String engine, String host, String webApp) {
-        Manager result = null;
-        Container container = findWebAppContainer(engine, host, webApp);
-        if (container != null) {
-            result = container.getManager();
-        } else {
-            LOGGER.log(Level.WARNING, "No web application {0} found in the host {1} and engine {2}", new Object[]{webApp, host, engine});
-        }
-        return result;
-    }
-
-    public Session findSession(String engine, String host, String webApp, String sessionId) {
-        Session result = null;
-        Manager manager = findWebAppManager(engine, host, webApp);
-        if (manager != null) {
-            try {
-                result = manager.findSession(sessionId);
-            } catch (Exception ex) {
-                LOGGER.log(Level.SEVERE, "Error by reading the session " + sessionId, ex);
+    
+    public org.apache.catalina.Session[] getSessions(String host, String webApp) {
+        org.apache.catalina.Session[] result = null;
+        StandardContext context = getContext(host, webApp);
+        if (context != null) {
+            Manager manager = context.getManager();
+            if (manager != null) {
+                try {
+                    result = manager.findSessions();
+                } catch (Exception ex) {
+                    LOGGER.log(Level.SEVERE, "Error by reading the list of sessions", ex);
+                }
+            } else {
+                LOGGER.log(Level.SEVERE, "No mananager found for web application {0}, host {1}", new Object[]{webApp, host});
             }
         } else {
-            LOGGER.log(Level.WARNING, "No mananager found for web application {0}, host {1} and engine {2}", new Object[]{webApp, host, engine});
+            LOGGER.log(Level.SEVERE, "No context found for web application {0}, host {1}", new Object[]{webApp, host});
         }
-        return result;
+        return result;        
     }
 }

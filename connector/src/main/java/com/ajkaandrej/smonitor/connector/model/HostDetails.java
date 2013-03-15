@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.agent.rs.model;
+package com.ajkaandrej.smonitor.connector.model;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerDetails extends Server {
+public class HostDetails extends Host {
     
 }

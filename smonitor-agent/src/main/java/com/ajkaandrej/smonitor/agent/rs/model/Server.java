@@ -24,14 +24,24 @@ import java.util.List;
  */
 public class Server {
     
+    private String id;
+    
     private String name;
     
-    private List<Application> applications;
+    private List<Host> hosts;
     
     public Server() {
-        applications = new ArrayList<Application>();
+        hosts = new ArrayList<Host>();
     }
-    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+        
     public String getName() {
         return name;
     }
@@ -40,11 +50,11 @@ public class Server {
         this.name = name;
     }
 
-    public List<Application> getApplications() {
-        return applications;
+    public List<Host> getHosts() {
+        return hosts;
     }
 
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
+    public void setHosts(List<Host> hosts) {
+        this.hosts = hosts;
     }         
 }

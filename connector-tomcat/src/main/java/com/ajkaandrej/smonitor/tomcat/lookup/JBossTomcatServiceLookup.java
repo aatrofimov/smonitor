@@ -15,6 +15,9 @@
  */
 package com.ajkaandrej.smonitor.tomcat.lookup;
 
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectName;
 import org.apache.catalina.Server;
 import org.apache.catalina.ServerFactory;
 import org.apache.catalina.Service;
@@ -22,12 +25,18 @@ import org.apache.catalina.core.StandardService;
 
 /**
  * The jBoss (4,5,6) tomcat 6 lookup service class.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class JBossTomcatServiceLookup implements TomcatServiceLookup {
- 
+public class JBossTomcatServiceLookup extends TomcatServiceLookup {
+
     private static final String JMX_DOMAIN = "jboss.web";
+
+    private static final String NAME = "Tomcat6";
+    
+    public JBossTomcatServiceLookup() {
+        super(NAME);
+    }
     
     @Override
     public Server getServer() {
@@ -39,12 +48,12 @@ public class JBossTomcatServiceLookup implements TomcatServiceLookup {
         Server server = getServer();
         Service[] services = server.findServices();
         StandardService service = null;
-        for (int i = 0; i < services.length; i++) {            
-            service = (StandardService) services[i];           
+        for (int i = 0; i < services.length; i++) {
+            service = (StandardService) services[i];
             if (JMX_DOMAIN.equals(service.getObjectName().getDomain())) {
                 break;
             }
-        }     
-        return service; 
+        }
+        return service;
     }
 }

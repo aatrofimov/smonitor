@@ -19,6 +19,6 @@ package com.ajkaandrej.smonitor.connector.model;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributeDetails {
+public class AttributeDetails extends Attribute {
     
 }

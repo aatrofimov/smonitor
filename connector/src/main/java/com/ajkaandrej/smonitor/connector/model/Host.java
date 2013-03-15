@@ -22,17 +22,17 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class Server {
+public class Host {
     
     private String id;
     
     private String name;
     
-    private List<Host> hosts;
+    private List<Application> applications;
     
-    public Server() {
-        hosts = new ArrayList<Host>();
-    }
+    public Host() {
+        applications = new ArrayList<Application>();
+    }    
 
     public String getId() {
         return id;
@@ -41,7 +41,7 @@ public class Server {
     public void setId(String id) {
         this.id = id;
     }
-        
+    
     public String getName() {
         return name;
     }
@@ -49,12 +49,12 @@ public class Server {
     public void setName(String name) {
         this.name = name;
     }
-
-    public List<Host> getHosts() {
-        return hosts;
+        
+    public List<Application> getApplications() {
+        return applications;
     }
 
-    public void setHosts(List<Host> hosts) {
-        this.hosts = hosts;
-    }         
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }     
 }

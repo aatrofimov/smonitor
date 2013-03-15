@@ -18,6 +18,7 @@ package com.ajkaandrej.smonitor.connector.service;
 import com.ajkaandrej.smonitor.connector.model.Application;
 import com.ajkaandrej.smonitor.connector.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.connector.model.AttributeDetails;
+import com.ajkaandrej.smonitor.connector.model.Host;
 import com.ajkaandrej.smonitor.connector.model.Server;
 import com.ajkaandrej.smonitor.connector.model.Session;
 import com.ajkaandrej.smonitor.connector.model.SessionDetails;
@@ -29,17 +30,23 @@ import java.util.List;
  */
 public interface ConnectorService {
     
+    String getVersion();
+    
     String getName();
     
     Server getServer();
     
-    List<Application> getApplications();
+    Host getHost(String name);
     
-    ApplicationDetails getApplicationDetails(String application);
+    List<Host> getHosts();
     
-    List<Session> getSessions(String application);
+    List<Application> getApplications(String host);
     
-    SessionDetails getSessionDetails(String application, String session);
+    ApplicationDetails getApplicationDetails(String host, String application);
     
-    AttributeDetails getAttributeDetails(String application, String session, String attribute);
+    List<Session> getSessions(String host, String application);
+    
+    SessionDetails getSessionDetails(String host, String application, String session);
+    
+    AttributeDetails getAttributeDetails(String host, String application, String session, String attribute);
 }

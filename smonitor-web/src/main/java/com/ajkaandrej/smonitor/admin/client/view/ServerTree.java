@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.admin.client.view;
 
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
+import com.ajkaandrej.smonitor.agent.rs.model.Host;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -52,15 +53,24 @@ public class ServerTree extends Tree {
     public void loadServer(Server server) {
         this.clear();
         TreeItem parent = this.addTextItem(server.getName());
-        for (Application app : server.getApplications()) {
-            addItem(parent, images.inbox(), app.getName());
+        parent.setUserObject(server);
+        for (Host host: server.getHosts()) {
+            
+            TreeItem hostItem = addItem(parent, images.inbox(), host.getName());
+            hostItem.setUserObject(host);
+            
+            for (Application app : host.getApplications()) {
+                TreeItem appItem = addItem(hostItem, images.inbox(), app.getName());
+                appItem.setUserObject(app);
+            }
+            
         }
     }
 
-    private void addItem(TreeItem root, ImageResource image, String label) {
+    private TreeItem addItem(TreeItem root, ImageResource image, String label) {
         SafeHtmlBuilder itemHtml = new SafeHtmlBuilder();
         itemHtml.append(AbstractImagePrototype.create(image).getSafeHtml());
         itemHtml.appendHtmlConstant(" ").appendEscaped(label);
-        root.addItem(itemHtml.toSafeHtml());
+        return root.addItem(itemHtml.toSafeHtml());
     }
 }

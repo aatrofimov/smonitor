@@ -22,10 +22,8 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetails {
+public class SessionDetails extends Session {
 
-    private Session session;
-    
     private String info;
     
     private double size;
@@ -41,14 +39,6 @@ public class SessionDetails {
     public SessionDetails() {
         attributes = new ArrayList<Attribute>();
         roles = new ArrayList<String>();
-    }
-
-    public Session getSession() {
-        return session;
-    }
-
-    public void setSession(Session session) {
-        this.session = session;
     }
     
     public List<String> getRoles() {

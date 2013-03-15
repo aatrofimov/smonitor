@@ -16,15 +16,18 @@
 package com.ajkaandrej.smonitor.agent.rs.service;
 
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
+import com.ajkaandrej.smonitor.agent.rs.model.HostDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
  * The server rest-service.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 @Path("server")
@@ -32,6 +35,12 @@ public interface ServerService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Server getServer() throws ServiceException;
-   
+    Server getServer(@QueryParam("remote") String remote) throws ServiceException;
+
+    @GET
+    @Path("{host}")
+    @Produces(MediaType.APPLICATION_JSON)
+    HostDetails getHost(@PathParam("host") String host, @QueryParam("remote") String remote) throws ServiceException;
+    
+    
 }

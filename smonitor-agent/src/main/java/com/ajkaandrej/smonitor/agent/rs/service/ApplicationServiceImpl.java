@@ -34,39 +34,42 @@ import org.modelmapper.TypeToken;
 public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
-    public List<Application> getApplications() throws ServiceException {
+    public List<Application> getApplications(String host, String remote) throws ServiceException {
         ConnectorService service = ConnectorServiceFactory.getService();
+        System.out.println("host " + host);
         Type listType = new TypeToken<List<Application>>() {}.getType();
-        List<Application> result = ObjectMapper.getInstance().map(service.getApplications(), listType);
+        List<Application> result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
         return result;
     }
 
     @Override
-    public ApplicationDetails getApplication(String name) throws ServiceException {
+    public ApplicationDetails getApplication(String host, String name, String remote) throws ServiceException {
         ConnectorService service = ConnectorServiceFactory.getService();
-        ApplicationDetails result = ObjectMapper.getInstance().map(service.getApplicationDetails(name), ApplicationDetails.class);
+        System.out.println("host " + host + " application " + name);
+        ApplicationDetails result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
         return result;
     }
     
     @Override
-    public SessionDetails getSession(String application, String id) throws ServiceException {
+    public SessionDetails getSession(String host, String application, String id, String remote) throws ServiceException {
+        System.out.println("host " + host + " application " + application + " id " + id);
         ConnectorService service = ConnectorServiceFactory.getService();
-        SessionDetails result = ObjectMapper.getInstance().map(service.getSessionDetails(application, id), SessionDetails.class);
+        SessionDetails result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
         return result;
     }    
 
     @Override
-    public AttributeDetails getAttribute(String application, String session, String name) throws ServiceException {
+    public AttributeDetails getAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AttributeDetails updateAttribute(String application, String session, String name, AttributeDetails attribute) throws ServiceException {
+    public AttributeDetails updateAttribute(String host, String application, String session, String name, AttributeDetails attribute, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteAttribute(String application, String session, String name) throws ServiceException {
+    public void deleteAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

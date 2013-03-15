@@ -22,9 +22,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetails {
-    
-    private String name;
+public class ApplicationDetails extends Application {
     
     private int activeSessions;
     private boolean distributable;
@@ -41,16 +39,8 @@ public class ApplicationDetails {
 
     public ApplicationDetails() {
         sessions = new ArrayList<Session>();
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-        
+    }  
+            
     public List<Session> getSessions() {
         return sessions;
     }

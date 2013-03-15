@@ -19,6 +19,6 @@ package com.ajkaandrej.smonitor.agent.rs.model;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerDetails extends Server {
+public class HostDetails extends Host {
     
 }

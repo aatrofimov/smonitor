@@ -28,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -39,32 +40,33 @@ import javax.ws.rs.core.MediaType;
 public interface ApplicationService {
 
     @GET   
+    @Path("{host}")
     @Produces(MediaType.APPLICATION_JSON)
-    List<Application> getApplications() throws ServiceException;
-
-    @GET
-    @Path("{application}")
-    @Produces(MediaType.APPLICATION_JSON)
-    ApplicationDetails getApplication(@PathParam("application") String name) throws ServiceException;
+    List<Application> getApplications(@PathParam("host") String host, @QueryParam("remote") String remote) throws ServiceException;
     
     @GET
-    @Path("{application}/{session}")
+    @Path("{host}/{application}")
+    @Produces(MediaType.APPLICATION_JSON)
+    ApplicationDetails getApplication(@PathParam("host") String host, @PathParam("application") String name, @QueryParam("remote") String remote) throws ServiceException;
+    
+    @GET
+    @Path("{host}/{application}/{session}")
     @Produces(MediaType.APPLICATION_JSON)    
-    SessionDetails getSession(@PathParam("application") String application, @PathParam("session") String id) throws ServiceException;
+    SessionDetails getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id, @QueryParam("remote") String remote) throws ServiceException;
 
     @GET
-    @Path("{application}/{session}/{attribute}")
+    @Path("{host}/{application}/{session}/{attribute}")
     @Produces(MediaType.APPLICATION_JSON)
-    AttributeDetails getAttribute(@PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name) throws ServiceException;
+    AttributeDetails getAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, @QueryParam("remote") String remote) throws ServiceException;
    
     @PUT
-    @Path("{application}/{session}/{attribute}")
+    @Path("{host}/{application}/{session}/{attribute}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    AttributeDetails updateAttribute(@PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, AttributeDetails attribute) throws ServiceException;
+    AttributeDetails updateAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, AttributeDetails attribute, @QueryParam("remote") String remote) throws ServiceException;
 
     @DELETE
-    @Path("{application}/{session}/{attribute}")
-    void deleteAttribute(@PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name) throws ServiceException;    
+    @Path("{host}/{application}/{session}/{attribute}")
+    void deleteAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, @QueryParam("remote") String remote) throws ServiceException;    
         
 }

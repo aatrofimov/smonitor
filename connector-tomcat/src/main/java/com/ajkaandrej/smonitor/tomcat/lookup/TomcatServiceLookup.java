@@ -22,9 +22,19 @@ import org.apache.catalina.Service;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public interface TomcatServiceLookup {
+public abstract class TomcatServiceLookup {
     
-    Server getServer();
+    private String name;
     
-    Service getService();
+    public TomcatServiceLookup(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+        
+    public abstract Server getServer();
+    
+    public abstract Service getService();
 }

@@ -15,6 +15,8 @@
  */
 package com.ajkaandrej.smonitor.tomcat.lookup;
 
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.core.StandardServer;
@@ -30,8 +32,14 @@ import org.jboss.msc.service.ServiceName;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class JBoss7TomcatServiceLookup implements TomcatServiceLookup {
+public class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
 
+    private static final String NAME = "Tomcat7";
+    
+    public JBoss7TomcatServiceLookup() {
+        super(NAME);
+    }
+            
     @Override
     public Server getServer() {
         StandardServer result = null;

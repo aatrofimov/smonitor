@@ -19,6 +19,7 @@ import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import com.ajkaandrej.smonitor.connector.factory.ConnectorServiceFactory;
 import com.ajkaandrej.smonitor.agent.mapper.ObjectMapper;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
+import com.ajkaandrej.smonitor.agent.rs.model.HostDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 
 /**
@@ -29,10 +30,15 @@ import com.ajkaandrej.smonitor.agent.rs.model.Server;
 public class ServerServiceImpl implements ServerService {
 
     @Override
-    public Server getServer() throws ServiceException {
+    public Server getServer(String remote) throws ServiceException {
         ConnectorService service = ConnectorServiceFactory.getService();
         Server result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
         return result;
+    }
+
+    @Override
+    public HostDetails getHost(String host, String remote) throws ServiceException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
