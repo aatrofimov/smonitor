@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.agent.rs.service;
 
 import com.ajkaandrej.smonitor.agent.mapper.ObjectMapper;
+import com.ajkaandrej.smonitor.agent.rs.client.ApplicationClientService;
 import com.ajkaandrej.smonitor.connector.factory.ConnectorServiceFactory;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
@@ -28,35 +29,54 @@ import java.util.List;
 import org.modelmapper.TypeToken;
 
 /**
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> getApplications(String host, String remote) throws ServiceException {
-        ConnectorService service = ConnectorServiceFactory.getService();
-        System.out.println("host " + host);
-        Type listType = new TypeToken<List<Application>>() {}.getType();
-        List<Application> result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
+        System.out.println("host " + host + " remote " + remote);
+        List<Application> result;
+        if (remote == null || remote.isEmpty()) {
+            ConnectorService service = ConnectorServiceFactory.getService();
+            Type listType = new TypeToken<List<Application>>() {
+            }.getType();
+            result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
+        } else {
+            ApplicationClientService client = new ApplicationClientService(remote);
+            result = client.getApplications(host);
+        }
         return result;
     }
 
     @Override
     public ApplicationDetails getApplication(String host, String name, String remote) throws ServiceException {
-        ConnectorService service = ConnectorServiceFactory.getService();
-        System.out.println("host " + host + " application " + name);
-        ApplicationDetails result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
+        ApplicationDetails result;
+        System.out.println("host " + host + " application " + name + " remote " + remote);
+        if (remote == null || remote.isEmpty()) {
+            ConnectorService service = ConnectorServiceFactory.getService();
+            result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
+        } else {
+            ApplicationClientService client = new ApplicationClientService(remote);
+            result = client.getApplication(host, name);
+        }
         return result;
     }
-    
+
     @Override
     public SessionDetails getSession(String host, String application, String id, String remote) throws ServiceException {
-        System.out.println("host " + host + " application " + application + " id " + id);
-        ConnectorService service = ConnectorServiceFactory.getService();
-        SessionDetails result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
+        System.out.println("host " + host + " application " + application + " id " + id + " remote " + remote);
+        SessionDetails result;
+        if (remote == null || remote.isEmpty()) {
+            ConnectorService service = ConnectorServiceFactory.getService();
+            result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
+        } else {
+            ApplicationClientService client = new ApplicationClientService(remote);
+            result = client.getSession(host, application, id);
+        }
         return result;
-    }    
+    }
 
     @Override
     public AttributeDetails getAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
@@ -72,5 +92,4 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void deleteAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }

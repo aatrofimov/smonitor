@@ -18,6 +18,7 @@ package com.ajkaandrej.smonitor.agent.rs.service;
 import com.ajkaandrej.smonitor.connector.service.ConnectorService;
 import com.ajkaandrej.smonitor.connector.factory.ConnectorServiceFactory;
 import com.ajkaandrej.smonitor.agent.mapper.ObjectMapper;
+import com.ajkaandrej.smonitor.agent.rs.client.ServerClientService;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.HostDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
@@ -31,8 +32,15 @@ public class ServerServiceImpl implements ServerService {
 
     @Override
     public Server getServer(String remote) throws ServiceException {
-        ConnectorService service = ConnectorServiceFactory.getService();
-        Server result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
+        Server result;
+        System.out.println("REMOTE : " + remote);
+        if (remote == null || remote.isEmpty()) {
+            ConnectorService service = ConnectorServiceFactory.getService();
+            result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
+        } else {
+            ServerClientService client = new ServerClientService(remote);
+            result = client.getServer();
+        }
         return result;
     }
 
