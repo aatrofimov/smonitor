@@ -19,16 +19,22 @@ import com.ajkaandrej.smonitor.admin.client.view.ApplicationPanel;
 import com.ajkaandrej.smonitor.admin.client.view.ServerTree;
 import com.ajkaandrej.smonitor.admin.client.view.ServerTree.ServerTreeImages;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
+import com.ajkaandrej.smonitor.agent.rs.model.Application;
+import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
+import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -46,30 +52,52 @@ public class Admin {
 
     @Inject
     private Caller<ServerService> serverService;
-
-    private ServerTree serverTree;
+    @Inject
+    private Caller<ApplicationService> applicationService;
     
+    private ServerTree serverTree;
+    private ApplicationPanel appPanel;
     final RemoteCallback<Server> serverCallback = new RemoteCallback<Server>() {
         @Override
         public void callback(Server server) {
             serverTree.loadServer(server);
-        }        
+        }
     };
-    
+    final RemoteCallback<ApplicationDetails> applicationDetailsCallback = new RemoteCallback<ApplicationDetails>() {
+        @Override
+        public void callback(ApplicationDetails details) {
+            appPanel.loadApplication(details);
+        }
+    };
+
     @PostConstruct
     public void init() {
-       
+
         RestClient.setJacksonMarshallingActive(true);
-        
-        ServerTreeImages images = GWT.create(ServerTreeImages.class);        
+
+        ServerTreeImages images = GWT.create(ServerTreeImages.class);
         serverTree = new ServerTree(images);
+        
+        serverTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
+            @Override
+            public void onSelection(SelectionEvent<TreeItem> event) {
+                TreeItem item = event.getSelectedItem();
+                Object object = item.getUserObject();
+                if (object instanceof Application) {
+                    Application app = (Application) object;
+                    loadApplicationDetails(app.getHost(), app.getId());
+                } else {
+                    appPanel.reset();
+                }
+            }
+        });
         
         ScrollPanel staticTreeWrapper = new ScrollPanel(serverTree);
         staticTreeWrapper.ensureDebugId("cwTree-serverTree-Wrapper");
-        
+
         staticTreeWrapper.setSize("100%", "100%");
-    
-  
+
+
         Button refreshButton = new Button("Refresh");
         refreshButton.addClickHandler(new ClickHandler() {
             @Override
@@ -77,13 +105,13 @@ public class Admin {
                 loadServer();
             }
         });
-                        
+
         VerticalPanel vPanel = new VerticalPanel();
         vPanel.add(refreshButton);
         vPanel.add(staticTreeWrapper);
 
-        ApplicationPanel appPanel = new ApplicationPanel();
-  
+        appPanel = new ApplicationPanel();
+
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         splitPanel.setWidth("100%");
         splitPanel.setHeight("100%");
@@ -91,10 +119,18 @@ public class Admin {
         splitPanel.addWest(vPanel, 200);
         splitPanel.add(appPanel);
         splitPanel.setWidgetMinSize(vPanel, 200);
-        
+
         RootPanel.get().add(splitPanel);
     }
 
+    private void loadApplicationDetails(String host, String name) {
+        try {
+           applicationService.call(applicationDetailsCallback).getApplication(host, name, null);
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }        
+    }
+    
     private void loadServer() {
         try {
             serverService.call(serverCallback).getServer(null);

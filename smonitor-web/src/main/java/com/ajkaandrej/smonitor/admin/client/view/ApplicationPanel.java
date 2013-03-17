@@ -15,7 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.view;
 
-import com.ajkaandrej.smonitor.agent.rs.model.Application;
+import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -26,6 +26,8 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
  */
 public class ApplicationPanel extends TabLayoutPanel {
     
+    private SessionsTable sessionTable;
+    
     public ApplicationPanel() {
         super(2.5, Unit.EM);
         setAnimationDuration(1000);
@@ -34,13 +36,19 @@ public class ApplicationPanel extends TabLayoutPanel {
         HTML homeText = new HTML("Application panel");
         add(homeText, "Details");        
         
-        HTML sessions = new HTML("Session panel");
-        add(sessions, "Sessions");   
+        sessionTable = new SessionsTable();
         
+//        HTML sessions = new HTML("Session panel");
+        add(sessionTable, "Sessions");   
+
         selectTab(0);
     }
     
-    public void loadApplication(Application application) {
-        
+    public void reset() {
+        sessionTable.reset();
+    }
+    
+    public void loadApplication(ApplicationDetails application) {
+        sessionTable.load(application.getSessions());
     }
 }
