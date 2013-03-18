@@ -23,7 +23,6 @@
             <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>objectprofiler</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>                
         <!-- TOMCAT -->
         <dependency>

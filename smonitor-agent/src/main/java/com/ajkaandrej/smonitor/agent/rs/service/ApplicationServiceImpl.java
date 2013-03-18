@@ -32,11 +32,11 @@ import org.modelmapper.TypeToken;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationServiceImpl implements ApplicationService {
-
+public class ApplicationServiceImpl extends AbstractService implements ApplicationService {
+    
     @Override
     public List<Application> getApplications(String host, String remote) throws ServiceException {
-        System.out.println("host " + host + " remote " + remote);
+        System.out.println("host " + host + " remote " + remote);        
         List<Application> result;
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();

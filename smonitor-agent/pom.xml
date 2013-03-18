@@ -17,28 +17,25 @@
             <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>connector</artifactId>
             <version>${project.version}</version>
-        </dependency>           
-        <dependency>
-            <groupId>com.ajkaandrej.smonitor</groupId>
-            <artifactId>connector-tomcat</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ajkaandrej.smonitor</groupId>
-            <artifactId>objectprofiler</artifactId>
-            <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
         <!-- MAPPER -->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
+            <scope>compile</scope>
         </dependency>        
         <!-- RESTEASY -->                   
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
             <scope>provided</scope>
-        </dependency>             
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     
     <build>      

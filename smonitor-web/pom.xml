@@ -15,9 +15,21 @@
     <dependencies>  
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector-tomcat</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
+        </dependency> 
+        <!-- MAPPER -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <scope>compile</scope>
         </dependency>
+        <!-- GWT -->
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>

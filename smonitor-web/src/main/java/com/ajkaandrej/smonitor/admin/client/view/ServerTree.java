@@ -18,6 +18,7 @@ package com.ajkaandrej.smonitor.admin.client.view;
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
 import com.ajkaandrej.smonitor.agent.rs.model.Host;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
+import com.ajkaandrej.smonitor.agent.rs.model.ServerContext;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -52,7 +53,8 @@ public class ServerTree extends Tree {
     
     public void loadServer(Server server) {
         this.clear();
-        TreeItem parent = this.addTextItem(server.getName());
+        ServerContext context = server.getServerContext();
+        TreeItem parent = this.addTextItem(context.getHostName() + ":" + context.getPort());
         parent.setUserObject(server);
         for (Host host: server.getHosts()) {
             

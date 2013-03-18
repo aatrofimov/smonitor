@@ -15,9 +15,20 @@
     <dependencies>
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>connector-tomcat</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
-        </dependency>           
+        </dependency> 
+        <!-- MAPPER -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <scope>compile</scope>
+        </dependency>                    
     </dependencies>
 
 
@@ -68,7 +79,7 @@
                 <dependency>
                     <groupId>org.jboss.resteasy</groupId>
                     <artifactId>resteasy-jackson-provider</artifactId>
-                    <version>2.3.5.Final</version>
+                    <scope>compile</scope>
                 </dependency>                
             </dependencies>
         </profile>

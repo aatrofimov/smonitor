@@ -30,10 +30,20 @@ public class Server {
     
     private List<Host> hosts;
     
+    private ServerContext serverContext;
+        
     public Server() {
         hosts = new ArrayList<Host>();
     }
 
+    public ServerContext getServerContext() {
+        return serverContext;
+    }
+
+    public void setServerContext(ServerContext serverContext) {
+        this.serverContext = serverContext;
+    }
+    
     public String getId() {
         return id;
     }

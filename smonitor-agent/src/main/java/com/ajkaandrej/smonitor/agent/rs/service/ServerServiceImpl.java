@@ -28,7 +28,7 @@ import com.ajkaandrej.smonitor.agent.rs.model.Server;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerServiceImpl implements ServerService {
+public class ServerServiceImpl extends AbstractService implements ServerService {
 
     @Override
     public Server getServer(String remote) throws ServiceException {
@@ -37,6 +37,9 @@ public class ServerServiceImpl implements ServerService {
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
             result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
+            if (result != null) {
+                result.setServerContext(getServerContext());                
+            }
         } else {
             ServerClientService client = new ServerClientService(remote);
             result = client.getServer();
