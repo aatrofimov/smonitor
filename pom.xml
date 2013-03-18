@@ -28,6 +28,8 @@
 	
     <modules>
         <module>objectprofiler</module>
+        <module>config</module>
+        <module>config-file</module>
         <module>connector</module>
         <module>connector-tomcat</module>        
         <module>smonitor-agent</module>

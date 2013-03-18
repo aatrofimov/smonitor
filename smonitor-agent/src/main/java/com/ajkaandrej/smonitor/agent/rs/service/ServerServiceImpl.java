@@ -32,7 +32,7 @@ public class ServerServiceImpl extends AbstractService implements ServerService 
 
     @Override
     public Server getServer(String remote) throws ServiceException {
-        Server result;
+        Server result;        
         System.out.println("REMOTE : " + remote);
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
