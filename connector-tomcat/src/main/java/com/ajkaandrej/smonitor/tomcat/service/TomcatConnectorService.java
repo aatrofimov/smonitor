@@ -61,6 +61,13 @@ public class TomcatConnectorService implements ConnectorService {
     }
     
     @Override
+    public List<Application> getApplications() {
+        TomcatServer server = TomcatServer.getInstance();
+        List<Application> result = TomcatUtil.getApplications(server.getContexts());        
+        return result;
+    }
+    
+    @Override
     public List<Application> getApplications(String host) {
         TomcatServer server = TomcatServer.getInstance();
         List<Application> result = TomcatUtil.getApplications(server.getContexts(host));        

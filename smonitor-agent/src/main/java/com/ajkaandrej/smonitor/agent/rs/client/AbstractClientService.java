@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.smonitor.agent.rs.client;
 
+import com.ajkaandrej.smonitor.agent.rs.model.ServerRequest;
 import org.jboss.resteasy.client.ProxyFactory;
 
 /**
@@ -23,13 +24,24 @@ import org.jboss.resteasy.client.ProxyFactory;
  */
 public class AbstractClientService<T> {
     
+    private static final String AGENT_SERVLER = "/smonitor-agent";
+  
     private T service;
     
+    private String remote;
+    
     public AbstractClientService(Class<T> clazz, String remote) {
-        service = ProxyFactory.create(clazz, remote);        
+        service = ProxyFactory.create(clazz, remote + AGENT_SERVLER);    
+        this.remote = remote;
     }
     
     protected T getService() {
         return service;
+    }
+    
+    protected void updateServerRequest(ServerRequest request) {
+        if (request != null) {
+            request.getServerContext().setRemote(remote);
+        }        
     }
 }

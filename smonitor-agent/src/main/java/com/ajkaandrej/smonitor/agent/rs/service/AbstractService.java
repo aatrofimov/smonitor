@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.agent.rs.service;
 
 import com.ajkaandrej.smonitor.agent.rs.model.ServerContext;
+import com.ajkaandrej.smonitor.agent.rs.model.ServerRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
@@ -28,12 +29,14 @@ public abstract class AbstractService {
     @Context
     private HttpServletRequest context;
     
-    protected ServerContext getServerContext() {
-        ServerContext result = new ServerContext();
-        result.setScheme(context.getScheme());
-        result.setHostName(context.getServerName());
-        result.setPort(context.getServerPort());
-        result.setServletPath(context.getServletPath());
-        return result;
+    protected void createServerRequest(ServerRequest request) {
+        if (request != null) {
+            ServerContext result = request.getServerContext();
+            result.setScheme(context.getScheme());
+            result.setHostName(context.getServerName());
+            result.setPort(context.getServerPort());
+            result.setServletPath(context.getServletPath());
+            result.setRemote(null);
+        }
     }
 }

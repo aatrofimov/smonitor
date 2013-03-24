@@ -40,6 +40,10 @@ import javax.ws.rs.core.MediaType;
 public interface ApplicationService {
 
     @GET   
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Application> getApplications(@QueryParam("remote") String remote) throws ServiceException;
+        
+    @GET   
     @Path("{host}")
     @Produces(MediaType.APPLICATION_JSON)
     List<Application> getApplications(@PathParam("host") String host, @QueryParam("remote") String remote) throws ServiceException;

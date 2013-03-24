@@ -33,19 +33,33 @@ import org.modelmapper.TypeToken;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ApplicationServiceImpl extends AbstractService implements ApplicationService {
-    
+
     @Override
     public List<Application> getApplications(String host, String remote) throws ServiceException {
         System.out.println("host " + host + " remote " + remote);        
         List<Application> result;
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
-            Type listType = new TypeToken<List<Application>>() {
-            }.getType();
+            Type listType = new TypeToken<List<Application>>(){}.getType();
             result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
         } else {
             ApplicationClientService client = new ApplicationClientService(remote);
-            result = client.getApplications(host);
+            result = client.getApplications();
+        }
+        return result;
+    }
+    
+    @Override
+    public List<Application> getApplications(String remote) throws ServiceException {
+        System.out.println("Remote " + remote);
+        List<Application> result;
+        if (remote == null || remote.isEmpty()) {
+            ConnectorService service = ConnectorServiceFactory.getService();
+            Type listType = new TypeToken<List<Application>>(){}.getType();
+            result = ObjectMapper.getInstance().map(service.getApplications(), listType);
+        } else {
+            ApplicationClientService client = new ApplicationClientService(remote);
+            result = client.getApplications();
         }
         return result;
     }
@@ -57,6 +71,7 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
             result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
+            createServerRequest(result);
         } else {
             ApplicationClientService client = new ApplicationClientService(remote);
             result = client.getApplication(host, name);
@@ -71,6 +86,7 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
             result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
+            createServerRequest(result);
         } else {
             ApplicationClientService client = new ApplicationClientService(remote);
             result = client.getSession(host, application, id);

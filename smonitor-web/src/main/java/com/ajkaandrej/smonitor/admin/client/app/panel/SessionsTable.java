@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.view;
+package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.smonitor.agent.rs.model.Session;
+import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
@@ -39,8 +40,9 @@ public class SessionsTable extends Composite {
     
     private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
     
-    private CellTable<Session> table = new CellTable<Session>();
+    private CellTable<SessionTableModel> table = new CellTable<SessionTableModel>();
     
+    private List<SessionTableModel> data = new ArrayList<SessionTableModel>();
     
     public SessionsTable() {
         table.setWidth("100%", true);
@@ -48,45 +50,65 @@ public class SessionsTable extends Composite {
         table.setAutoFooterRefreshDisabled(true);
         table.setPageSize(3);
         
-        SingleSelectionModel<Session> ssm = new SingleSelectionModel<Session>();
+        SingleSelectionModel<SessionTableModel> ssm = new SingleSelectionModel<SessionTableModel>();
         table.setSelectionModel(ssm);
 
         
-
-        TextColumn<Session> idColumn = new TextColumn<Session>() {
+        TextColumn<SessionTableModel> hostColumn = new TextColumn<SessionTableModel>() {
             @Override
-            public String getValue(Session object) {
-                return object.getId();
+            public String getValue(SessionTableModel object) {
+                return object.hostName;
+            }
+        };
+        table.addColumn(hostColumn, "Host");
+        
+        TextColumn<SessionTableModel> portColumn = new TextColumn<SessionTableModel>() {
+            @Override
+            public String getValue(SessionTableModel object) {
+                return "" + object.hostPort;
+            }
+        };
+        
+        
+        table.addColumn(portColumn, "Port");
+        
+        TextColumn<SessionTableModel> idColumn = new TextColumn<SessionTableModel>() {
+            @Override
+            public String getValue(SessionTableModel object) {
+                return object.id;
             }
         };
         table.addColumn(idColumn, "ID");
 
-        TextColumn<Session> userColumn = new TextColumn<Session>() {
+        TextColumn<SessionTableModel> userColumn = new TextColumn<SessionTableModel>() {
             @Override
-            public String getValue(Session object) {
-                return object.getUser();
+            public String getValue(SessionTableModel object) {
+                return object.user;
             }
         };
         table.addColumn(userColumn, "User");
         
         DateCell dateCell = new DateCell(DATE_FORMAT);        
-        Column<Session, Date> createColumn = new Column<Session, Date>(dateCell) {
+        Column<SessionTableModel, Date> createColumn = new Column<SessionTableModel, Date>(dateCell) {
             @Override
-            public Date getValue(Session object) {
-                return object.getCreationTime();
+            public Date getValue(SessionTableModel object) {
+                return object.creationTime;
             }
         };
         table.addColumn(createColumn, "Create");
         
         DateCell lastAccessedCell = new DateCell(DATE_FORMAT);        
-        Column<Session, Date> lastAccessedColumn = new Column<Session, Date>(lastAccessedCell) {
+        Column<SessionTableModel, Date> lastAccessedColumn = new Column<SessionTableModel, Date>(lastAccessedCell) {
             @Override
-            public Date getValue(Session object) {
-                return object.getLastAccessedTime();
+            public Date getValue(SessionTableModel object) {
+                return object.lastAccessedTime;
             }
         };
         table.addColumn(lastAccessedColumn, "Last accessed time");
         
+        table.setColumnWidth(hostColumn, 50, Unit.PX);
+        table.setColumnWidth(portColumn, 200, Unit.PX);
+         
         SimplePager pager = new SimplePager();
         pager.setDisplay(table);
         
@@ -98,10 +120,12 @@ public class SessionsTable extends Composite {
     }
 
     public void reset() {
-        table.setRowData(new ArrayList<Session>());        
+        data.clear();
+        table.setRowData(data);        
     }
     
-    public void load(List<Session> sessions) {
-        table.setRowData(sessions);
+    public void add(List<SessionTableModel> sessions) {
+        data.addAll(sessions);
+        table.setRowData(data);
     }
 }

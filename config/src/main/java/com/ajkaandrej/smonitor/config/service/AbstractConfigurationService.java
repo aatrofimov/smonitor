@@ -72,15 +72,11 @@ public abstract class AbstractConfigurationService implements ConfigurationServi
      */
     @Override
     public void reloadConfigurations() throws ConfigurationException {
-        try {
-            if (cache != null) {
-                cache.clear();
-            }
-            cache = new HashMap<String, Map<String, String>>();
-            loadConfigurations();
-        } finally {
-            cache = null;
+        if (cache != null) {
+            cache.clear();
         }
+        cache = new HashMap<String, Map<String, String>>();
+        loadConfigurations();
     }
 
     /**
@@ -144,7 +140,7 @@ public abstract class AbstractConfigurationService implements ConfigurationServi
     public <T extends Configuration> T saveConfiguration(T model) throws ConfigurationException {
         T result = null;
         if (model != null) {
-            Map<String,String> data = saveConfiguration(model.getModule(), model.getData());
+            Map<String, String> data = saveConfiguration(model.getModule(), model.getData());
             if (data != null) {
                 updateConfiguration(model.getModule(), data);
                 result = loadConfiguration(model);
@@ -168,5 +164,5 @@ public abstract class AbstractConfigurationService implements ConfigurationServi
      * @return the configuration map.
      * @throws ConfigurationException if the method fails.
      */
-    protected abstract Map<String,String> saveConfiguration(String name, Map<String,String> data) throws ConfigurationException;
+    protected abstract Map<String, String> saveConfiguration(String name, Map<String, String> data) throws ConfigurationException;
 }

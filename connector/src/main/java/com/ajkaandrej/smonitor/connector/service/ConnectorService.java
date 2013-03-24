@@ -40,6 +40,8 @@ public interface ConnectorService {
     
     List<Host> getHosts();
     
+    List<Application> getApplications();
+    
     List<Application> getApplications(String host);
     
     ApplicationDetails getApplicationDetails(String host, String application);

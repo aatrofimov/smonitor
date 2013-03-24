@@ -22,7 +22,9 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetails extends Application {
+public class ApplicationDetails extends Application implements ServerRequest {
+    
+    private ServerContext serverContext;
     
     private int activeSessions;
     private boolean distributable;
@@ -39,7 +41,13 @@ public class ApplicationDetails extends Application {
 
     public ApplicationDetails() {
         sessions = new ArrayList<Session>();
+        serverContext = new ServerContext();
     }
+
+    @Override
+    public ServerContext getServerContext() {
+        return serverContext;
+    }    
     
     public List<Session> getSessions() {
         return sessions;

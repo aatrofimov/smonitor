@@ -22,28 +22,26 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class Server {
+public class Server implements ServerRequest {
     
     private String id;
     
     private String name;
-    
+     
     private List<Host> hosts;
     
     private ServerContext serverContext;
         
     public Server() {
         hosts = new ArrayList<Host>();
+        serverContext = new ServerContext();
     }
 
+    @Override
     public ServerContext getServerContext() {
         return serverContext;
     }
 
-    public void setServerContext(ServerContext serverContext) {
-        this.serverContext = serverContext;
-    }
-    
     public String getId() {
         return id;
     }
@@ -66,5 +64,5 @@ public class Server {
 
     public void setHosts(List<Host> hosts) {
         this.hosts = hosts;
-    }         
+    }           
 }

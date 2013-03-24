@@ -33,24 +33,32 @@ public class ApplicationClientService extends AbstractClientService<ApplicationS
         super(ApplicationService.class, remote);
     }
     
-    public List<Application> getApplications(String host) throws ServiceException {
-        return getService().getApplications(host, null);
+    public List<Application> getApplications() throws ServiceException {
+        return getService().getApplications(null);
     }
 
     public ApplicationDetails getApplication(String host, String name) throws ServiceException {
-        return getService().getApplication(host, name, null);
+        ApplicationDetails result = getService().getApplication(host, name, null);
+        updateServerRequest(result);
+        return result;
     }
 
     public SessionDetails getSession(String host, String application, String id) throws ServiceException {
-        return getService().getSession(host, application, id, null);
+        SessionDetails result = getService().getSession(host, application, id, null);
+        updateServerRequest(result);
+        return result;
     }
 
     public AttributeDetails getAttribute(String host, String application, String session, String name) throws ServiceException {
-        return getService().getAttribute(host, application, session, name, null);
+        AttributeDetails result = getService().getAttribute(host, application, session, name, null);
+        updateServerRequest(result);
+        return result;
     }
 
     public AttributeDetails updateAttribute(String host, String application, String session, String name, AttributeDetails attribute) throws ServiceException {
-        return getService().updateAttribute(host, application, session, name, attribute, null);
+        AttributeDetails result = getService().updateAttribute(host, application, session, name, attribute, null);
+        updateServerRequest(result);
+        return result;
     }
 
     public void deleteAttribute(String host, String application, String session, String name) throws ServiceException {

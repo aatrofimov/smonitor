@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -101,17 +102,40 @@ public abstract class Configuration implements Serializable {
     }
 
     /**
-     * Adds the value to the key.
+     * Sets the value to the key.
      *
      * @param key the key.
      * @param value the value.
      */
-    protected void addValue(String key, String value) {
+    protected void setValue(String key, String value) {
         if (key != null) {
             data.put(key, value);
         }
     }
 
+    /**
+     * Sets the value to the key.
+     *
+     * @param key the key.
+     * @param value the value.
+     */
+    protected void setStringList(String key, List<String> value) {
+        if (key != null) {
+            String tmp = null;
+            if (value != null) {
+                StringBuilder sb = new StringBuilder();
+                Iterator<String> iter = value.iterator();
+                while (iter.hasNext()) {
+                    sb.append(iter.next());
+                    if (iter.hasNext()) {
+                        sb.append(LIST_SPLIT);
+                    }
+                }                
+            }
+            setValue(key, tmp);
+        }
+    }
+    
     /**
      * Gets the string value.
      *
@@ -131,7 +155,7 @@ public abstract class Configuration implements Serializable {
     protected List<String> getStringList(String key) {
         List<String> result = new ArrayList<String>();
         String value = data.get(key);
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             String[] items = value.split(LIST_SPLIT);
             result.addAll(Arrays.asList(items));
         }
@@ -149,6 +173,28 @@ public abstract class Configuration implements Serializable {
         return Boolean.parseBoolean(value);
     }
 
+    /**
+     * Sets the boolean value.
+     * @param key the key.
+     * @param value the value.
+     */
+    protected void setBooleanValue(String key, boolean value) {
+        if (key != null) {
+            setValue(key, Boolean.toString(value));
+        }
+    }
+    
+    /**
+     * Sets the integer value.
+     * @param key the key.
+     * @param value the value.
+     */
+    protected void setIngeterValue(String key, int value) {
+        if (key != null) {
+            setValue(key, Integer.toString(value));
+        }        
+    }
+    
     /**
      * Gets the integer value for the key.
      *

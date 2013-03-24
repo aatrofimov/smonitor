@@ -35,8 +35,8 @@ public interface ServerService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Server getServer(@QueryParam("remote") String remote) throws ServiceException;
-
+    Server getServer(@QueryParam("remote") String remote) throws ServiceException; 
+    
     @GET
     @Path("{host}")
     @Produces(MediaType.APPLICATION_JSON)

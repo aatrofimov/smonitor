@@ -13,12 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.view;
+package com.ajkaandrej.smonitor.admin.client.app.panel;
+
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetailsPanel {
+public class ApplicationDetailsPanel extends Composite {
     
+    public ApplicationDetailsPanel() {
+        HTML homeText = new HTML("Application panel");        
+        initWidget(homeText);
+    }
+    
+    public void reset() {
+        
+    }
+    
+    public void add(ApplicationDetailsModel model) {
+        
+    }
 }

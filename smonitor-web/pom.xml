@@ -17,12 +17,22 @@
             <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>connector-tomcat</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>config-file</artifactId>
+            <version>${project.version}</version>
+        </dependency>                 
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
-        </dependency> 
+        </dependency>
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>smonitor-services</artifactId>
+            <version>${project.version}</version>
+        </dependency>          
         <!-- MAPPER -->
         <dependency>
             <groupId>org.modelmapper</groupId>
@@ -36,7 +46,14 @@
             <version>${project.version}</version>
             <classifier>sources</classifier>
             <scope>provided</scope>
-        </dependency>        
+        </dependency> 
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>smonitor-services</artifactId>
+            <version>${project.version}</version>
+            <classifier>sources</classifier>
+            <scope>provided</scope>
+        </dependency>                
         <!-- ERRAI -->
         <dependency>
             <groupId>org.jboss.errai</groupId>

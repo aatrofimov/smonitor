@@ -18,6 +18,9 @@ package com.ajkaandrej.smonitor.tomcat.server;
 import com.ajkaandrej.smonitor.tomcat.lookup.JBoss7TomcatServiceLookup;
 import com.ajkaandrej.smonitor.tomcat.lookup.JBossTomcatServiceLookup;
 import com.ajkaandrej.smonitor.tomcat.lookup.TomcatServiceLookup;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.management.MBeanServer;
@@ -117,6 +120,21 @@ public class TomcatServer {
             result = (StandardHost) engineService.findChild(host);
         }
         return result;
+    }
+
+    public Container[] getContexts() {
+        List<Container> result = new ArrayList<Container>();
+        Container root = service.getContainer();
+        if (root != null) {
+            Container[] hosts = root.findChildren();
+            if (hosts != null) {
+                for (Container host : hosts) {
+                    Container[] items = host.findChildren();
+                    result.addAll(Arrays.asList(items));
+                }
+            }
+        }
+        return result.toArray(new Container[result.size()]);                
     }
 
     public Container[] getContexts(String host) {

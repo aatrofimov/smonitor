@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.view;
+package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.smonitor.admin.client.navigation.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HTML;
@@ -28,27 +29,29 @@ public class ApplicationPanel extends TabLayoutPanel {
     
     private SessionsTable sessionTable;
     
+    private ApplicationDetailsPanel applicationDetails;
+    
     public ApplicationPanel() {
         super(2.5, Unit.EM);
         setAnimationDuration(1000);
         getElement().getStyle().setMarginBottom(10.0, Unit.PX);
 
-        HTML homeText = new HTML("Application panel");
-        add(homeText, "Details");        
+        applicationDetails = new ApplicationDetailsPanel();
+        add(applicationDetails, "Details");        
         
-        sessionTable = new SessionsTable();
-        
-//        HTML sessions = new HTML("Session panel");
+        sessionTable = new SessionsTable();        
         add(sessionTable, "Sessions");   
 
         selectTab(0);
     }
     
     public void reset() {
+        applicationDetails.reset();
         sessionTable.reset();
     }
     
-    public void loadApplication(ApplicationDetails application) {
-        sessionTable.load(application.getSessions());
+    public void addApplication(ApplicationDetails application) {        
+        applicationDetails.add(ObjectFactory.create(application));
+        sessionTable.add(ObjectFactory.create(application.getServerContext(), application.getSessions()));
     }
 }

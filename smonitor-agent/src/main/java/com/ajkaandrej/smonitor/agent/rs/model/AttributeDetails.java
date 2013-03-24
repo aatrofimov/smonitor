@@ -19,6 +19,17 @@ package com.ajkaandrej.smonitor.agent.rs.model;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributeDetails extends Attribute {
+public class AttributeDetails extends Attribute implements ServerRequest  {
+
+    private ServerContext serverContext;
+    
+    public AttributeDetails() {
+        serverContext = new ServerContext();
+    }
+    
+    @Override
+    public ServerContext getServerContext() {
+        return serverContext;
+    }
     
 }

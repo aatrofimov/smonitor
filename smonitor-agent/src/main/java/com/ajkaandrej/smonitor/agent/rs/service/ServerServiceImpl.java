@@ -25,21 +25,18 @@ import com.ajkaandrej.smonitor.agent.rs.model.Server;
 
 /**
  * The server rest-service implementation.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ServerServiceImpl extends AbstractService implements ServerService {
 
     @Override
     public Server getServer(String remote) throws ServiceException {
-        Server result;        
-        System.out.println("REMOTE : " + remote);
+        Server result;
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
             result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
-            if (result != null) {
-                result.setServerContext(getServerContext());                
-            }
+            createServerRequest(result);
         } else {
             ServerClientService client = new ServerClientService(remote);
             result = client.getServer();
@@ -51,5 +48,4 @@ public class ServerServiceImpl extends AbstractService implements ServerService 
     public HostDetails getHost(String host, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }

@@ -16,7 +16,6 @@
 package com.ajkaandrej.smonitor.agent.rs.client;
 
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
-import com.ajkaandrej.smonitor.agent.rs.model.HostDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 
@@ -31,11 +30,9 @@ public class ServerClientService extends AbstractClientService<ServerService> {
     }
     
     public Server getServer() throws ServiceException {
-        return getService().getServer(null);
-    }
-
-    public HostDetails getHost(String host) throws ServiceException {
-        return getService().getHost(host, null);
+        Server result = getService().getServer(null);
+        updateServerRequest(result);
+        return result;
     }
     
 }

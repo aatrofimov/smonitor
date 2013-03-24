@@ -15,32 +15,29 @@
  */
 package com.ajkaandrej.smonitor.admin.client;
 
-import com.ajkaandrej.smonitor.admin.client.view.ApplicationPanel;
-import com.ajkaandrej.smonitor.admin.client.view.ServerTree;
-import com.ajkaandrej.smonitor.admin.client.view.ServerTree.ServerTreeImages;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.SingleSelectionApplicationTreeModel;
+import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
+import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
-import com.ajkaandrej.smonitor.agent.rs.model.Application;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.ajkaandrej.smonitor.rs.exception.MonitorServiceException;
+import com.ajkaandrej.smonitor.rs.model.Connection;
+import com.ajkaandrej.smonitor.rs.service.MonitorService;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
 
 /**
@@ -54,19 +51,30 @@ public class Admin {
     private Caller<ServerService> serverService;
     @Inject
     private Caller<ApplicationService> applicationService;
-    
-    private ServerTree serverTree;
+    @Inject
+    private Caller<MonitorService> monitorService;
+    private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
     final RemoteCallback<Server> serverCallback = new RemoteCallback<Server>() {
         @Override
         public void callback(Server server) {
-            serverTree.loadServer(server);
+            navigationPanel.addServer(server);
         }
     };
     final RemoteCallback<ApplicationDetails> applicationDetailsCallback = new RemoteCallback<ApplicationDetails>() {
         @Override
         public void callback(ApplicationDetails details) {
-            appPanel.loadApplication(details);
+            appPanel.addApplication(details);
+        }
+    };
+    final RemoteCallback<List<Connection>> connectionCallback = new RemoteCallback<List<Connection>>() {
+        @Override
+        public void callback(List<Connection> connections) {
+            if (connections != null) {
+                for (Connection con : connections) {
+                    loadConnection(con);
+                }
+            }
         }
     };
 
@@ -75,65 +83,51 @@ public class Admin {
 
         RestClient.setJacksonMarshallingActive(true);
 
-        ServerTreeImages images = GWT.create(ServerTreeImages.class);
-        serverTree = new ServerTree(images);
-        
-        serverTree.addSelectionHandler(new SelectionHandler<TreeItem>() {
-            @Override
-            public void onSelection(SelectionEvent<TreeItem> event) {
-                TreeItem item = event.getSelectedItem();
-                Object object = item.getUserObject();
-                if (object instanceof Application) {
-                    Application app = (Application) object;
-                    loadApplicationDetails(app.getHost(), app.getId());
-                } else {
-                    appPanel.reset();
-                }
-            }
-        });
-        
-        ScrollPanel staticTreeWrapper = new ScrollPanel(serverTree);
-        staticTreeWrapper.ensureDebugId("cwTree-serverTree-Wrapper");
-
-        staticTreeWrapper.setSize("100%", "100%");
-
-
-        Button refreshButton = new Button("Refresh");
-        refreshButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                loadServer();
-            }
-        });
-
-        VerticalPanel vPanel = new VerticalPanel();
-        vPanel.add(refreshButton);
-        vPanel.add(staticTreeWrapper);
-
         appPanel = new ApplicationPanel();
-
+        appPanel.reset();
+        
+        navigationPanel = new NavigationPanel(new SingleSelectionApplicationTreeModel() {
+            @Override
+            public void onApplicationSelected(ApplicationTreeModel model) {                
+                loadApplicationDetails(model);
+            }
+        });
+        
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         splitPanel.setWidth("100%");
         splitPanel.setHeight("100%");
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
-        splitPanel.addWest(vPanel, 200);
+        splitPanel.addWest(navigationPanel, 200);
         splitPanel.add(appPanel);
-        splitPanel.setWidgetMinSize(vPanel, 200);
+        splitPanel.setWidgetMinSize(navigationPanel, 200);
 
         RootPanel.get().add(splitPanel);
     }
 
-    private void loadApplicationDetails(String host, String name) {
-        try {
-           applicationService.call(applicationDetailsCallback).getApplication(host, name, null);
-        } catch (ServiceException ex) {
-            Window.alert("Error: " + ex.getMessage());
-        }        
+    private void loadApplicationDetails(ApplicationTreeModel model) {
+        appPanel.reset();
+        for (AppInstanceTreeModel inst : model.instances) {
+            try {
+                applicationService.call(applicationDetailsCallback).getApplication(inst.host, model.id, inst.remote);
+            } catch (ServiceException ex) {
+                Window.alert("Error: " + ex.getMessage());
+            }
+        }
     }
-    
+
+    @AfterInitialization
     private void loadServer() {
         try {
-            serverService.call(serverCallback).getServer(null);
+            navigationPanel.reset();
+            monitorService.call(connectionCallback).getServerConnections();
+        } catch (MonitorServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    }
+
+    private void loadConnection(Connection connection) {
+        try {
+            serverService.call(serverCallback).getServer(connection.getUrl());
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }

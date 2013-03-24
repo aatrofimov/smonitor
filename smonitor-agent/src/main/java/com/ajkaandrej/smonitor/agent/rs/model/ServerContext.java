@@ -27,8 +27,18 @@ public class ServerContext {
     
     private String scheme;
     
+    private String remote;
+    
     private int port;
 
+    public String getRemote() {
+        return remote;
+    }
+
+    public void setRemote(String remote) {
+        this.remote = remote;
+    }
+        
     public String getScheme() {
         return scheme;
     }

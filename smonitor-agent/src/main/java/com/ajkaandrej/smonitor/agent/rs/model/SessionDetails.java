@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetails extends Session {
+public class SessionDetails extends Session implements ServerRequest {
 
     private String info;
     
@@ -36,11 +36,19 @@ public class SessionDetails extends Session {
     
     private List<Attribute> attributes;
     
+    private ServerContext serverContext;
+    
     public SessionDetails() {
         attributes = new ArrayList<Attribute>();
         roles = new ArrayList<String>();
+        serverContext = new ServerContext();
     }
-    
+
+    @Override
+    public ServerContext getServerContext() {
+        return serverContext;
+    }
+        
     public List<String> getRoles() {
         return roles;
     }
