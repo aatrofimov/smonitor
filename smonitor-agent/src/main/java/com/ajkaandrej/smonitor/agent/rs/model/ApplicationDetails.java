@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.agent.rs.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,7 +36,10 @@ public class ApplicationDetails extends Application implements ServerRequest {
     private int sessionAverageAliveTime;
     private int sessionCounter;
     private int sessionIdLength;
-    private int SessionMaxAliveTime;
+    private int sessionMaxAliveTime;
+    
+    private String context;
+    private Date startTime;
     
     private List<Session> sessions;
 
@@ -44,6 +48,22 @@ public class ApplicationDetails extends Application implements ServerRequest {
         serverContext = new ServerContext();
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+    
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+    
     @Override
     public ServerContext getServerContext() {
         return serverContext;
@@ -181,13 +201,13 @@ public class ApplicationDetails extends Application implements ServerRequest {
      * @return the SessionMaxAliveTime
      */
     public int getSessionMaxAliveTime() {
-        return SessionMaxAliveTime;
+        return sessionMaxAliveTime;
     }
 
     /**
-     * @param SessionMaxAliveTime the SessionMaxAliveTime to set
+     * @param sessionMaxAliveTime the SessionMaxAliveTime to set
      */
-    public void setSessionMaxAliveTime(int SessionMaxAliveTime) {
-        this.SessionMaxAliveTime = SessionMaxAliveTime;
+    public void setSessionMaxAliveTime(int sessionMaxAliveTime) {
+        this.sessionMaxAliveTime = sessionMaxAliveTime;
     }    
 }

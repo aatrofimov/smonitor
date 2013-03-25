@@ -15,16 +15,23 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ApplicationDetailsModel {
     
+    public String id;    
+    public String name;    
     public String host;
     public String hostName;
-    public String hostPort;
+    public String scheme;
+    public int hostPort;
     public String remote;
+    public String context;
+    public Date startTime;
     
     public int activeSessions;
     public boolean distributable;
@@ -35,6 +42,6 @@ public class ApplicationDetailsModel {
     public int sessionAverageAliveTime;
     public int sessionCounter;
     public int sessionIdLength;
-    public int SessionMaxAliveTime;
+    public int sessionMaxAliveTime;
     
 }

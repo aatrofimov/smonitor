@@ -122,7 +122,11 @@ public final class TomcatUtil {
             Application app = createApplication(context);            
             result.setId(app.getId());
             result.setName(app.getName());            
-
+            result.setHost(app.getHost());
+            
+            result.setContext(context.getEncodedPath());
+            result.setStartTime(new Date(context.getStartTime()));
+            
             Manager manager = context.getManager();
             if (manager != null) {
                 // The distributable flag for the sessions supported by this Manager

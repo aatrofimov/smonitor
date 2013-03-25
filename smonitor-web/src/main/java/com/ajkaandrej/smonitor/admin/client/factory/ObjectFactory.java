@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.navigation.factory;
+package com.ajkaandrej.smonitor.admin.client.factory;
 
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
@@ -35,12 +35,11 @@ import java.util.List;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public final class ObjectFactory {
-    
 
     private ObjectFactory() {
         // empty constructor
     }
-    
+
     public static AppInstanceTreeModel create(Application application, ServerContext context) {
         AppInstanceTreeModel result = new AppInstanceTreeModel();
         result.host = application.getHost();
@@ -49,14 +48,14 @@ public final class ObjectFactory {
         result.hostPort = context.getPort();
         return result;
     }
-    
+
     public static ApplicationTreeModel create(Application application) {
         ApplicationTreeModel result = new ApplicationTreeModel();
         result.id = application.getId();
         result.name = application.getName();
         return result;
     }
-    
+
     public static List<SessionTableModel> create(ServerContext context, List<Session> sessions) {
         List<SessionTableModel> result = new ArrayList<SessionTableModel>();
         for (Session session : sessions) {
@@ -64,7 +63,7 @@ public final class ObjectFactory {
         }
         return result;
     }
-    
+
     public static SessionTableModel create(ServerContext context, Session session) {
         SessionTableModel result = new SessionTableModel();
         result.creationTime = session.getCreationTime();
@@ -72,19 +71,41 @@ public final class ObjectFactory {
         result.lastAccessedTime = session.getLastAccessedTime();
         result.lastAccessedTimeInternal = session.getLastAccessedTimeInternal();
         result.maxInactiveInterval = session.getMaxInactiveInterval();
-        
+
         result.remote = context.getRemote();
         result.hostName = context.getHostName();
         result.hostPort = context.getPort();
-        
+
         return result;
     }
-    
-    public static ApplicationDetailsModel create(ApplicationDetails appDetails) {
+
+    public static ApplicationDetailsModel create(ApplicationDetails app) {
         ApplicationDetailsModel result = new ApplicationDetailsModel();
+        result.id = app.getId();
+        result.name = app.getName();
+        
+        result.host = app.getHost();
+        result.hostName = app.getServerContext().getHostName();
+        result.hostPort = app.getServerContext().getPort();
+        result.remote = app.getServerContext().getRemote();
+        result.scheme = app.getServerContext().getScheme();
+        result.context = app.getContext();
+        result.startTime = app.getStartTime();
+        
+        result.activeSessions = app.getActiveSessions();
+        result.distributable = app.isDistributable();
+        result.expiredSessions = app.getExpiredSessions();
+        result.maxActive = app.getMaxActive();
+        result.maxInactiveInterval = app.getMaxInactiveInterval();
+        result.rejectedSessions = app.getRejectedSessions();
+        result.sessionAverageAliveTime = app.getSessionAverageAliveTime();
+        result.sessionCounter = app.getSessionCounter();
+        result.sessionIdLength = app.getSessionIdLength();
+
+        result.sessionMaxAliveTime = app.getSessionMaxAliveTime();
         return result;
     }
-        
+
     public static ServerTreeModel create(Server server) {
         ServerTreeModel result = new ServerTreeModel();
         ServerContext context = server.getServerContext();
@@ -94,7 +115,7 @@ public final class ObjectFactory {
 
         if (server.getHosts() != null) {
             for (Host host : server.getHosts()) {
-                result.hosts.add(create(host));                
+                result.hosts.add(create(host));
             }
         }
         return result;

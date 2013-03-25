@@ -13,23 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.navigation.model;
+package com.ajkaandrej.smonitor.admin.client.app.model;
 
-import com.google.gwt.view.client.ProvidesKey;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HostTreeModel {
-
-    public static final ProvidesKey<HostTreeModel> KEY_PROVIDER = new ProvidesKey<HostTreeModel>() {
-        @Override
-        public Object getKey(HostTreeModel item) {
-            return item == null ? null : item.id;
-        }
-    };
+public class SessionDetailsModel {
     
-    public String name;
+    public String remote;
+    public String hostName;
+    public String hostPort;
+    public String host;
+    
     public String id;
+    
+    public String user;
+
+    public Date creationTime;
+    
+    public Date lastAccessedTime;
+        
+    public boolean valid;
+    
+    public long lastAccessedTimeInternal;
+        
+    public int maxInactiveInterval;
+    
+    public String info;
+    
+    public double size;
+
+    public double sizeSerializable;
+
+    public boolean newSession;
+    
+    public List<String> roles;
+
 }

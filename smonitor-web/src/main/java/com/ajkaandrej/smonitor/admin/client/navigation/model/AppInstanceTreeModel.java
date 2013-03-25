@@ -15,12 +15,21 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.model;
 
+import com.google.gwt.view.client.ProvidesKey;
+
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class AppInstanceTreeModel {
  
+    public static final ProvidesKey<AppInstanceTreeModel> KEY_PROVIDER = new ProvidesKey<AppInstanceTreeModel>() {
+        @Override
+        public Object getKey(AppInstanceTreeModel item) {
+            return item == null ? null : item.remote + item.host;
+        }
+    };
+    
     public String hostName;
     
     public int hostPort;

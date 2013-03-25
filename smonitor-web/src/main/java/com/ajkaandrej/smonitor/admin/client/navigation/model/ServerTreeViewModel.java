@@ -19,6 +19,7 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import java.util.ArrayList;
 
@@ -30,6 +31,19 @@ public class ServerTreeViewModel implements TreeViewModel {
 
     private ListDataProvider<ServerTreeModel> dataProvider = new ListDataProvider<ServerTreeModel>(new ArrayList<ServerTreeModel>());
 
+    private SingleSelectionModel<ServerTreeModel> selectionModel;
+    
+    private SingleSelectionModel<HostTreeModel> selectionHostModel;
+    
+    public ServerTreeViewModel() {
+        
+    }
+    
+    public ServerTreeViewModel(SingleSelectionModel<ServerTreeModel> selectionModel, SingleSelectionModel<HostTreeModel> selectionHostModel) {
+        this.selectionHostModel = selectionHostModel;
+        this.selectionModel = selectionModel;
+    }
+    
     public void add(ServerTreeModel model) {
         dataProvider.getList().add(model);
     }
@@ -53,7 +67,7 @@ public class ServerTreeViewModel implements TreeViewModel {
                 }
             };
 
-            result = new DefaultNodeInfo<ServerTreeModel>(dataProvider, cell);
+            result = new DefaultNodeInfo<ServerTreeModel>(dataProvider, cell, selectionModel, null);
         } else if (value instanceof ServerTreeModel) {
             ListDataProvider<HostTreeModel> appDataProvider = new ListDataProvider<HostTreeModel>(((ServerTreeModel) value).hosts);
             Cell<HostTreeModel> cell = new AbstractCell<HostTreeModel>() {
@@ -64,7 +78,7 @@ public class ServerTreeViewModel implements TreeViewModel {
                     }
                 }
             };
-            result = new DefaultNodeInfo<HostTreeModel>(appDataProvider, cell);
+            result = new DefaultNodeInfo<HostTreeModel>(appDataProvider, cell, selectionHostModel, null);
         }
         return result;
     }

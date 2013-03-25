@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.connector.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,11 +36,30 @@ public class ApplicationDetails extends Application {
     private int sessionIdLength;
     private int SessionMaxAliveTime;
     
+    private String context;
+    private Date startTime;
+    
     private List<Session> sessions;
 
     public ApplicationDetails() {
         sessions = new ArrayList<Session>();
     }  
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+    
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
             
     public List<Session> getSessions() {
         return sessions;

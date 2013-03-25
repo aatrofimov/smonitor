@@ -17,9 +17,9 @@ package com.ajkaandrej.smonitor.admin.client;
 
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
-import com.ajkaandrej.smonitor.admin.client.navigation.model.SingleSelectionApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
 import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
+import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
@@ -85,13 +85,21 @@ public class Admin {
 
         appPanel = new ApplicationPanel();
         appPanel.reset();
-        
-        navigationPanel = new NavigationPanel(new SingleSelectionApplicationTreeModel() {
+
+        navigationPanel = new NavigationPanel();
+        navigationPanel.getApplicationPanel().setAppHandler(new SelectionHandler<ApplicationTreeModel>() {
             @Override
-            public void onApplicationSelected(ApplicationTreeModel model) {                
-                loadApplicationDetails(model);
+            public void selectionChanged(ApplicationTreeModel item) {
+                loadApplicationDetails(item);
             }
         });
+
+//        navigationPanel.getApplicationPanel().setAppInstanceHandler(new SelectionHandler<AppInstanceTreeModel>() {
+//            @Override
+//            public void selectionChanged(AppInstanceTreeModel item) {
+//
+//            }
+//        });
         
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         splitPanel.setWidth("100%");

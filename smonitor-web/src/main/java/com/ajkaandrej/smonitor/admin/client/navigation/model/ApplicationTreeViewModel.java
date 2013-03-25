@@ -20,6 +20,9 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +36,19 @@ public class ApplicationTreeViewModel implements TreeViewModel {
             
     private ListDataProvider<ApplicationTreeModel> dataProvider = new ListDataProvider<ApplicationTreeModel>(new ArrayList<ApplicationTreeModel>());
 
-    private SingleSelectionApplicationTreeModel selectionModel;
-
-    public ApplicationTreeViewModel(SingleSelectionApplicationTreeModel selectionModel) {
-        this.selectionModel = selectionModel;
+    private SingleSelectionModel<ApplicationTreeModel> selectionModel;
+    
+    private SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel;
+    
+    public ApplicationTreeViewModel() {
+        
     }
-          
+    
+    public ApplicationTreeViewModel(SingleSelectionModel<ApplicationTreeModel> selectionModel, SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel) {
+        this.selectionModel = selectionModel;
+        this.appInstanceSelectionModel = appInstanceSelectionModel;
+    }              
+    
     public void clear() {
         dataProvider.getList().clear();
         dataProvider.flush();
@@ -79,14 +89,14 @@ public class ApplicationTreeViewModel implements TreeViewModel {
                     }
                 }
             };
-            result = new DefaultNodeInfo<AppInstanceTreeModel>(appDataProvider, cell);
+            result = new DefaultNodeInfo<AppInstanceTreeModel>(appDataProvider, cell, appInstanceSelectionModel, null);
         }
         return result;
     }
 
     @Override
     public boolean isLeaf(Object value) {
-        return value instanceof Server;
+        return value instanceof AppInstanceTreeModel;
     }
     
 }

@@ -15,16 +15,19 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
-import com.ajkaandrej.smonitor.admin.client.navigation.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeViewModel;
-import com.ajkaandrej.smonitor.admin.client.navigation.model.SingleSelectionApplicationTreeModel;
 import com.ajkaandrej.smonitor.agent.rs.model.Application;
 import com.ajkaandrej.smonitor.agent.rs.model.Host;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.ajkaandrej.smonitor.agent.rs.model.ServerContext;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +39,41 @@ public class ApplicationNagivationPanel extends Composite {
 
     private CellTree tree;
     private ApplicationTreeViewModel model;
+    private SelectionHandler<AppInstanceTreeModel> appInstanceHandler;
+    private SelectionHandler<ApplicationTreeModel> appHandler;
 
-    public ApplicationNagivationPanel(SingleSelectionApplicationTreeModel selectionModel) {
-        model = new ApplicationTreeViewModel(selectionModel);
+    public ApplicationNagivationPanel() {
+        final SingleSelectionModel<ApplicationTreeModel> selectionModel = new SingleSelectionModel<ApplicationTreeModel>(ApplicationTreeModel.KEY_PROVIDER);
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (appHandler != null) {
+                    appHandler.selectionChanged(selectionModel.getSelectedObject());
+                }
+            }
+        });
+
+        final SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel = new SingleSelectionModel<AppInstanceTreeModel>(AppInstanceTreeModel.KEY_PROVIDER);
+        appInstanceSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (appInstanceHandler != null) {
+                    appInstanceHandler.selectionChanged(appInstanceSelectionModel.getSelectedObject());
+                }
+            }
+        });
+
+        model = new ApplicationTreeViewModel(selectionModel, appInstanceSelectionModel);
         tree = new CellTree(model, null);
         initWidget(tree);
+    }
+
+    public void setAppHandler(SelectionHandler<ApplicationTreeModel> appHandler) {
+        this.appHandler = appHandler;
+    }
+
+    public void setAppInstanceHandler(SelectionHandler<AppInstanceTreeModel> appInstanceHandler) {
+        this.appInstanceHandler = appInstanceHandler;
     }
 
     public void clear() {

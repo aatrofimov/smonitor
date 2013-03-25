@@ -15,7 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.smonitor.admin.client.navigation.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HTML;
@@ -33,8 +33,6 @@ public class ApplicationPanel extends TabLayoutPanel {
     
     public ApplicationPanel() {
         super(2.5, Unit.EM);
-        setAnimationDuration(1000);
-        getElement().getStyle().setMarginBottom(10.0, Unit.PX);
 
         applicationDetails = new ApplicationDetailsPanel();
         add(applicationDetails, "Details");        

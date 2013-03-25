@@ -15,7 +15,6 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
-import com.ajkaandrej.smonitor.admin.client.navigation.model.SingleSelectionApplicationTreeModel;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Composite;
@@ -29,20 +28,22 @@ public class NavigationPanel extends Composite {
     
     private TabLayoutPanel tabPanel;
     
-    private ServerNagivationPanel connectionPanel;
+    private ServerNagivationPanel serverPanel;
     
     private ApplicationNagivationPanel applicationPanel;
     
-    public NavigationPanel(SingleSelectionApplicationTreeModel selectionModel) {
-        createTabPanel(selectionModel);
+    public NavigationPanel() {
+        createTabPanel();
+        tabPanel.setAnimationDuration(1000);        
         initWidget(tabPanel);
     }
-    
-    private void createTabPanel(SingleSelectionApplicationTreeModel selectionModel) {
-        connectionPanel = new ServerNagivationPanel();
-        applicationPanel = new ApplicationNagivationPanel(selectionModel);        
+
+    private void createTabPanel() {
+        serverPanel = new ServerNagivationPanel();
+        applicationPanel = new ApplicationNagivationPanel();
+        
         tabPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
-        tabPanel.add(connectionPanel, "Servers");
+        tabPanel.add(serverPanel, "Servers");
         tabPanel.add(applicationPanel, "Applications");
         tabPanel.selectTab(0);
     }
@@ -50,14 +51,18 @@ public class NavigationPanel extends Composite {
     public ApplicationNagivationPanel getApplicationPanel() {
         return applicationPanel;
     }
-        
+
+    public ServerNagivationPanel getServerPanel() {
+        return serverPanel;
+    }
+            
     public void reset() {
-        connectionPanel.clear();
+        serverPanel.clear();
         applicationPanel.clear();
     }
     
     public void addServer(Server server) {
-        connectionPanel.addServer(server);
+        serverPanel.addServer(server);
         applicationPanel.addServer(server);
     }
 }

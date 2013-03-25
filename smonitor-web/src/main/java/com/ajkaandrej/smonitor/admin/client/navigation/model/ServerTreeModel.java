@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.model;
 
+import com.google.gwt.view.client.ProvidesKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,16 @@ import java.util.List;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ServerTreeModel {
-     
+
+    public static final ProvidesKey<ServerTreeModel> KEY_PROVIDER = new ProvidesKey<ServerTreeModel>() {
+        @Override
+        public Object getKey(ServerTreeModel item) {
+            return item == null ? null : item.remote;
+        }
+    };
+    
     public String remote;
-    
     public String hostName;
-    
     public int hostPort;
-            
     public List<HostTreeModel> hosts = new ArrayList<HostTreeModel>();
-     
 }

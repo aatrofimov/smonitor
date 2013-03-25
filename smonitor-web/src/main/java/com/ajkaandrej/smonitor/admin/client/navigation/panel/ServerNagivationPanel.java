@@ -15,12 +15,18 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
-import com.ajkaandrej.smonitor.admin.client.navigation.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
+import com.ajkaandrej.smonitor.admin.client.navigation.model.HostTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ServerTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ServerTreeViewModel;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  *
@@ -32,8 +38,32 @@ public class ServerNagivationPanel extends Composite {
     
     private ServerTreeViewModel model;
     
+    private SelectionHandler<ServerTreeModel> serverHandler;
+    private SelectionHandler<HostTreeModel> hostHandler;
+    
     public ServerNagivationPanel() {
-        model = new ServerTreeViewModel();
+        
+        final SingleSelectionModel<ServerTreeModel> selectionModel = new SingleSelectionModel<ServerTreeModel>(ServerTreeModel.KEY_PROVIDER);
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (serverHandler != null) {
+                    serverHandler.selectionChanged(selectionModel.getSelectedObject());
+                }
+            }
+        });
+
+        final SingleSelectionModel<HostTreeModel> selectionHostModel = new SingleSelectionModel<HostTreeModel>(HostTreeModel.KEY_PROVIDER);
+        selectionHostModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (hostHandler != null) {
+                    hostHandler.selectionChanged(selectionHostModel.getSelectedObject());
+                }
+            }
+        });
+        
+        model = new ServerTreeViewModel(selectionModel, selectionHostModel);        
         tree = new CellTree(model, null);        
         initWidget(tree);
     }

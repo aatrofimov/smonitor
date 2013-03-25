@@ -13,23 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.navigation.model;
-
-import com.google.gwt.view.client.ProvidesKey;
+package com.ajkaandrej.smonitor.admin.client.handler;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HostTreeModel {
-
-    public static final ProvidesKey<HostTreeModel> KEY_PROVIDER = new ProvidesKey<HostTreeModel>() {
-        @Override
-        public Object getKey(HostTreeModel item) {
-            return item == null ? null : item.id;
-        }
-    };
+public interface SelectionHandler<T> {
     
-    public String name;
-    public String id;
+    public void selectionChanged(T item);
 }

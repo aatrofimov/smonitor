@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.model;
 
+import com.google.gwt.view.client.ProvidesKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,14 @@ import java.util.List;
  */
 public class ApplicationTreeModel {
 
+    public static final ProvidesKey<ApplicationTreeModel> KEY_PROVIDER = new ProvidesKey<ApplicationTreeModel>() {
+        
+        @Override
+        public Object getKey(ApplicationTreeModel item) {
+            return item == null ? null : item.id;
+        }
+    };
+    
     public String id;
     
     public String name;
