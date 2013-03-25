@@ -1,3 +1,7 @@
+.applicationDetailsPanelItem {
+    border:1px solid black;
+}
+
 .gwt-Tree .gwt-TreeItem {
   padding: 1px 0px;
   margin: 0px;

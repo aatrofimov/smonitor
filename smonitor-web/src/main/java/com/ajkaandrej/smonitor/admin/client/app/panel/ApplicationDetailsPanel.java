@@ -17,7 +17,7 @@ package com.ajkaandrej.smonitor.admin.client.app.panel;
 
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  *
@@ -25,22 +25,21 @@ import com.google.gwt.user.client.ui.FlexTable;
  */
 public class ApplicationDetailsPanel extends Composite {
 
-    private FlexTable flexTable;
-
-    public ApplicationDetailsPanel() {
-
-        flexTable = new FlexTable();
-
-        initWidget(flexTable);
+    private VerticalPanel vPanel;
+    
+    public ApplicationDetailsPanel() {        
+        vPanel = new VerticalPanel();
+        vPanel.setSpacing(5);
+        vPanel.setWidth("100%");
+        initWidget(vPanel);
     }
 
     public void reset() {
-        flexTable.removeAllRows();
+        vPanel.clear();
     }
 
     public void add(ApplicationDetailsModel model) {
-        int numRows = flexTable.getRowCount();
-        flexTable.setWidget(numRows, 0, new ApplicationDetailsPanelItem(model));
+        vPanel.add(new ApplicationDetailsPanelItem(model));
     }
 
 }

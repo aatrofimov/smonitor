@@ -155,38 +155,65 @@
                 <configuration>
                     <warName>smonitor</warName>
                     <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@</outputFileNameMapping>
-                    <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class</packagingExcludes>
+                    <packagingExcludes>**/javax/**/*,**/com/**/*,**/org/**/*</packagingExcludes>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}</directory>
-                            <includes>
-                                <include>www-test/**</include>
-                                <include>.gwt/**</include>
-                                <include>.errai/**</include>
-                                <include>src/main/webapp/private.Admin/**</include>
-                                <include>src/main/webapp/WEB-INF/deploy/**</include>
-                                <include>src/main/webapp/WEB-INF/lib/**</include>
-                                <include>src/main/webapp/WEB-INF/classes/**</include>
-                                <include>**/gwt-unitCache/**</include>
-                                <include>**/*.JUnit/**</include>
-                            </includes>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                        <fileset>
-                            <directory>target</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                        <fileset>
-                            <directory>.errai</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}</directory>
+                                    <includes>
+                                        <include>src/main/webapp/WEB-INF/classes/**/*.java</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                        </configuration>                         
+                    </execution>                    
+                    <execution>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <phase>clean</phase>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}</directory>
+                                    <includes>
+                                        <include>www-test/**</include>
+                                        <include>.gwt/**</include>
+                                        <include>.errai/**</include>
+                                        <include>src/main/webapp/private.Admin/**</include>
+                                        <include>src/main/webapp/WEB-INF/deploy/**</include>
+                                        <include>src/main/webapp/WEB-INF/lib/**</include>
+                                        <include>src/main/webapp/WEB-INF/classes/**</include>
+                                        <include>**/gwt-unitCache/**</include>
+                                        <include>**/*.JUnit/**</include>
+                                    </includes>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                                <fileset>
+                                    <directory>target</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                                <fileset>
+                                    <directory>.errai</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>                         
+                    </execution>                    
+                </executions>                                       
             </plugin>
         </plugins>   
        

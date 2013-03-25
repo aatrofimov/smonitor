@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  *
@@ -39,6 +40,8 @@ public class ApplicationDetailsPanelItem extends Composite {
     public ApplicationDetailsPanelItem(ApplicationDetailsModel model) {
         this.data = model;
         FlexTable layout = new FlexTable();
+        layout.setWidth("100%");
+        layout.setStyleName("applicationDetailsPanelItem");
         
         layout.setCellSpacing(6);
         FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
@@ -87,10 +90,7 @@ public class ApplicationDetailsPanelItem extends Composite {
         layout.setHTML(5, 4, "startTime:");
         layout.setHTML(5, 5, DATE_FORMAT.format(data.startTime));
         
-        // Wrap the content in a DecoratorPanel
-        DecoratorPanel decPanel = new DecoratorPanel();
-        decPanel.setWidget(layout);
-        initWidget(decPanel);
+        initWidget(layout);
     }
 
     public ApplicationDetailsModel getData() {

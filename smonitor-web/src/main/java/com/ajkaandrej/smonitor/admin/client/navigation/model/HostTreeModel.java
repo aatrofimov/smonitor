@@ -26,10 +26,11 @@ public class HostTreeModel {
     public static final ProvidesKey<HostTreeModel> KEY_PROVIDER = new ProvidesKey<HostTreeModel>() {
         @Override
         public Object getKey(HostTreeModel item) {
-            return item == null ? null : item.id;
+            return item == null ? null : item.remote + item.id;
         }
     };
     
+    public String remote;
     public String name;
     public String id;
 }

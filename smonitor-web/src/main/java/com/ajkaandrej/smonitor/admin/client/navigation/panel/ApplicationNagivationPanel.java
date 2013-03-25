@@ -53,17 +53,17 @@ public class ApplicationNagivationPanel extends Composite {
             }
         });
 
-        final SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel = new SingleSelectionModel<AppInstanceTreeModel>(AppInstanceTreeModel.KEY_PROVIDER);
-        appInstanceSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (appInstanceHandler != null) {
-                    appInstanceHandler.selectionChanged(appInstanceSelectionModel.getSelectedObject());
-                }
-            }
-        });
+//        final SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel = new SingleSelectionModel<AppInstanceTreeModel>(AppInstanceTreeModel.KEY_PROVIDER);
+//        appInstanceSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+//            @Override
+//            public void onSelectionChange(SelectionChangeEvent event) {
+//                if (appInstanceHandler != null) {
+//                    appInstanceHandler.selectionChanged(appInstanceSelectionModel.getSelectedObject());
+//                }
+//            }
+//        });
 
-        model = new ApplicationTreeViewModel(selectionModel, appInstanceSelectionModel);
+        model = new ApplicationTreeViewModel(selectionModel, null);
         tree = new CellTree(model, null);
         initWidget(tree);
     }

@@ -48,7 +48,7 @@ public class SessionsTable extends Composite {
         table.setWidth("100%", true);
         table.setAutoHeaderRefreshDisabled(true);
         table.setAutoFooterRefreshDisabled(true);
-        table.setPageSize(15);
+        table.setPageSize(10);
         
         data.addDataDisplay(table);
         

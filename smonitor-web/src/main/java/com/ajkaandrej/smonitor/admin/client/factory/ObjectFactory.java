@@ -46,6 +46,7 @@ public final class ObjectFactory {
         result.hostName = context.getHostName();
         result.remote = context.getRemote();
         result.hostPort = context.getPort();
+        result.id = application.getId();
         return result;
     }
 
@@ -115,16 +116,17 @@ public final class ObjectFactory {
 
         if (server.getHosts() != null) {
             for (Host host : server.getHosts()) {
-                result.hosts.add(create(host));
+                result.hosts.add(create(result, host));
             }
         }
         return result;
     }
 
-    private static HostTreeModel create(Host host) {
+    private static HostTreeModel create(ServerTreeModel server, Host host) {
         HostTreeModel result = new HostTreeModel();
         result.id = host.getId();
         result.name = host.getName();
+        result.remote = server.remote;
         return result;
     }
 }

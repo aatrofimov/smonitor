@@ -18,7 +18,6 @@ package com.ajkaandrej.smonitor.admin.client.app.panel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 /**
