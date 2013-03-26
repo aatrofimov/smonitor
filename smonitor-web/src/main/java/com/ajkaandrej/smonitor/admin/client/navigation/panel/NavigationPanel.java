@@ -16,36 +16,82 @@
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class NavigationPanel extends Composite {
-    
+
     private TabLayoutPanel tabPanel;
-    
     private ServerNagivationPanel serverPanel;
-    
     private ApplicationNagivationPanel applicationPanel;
+    private PushButton refreshButton;
+    private PushButton configButton;
+    
+    public static interface Images extends ClientBundle {
+        
+        ImageResource refresh();
+        
+        ImageResource config();
+    }
+    
+    public static final Images IMAGES = GWT.create(Images.class);
     
     public NavigationPanel() {
-        createTabPanel();
-        tabPanel.setAnimationDuration(1000);        
-        initWidget(tabPanel);
+        tabPanel = createTabPanel();
+        
+        
+        refreshButton = new PushButton(new Image(IMAGES.refresh()));
+        configButton = new PushButton(new Image(IMAGES.config()));
+        
+        HorizontalPanel sp = new HorizontalPanel();
+        sp.add(refreshButton);
+        sp.add(configButton);
+        
+        VerticalPanel dock = new VerticalPanel();
+        dock.setWidth("100%");
+        dock.setHeight("100%");        
+        dock.add(tabPanel);
+        dock.setCellHeight(tabPanel, "100%");
+        dock.add(sp);
+                
+        initWidget(dock);
     }
 
-    private void createTabPanel() {
+    public PushButton getRefreshButton() {
+        return refreshButton;
+    }
+
+    public PushButton getConfigButton() {
+        return configButton;
+    }
+        
+    private TabLayoutPanel createTabPanel() {
         serverPanel = new ServerNagivationPanel();
         applicationPanel = new ApplicationNagivationPanel();
-        
-        tabPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
-        tabPanel.add(serverPanel, "Servers");
-        tabPanel.add(applicationPanel, "Applications");
-        tabPanel.selectTab(0);
+
+        TabLayoutPanel result = new TabLayoutPanel(2.5, Style.Unit.EM);
+        result.setAnimationDuration(1000);
+        result.add(serverPanel, "Servers");
+        result.add(applicationPanel, "Applications");
+        result.setWidth("100%");
+        result.setHeight("100%");
+
+        result.selectTab(0);
+        return result;
     }
 
     public ApplicationNagivationPanel getApplicationPanel() {
@@ -55,12 +101,13 @@ public class NavigationPanel extends Composite {
     public ServerNagivationPanel getServerPanel() {
         return serverPanel;
     }
-            
+
     public void reset() {
+        tabPanel.selectTab(0);
         serverPanel.clear();
         applicationPanel.clear();
     }
-    
+
     public void addServer(Server server) {
         serverPanel.addServer(server);
         applicationPanel.addServer(server);

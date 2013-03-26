@@ -28,6 +28,9 @@ import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 import com.ajkaandrej.smonitor.rs.exception.MonitorServiceException;
 import com.ajkaandrej.smonitor.rs.model.Connection;
 import com.ajkaandrej.smonitor.rs.service.MonitorService;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
@@ -36,6 +39,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 import org.jboss.errai.ioc.client.api.EntryPoint;
@@ -55,6 +59,14 @@ public class Admin {
     private Caller<MonitorService> monitorService;
     private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
+    
+    final ResponseCallback configCallback = new ResponseCallback() {
+        @Override
+        public void callback(Response response) {
+
+        }
+    };
+    
     final RemoteCallback<Server> serverCallback = new RemoteCallback<Server>() {
         @Override
         public void callback(Server server) {
@@ -94,19 +106,34 @@ public class Admin {
             }
         });
 
+        navigationPanel.getRefreshButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                appPanel.reset();
+                loadServer();
+            }
+        });
+        
+        navigationPanel.getConfigButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                relaodConfiguration();
+            }
+        });
+        
 //        navigationPanel.getApplicationPanel().setAppInstanceHandler(new SelectionHandler<AppInstanceTreeModel>() {
 //            @Override
 //            public void selectionChanged(AppInstanceTreeModel item) {
 //
 //            }
 //        });
-        
+                
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         splitPanel.setWidth("100%");
         splitPanel.setHeight("100%");
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
         splitPanel.addWest(navigationPanel, 200);
-        splitPanel.add(appPanel);
+        splitPanel.add(appPanel);        
         splitPanel.setWidgetMinSize(navigationPanel, 200);
 
         RootPanel.get().add(splitPanel);
@@ -137,6 +164,14 @@ public class Admin {
         try {
             serverService.call(serverCallback).getServer(connection.getUrl());
         } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    }
+    
+    private void relaodConfiguration() {
+        try {
+            monitorService.call(configCallback).realoadConfiguration();
+        } catch (MonitorServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }
     }

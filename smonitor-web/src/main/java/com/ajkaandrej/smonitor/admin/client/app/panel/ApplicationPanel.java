@@ -43,6 +43,7 @@ public class ApplicationPanel extends TabLayoutPanel {
     }
     
     public void reset() {
+        selectTab(0);
         applicationDetails.reset();
         sessionTable.reset();
     }
