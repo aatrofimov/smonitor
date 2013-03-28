@@ -42,6 +42,12 @@
         <!-- GWT -->
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
+            <artifactId>gwt-uc</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>        
+        <dependency>
+            <groupId>com.ajkaandrej.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
             <classifier>sources</classifier>

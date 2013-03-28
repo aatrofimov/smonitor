@@ -1,3 +1,7 @@
+.navigationButtonBar {
+    background: none repeat scroll 0 0 #CCCCCC;    
+}
+
 .applicationDetailsPanelItem {
     border:1px solid black;
 }

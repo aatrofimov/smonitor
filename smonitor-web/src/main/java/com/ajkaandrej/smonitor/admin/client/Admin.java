@@ -15,25 +15,28 @@
  */
 package com.ajkaandrej.smonitor.admin.client;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
 import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
 import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.smonitor.admin.client.panel.FooterPanel;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
-import com.ajkaandrej.smonitor.rs.exception.MonitorServiceException;
 import com.ajkaandrej.smonitor.rs.model.Connection;
 import com.ajkaandrej.smonitor.rs.service.MonitorService;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -59,6 +62,7 @@ public class Admin {
     private Caller<MonitorService> monitorService;
     private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
+    private FooterPanel footer;
     
     final ResponseCallback configCallback = new ResponseCallback() {
         @Override
@@ -90,11 +94,19 @@ public class Admin {
         }
     };
 
+    final RemoteCallback<String> versionCallback = new RemoteCallback<String>() {
+        @Override
+        public void callback(String value) {
+            footer.setVersion(value);
+        }
+    };
+    
     @PostConstruct
-    public void init() {
+    public void create() {
 
         RestClient.setJacksonMarshallingActive(true);
 
+        footer = new FooterPanel();
         appPanel = new ApplicationPanel();
         appPanel.reset();
 
@@ -129,16 +141,33 @@ public class Admin {
 //        });
                 
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
-        splitPanel.setWidth("100%");
-        splitPanel.setHeight("100%");
+        ConstantValues.set100(splitPanel);
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
-        splitPanel.addWest(navigationPanel, 200);
+        splitPanel.addWest(navigationPanel, 200); 
         splitPanel.add(appPanel);        
         splitPanel.setWidgetMinSize(navigationPanel, 200);
 
-        RootPanel.get().add(splitPanel);
+        VerticalPanel mainPanel = new VerticalPanel();
+        ConstantValues.set100(mainPanel);
+        mainPanel.add(splitPanel);
+        mainPanel.add(footer);
+        mainPanel.setCellHeight(splitPanel, ConstantValues.PCT_100);
+        mainPanel.setCellHorizontalAlignment(footer, HasHorizontalAlignment.ALIGN_CENTER);
+        
+        RootPanel.get().add(mainPanel);
     }
 
+    @AfterInitialization
+    private void init() {
+        try {
+            footer.setVersion("Loading ...");            
+            monitorService.call(versionCallback).getVersion();
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }        
+        loadServer();
+    }
+    
     private void loadApplicationDetails(ApplicationTreeModel model) {
         appPanel.reset();
         for (AppInstanceTreeModel inst : model.instances) {
@@ -150,12 +179,11 @@ public class Admin {
         }
     }
 
-    @AfterInitialization
     private void loadServer() {
         try {
             navigationPanel.reset();
             monitorService.call(connectionCallback).getServerConnections();
-        } catch (MonitorServiceException ex) {
+        } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }
     }
@@ -171,7 +199,7 @@ public class Admin {
     private void relaodConfiguration() {
         try {
             monitorService.call(configCallback).realoadConfiguration();
-        } catch (MonitorServiceException ex) {
+        } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }
     }

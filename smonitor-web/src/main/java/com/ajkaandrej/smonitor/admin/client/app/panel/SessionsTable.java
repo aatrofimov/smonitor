@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.dom.client.Style.Unit;
@@ -45,7 +46,7 @@ public class SessionsTable extends Composite {
     private ListDataProvider<SessionTableModel> data = new ListDataProvider<SessionTableModel>();
     
     public SessionsTable() {
-        table.setWidth("100%", true);
+        table.setWidth(ConstantValues.PCT_100, true);
         table.setAutoHeaderRefreshDisabled(true);
         table.setAutoFooterRefreshDisabled(true);
         table.setPageSize(10);

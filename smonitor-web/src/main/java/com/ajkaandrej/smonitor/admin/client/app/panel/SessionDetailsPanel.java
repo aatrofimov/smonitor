@@ -15,18 +15,16 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.panel.EntityComposite;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetailsPanel extends Composite {
+public class SessionDetailsPanel extends EntityComposite<SessionDetailsModel> {
     
-    private SessionDetailsModel data;
-
     public SessionDetailsPanel(SessionDetailsModel session) {
         this.data = session;
         
@@ -41,10 +39,5 @@ public class SessionDetailsPanel extends Composite {
   
         initWidget(layout);
     }
-    
-    public SessionDetailsModel getData() {
-        return data;
-    }
-    
-    
+ 
 }

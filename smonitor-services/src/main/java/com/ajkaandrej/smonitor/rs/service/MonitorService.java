@@ -15,7 +15,7 @@
  */
 package com.ajkaandrej.smonitor.rs.service;
 
-import com.ajkaandrej.smonitor.rs.exception.MonitorServiceException;
+import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.rs.model.Connection;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -31,11 +31,15 @@ import javax.ws.rs.core.MediaType;
 public interface MonitorService {
  
     @GET
+    @Path("version")
+    public String getVersion() throws ServiceException;
+    
+    @GET
     @Path("reloadConfig")
-    public void realoadConfiguration() throws MonitorServiceException;
+    public void realoadConfiguration() throws ServiceException;
     
     @GET
     @Path("connections")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Connection> getServerConnections() throws MonitorServiceException;
+    public List<Connection> getServerConnections() throws ServiceException;
 }

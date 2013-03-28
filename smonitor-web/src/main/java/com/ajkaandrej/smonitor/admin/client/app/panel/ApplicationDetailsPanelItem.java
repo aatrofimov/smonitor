@@ -15,32 +15,28 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.gwt.uc.panel.EntityComposite;
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetailsPanelItem extends Composite {
+public class ApplicationDetailsPanelItem extends EntityComposite<ApplicationDetailsModel> {
     
     private static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
     private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
-    private static final String LINK_TARGET_BLANK = "_blank";
-    
-    private ApplicationDetailsModel data;
-    
+      
     public ApplicationDetailsPanelItem(ApplicationDetailsModel model) {
-        this.data = model;
+        data = model;
         FlexTable layout = new FlexTable();
-        layout.setWidth("100%");
+        ConstantValues.setWidth100(layout);
         layout.setStyleName("applicationDetailsPanelItem");
         
         layout.setCellSpacing(6);
@@ -49,7 +45,7 @@ public class ApplicationDetailsPanelItem extends Composite {
         // Add a title to the form
 //        layout.setHTML(0, 0, data.hostName + ":" + data.hostPort + data.context);
         String url = data.scheme + "://" + data.hostName + ":" + data.hostPort + data.context;
-        layout.setWidget(0, 0, new Anchor(url, url, LINK_TARGET_BLANK));
+        layout.setWidget(0, 0, new Anchor(url, url, ConstantValues.TARGET_BLANK));
         cellFormatter.setColSpan(0, 0, 6);
         cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
@@ -91,9 +87,5 @@ public class ApplicationDetailsPanelItem extends Composite {
         layout.setHTML(5, 5, DATE_FORMAT.format(data.startTime));
         
         initWidget(layout);
-    }
-
-    public ApplicationDetailsModel getData() {
-        return data;
     }
 }

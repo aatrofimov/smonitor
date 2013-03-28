@@ -13,34 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.app.panel;
+package com.ajkaandrej.smonitor.admin.client.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
-import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetailsPanel extends Composite {
-
-    private VerticalPanel vPanel;
+public class FooterPanel extends Composite {
     
-    public ApplicationDetailsPanel() {        
-        vPanel = new VerticalPanel();
-        vPanel.setSpacing(5);
-        ConstantValues.setWidth100(vPanel);
-        initWidget(vPanel);
+    private Label versionLabel;
+    
+    public FooterPanel() {
+        
+        HTML label = new HTML("jBoss session monitor created by <a href='https://github.com/andrejpetras'>Andrej Petras</a>. Version: ");
+        versionLabel = new Label();        
+        HorizontalPanel hp = new HorizontalPanel();
+        hp.add(label);
+        hp.add(versionLabel);
+        initWidget(hp);
     }
-
-    public void reset() {
-        vPanel.clear();
+    
+    public void setVersion(String version) {
+        versionLabel.setText(version);
     }
-
-    public void add(ApplicationDetailsModel model) {
-        vPanel.add(new ApplicationDetailsPanelItem(model));
-    }
-
 }

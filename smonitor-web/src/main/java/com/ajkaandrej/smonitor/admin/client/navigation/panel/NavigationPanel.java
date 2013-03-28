@@ -15,14 +15,14 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
@@ -52,22 +52,24 @@ public class NavigationPanel extends Composite {
     
     public NavigationPanel() {
         tabPanel = createTabPanel();
-        
-        
+       
         refreshButton = new PushButton(new Image(IMAGES.refresh()));
         configButton = new PushButton(new Image(IMAGES.config()));
         
         HorizontalPanel sp = new HorizontalPanel();
+        sp.setStyleName("navigationButtonBar");
         sp.add(refreshButton);
         sp.add(configButton);
+        HTML spacer = new HTML(ConstantValues.HTML_TAG_DIV);        
+        sp.add(spacer);
+        sp.setCellWidth(spacer, ConstantValues.PCT_100);
+        ConstantValues.setWidth100(sp);
         
         VerticalPanel dock = new VerticalPanel();
-        dock.setWidth("100%");
-        dock.setHeight("100%");        
+        ConstantValues.set100(dock);
         dock.add(tabPanel);
-        dock.setCellHeight(tabPanel, "100%");
+        dock.setCellHeight(tabPanel, ConstantValues.PCT_100);
         dock.add(sp);
-                
         initWidget(dock);
     }
 
@@ -87,8 +89,7 @@ public class NavigationPanel extends Composite {
         result.setAnimationDuration(1000);
         result.add(serverPanel, "Servers");
         result.add(applicationPanel, "Applications");
-        result.setWidth("100%");
-        result.setHeight("100%");
+        ConstantValues.set100(result);
 
         result.selectTab(0);
         return result;

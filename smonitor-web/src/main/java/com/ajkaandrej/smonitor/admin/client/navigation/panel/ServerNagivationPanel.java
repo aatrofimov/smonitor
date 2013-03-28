@@ -23,8 +23,6 @@ import com.ajkaandrej.smonitor.admin.client.navigation.model.ServerTreeViewModel
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  *

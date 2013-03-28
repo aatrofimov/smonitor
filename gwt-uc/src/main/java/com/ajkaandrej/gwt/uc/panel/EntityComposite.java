@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.rs.exception;
+package com.ajkaandrej.gwt.uc.panel;
+
+import com.google.gwt.user.client.ui.Composite;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class MonitorServiceException extends Exception {
+public class EntityComposite<T> extends Composite {
     
-    private static final long serialVersionUID = -7137772044882847641L;
-    
+    protected T data;
+
+    public T getData() {
+        return data;
+    }
+       
 }

@@ -15,13 +15,16 @@
  */
 package com.ajkaandrej.smonitor.rs.service;
 
+import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.config.factory.ConfigurationServiceFactory;
 import com.ajkaandrej.smonitor.config.model.MonitorConfig;
 import com.ajkaandrej.smonitor.config.service.ConfigurationService;
-import com.ajkaandrej.smonitor.rs.exception.MonitorServiceException;
 import com.ajkaandrej.smonitor.rs.model.Connection;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  *
@@ -29,8 +32,36 @@ import java.util.List;
  */
 public class MonitorServiceImpl implements MonitorService {
 
+    /** The MAVEN property file. */
+    private static final String PROPERTY_FILE = "META-INF/maven/com.ajkaandrej.smonitor/smonitor-services/pom.properties";
+    
+    /** The version key. */
+    private static final String KEY_VERSION = "version";
+    
     @Override
-    public List<Connection> getServerConnections() throws MonitorServiceException {
+    public String getVersion() throws ServiceException {
+        Properties properties = new Properties();
+        InputStream input = MonitorServiceImpl.class.getClassLoader().getResourceAsStream(PROPERTY_FILE);
+        try {
+            properties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        
+        return properties.getProperty(KEY_VERSION);
+    }
+
+    
+    @Override
+    public List<Connection> getServerConnections() throws ServiceException {
         List<Connection> result = new ArrayList<Connection>();
         try {
             Connection con = new Connection();
@@ -56,7 +87,7 @@ public class MonitorServiceImpl implements MonitorService {
     }
 
     @Override
-    public void realoadConfiguration() throws MonitorServiceException {
+    public void realoadConfiguration() throws ServiceException {
         try {
             ConfigurationService service = ConfigurationServiceFactory.getService();
             service.reloadConfigurations();
