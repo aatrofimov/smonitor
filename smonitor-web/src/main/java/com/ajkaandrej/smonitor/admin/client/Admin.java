@@ -16,15 +16,18 @@
 package com.ajkaandrej.smonitor.admin.client;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
+import com.ajkaandrej.smonitor.admin.client.app.panel.SessionPanel;
 import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
 import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.panel.FooterPanel;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
+import com.ajkaandrej.smonitor.agent.rs.model.SessionDetails;
 import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 import com.ajkaandrej.smonitor.rs.model.Connection;
@@ -63,6 +66,7 @@ public class Admin {
     private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
     private FooterPanel footer;
+    private SessionPanel sessionPanel;
     final ResponseCallback configCallback = new ResponseCallback() {
         @Override
         public void callback(Response response) {
@@ -78,6 +82,12 @@ public class Admin {
         @Override
         public void callback(ApplicationDetails details) {
             appPanel.addApplication(details);
+        }
+    };
+    final RemoteCallback<SessionDetails> sessionDetailsCallback = new RemoteCallback<SessionDetails>() {
+        @Override
+        public void callback(SessionDetails details) {
+            sessionPanel.load(details);
         }
     };
     final RemoteCallback<List<Connection>> connectionCallback = new RemoteCallback<List<Connection>>() {
@@ -143,12 +153,29 @@ public class Admin {
 //            }
 //        });
 
+        appPanel.getSessionTable().setSelectionHandler(new SelectionHandler<SessionTableModel>() {
+            @Override
+            public void selectionChanged(SessionTableModel item) {
+                loadSessionDetails(item);
+            }
+        });
+
+        sessionPanel = new SessionPanel();
+
+        SplitLayoutPanel appSplitPanel = new SplitLayoutPanel(5);
+        ConstantValues.set100(appSplitPanel);
+        appSplitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
+        appSplitPanel.addSouth(sessionPanel, 200);
+        appSplitPanel.add(appPanel);
+
+
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         ConstantValues.set100(splitPanel);
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
         splitPanel.addWest(navigationPanel, 200);
-        splitPanel.add(appPanel);
+        splitPanel.add(appSplitPanel);
         splitPanel.setWidgetMinSize(navigationPanel, 200);
+
 
         VerticalPanel mainPanel = new VerticalPanel();
         ConstantValues.set100(mainPanel);
@@ -173,6 +200,7 @@ public class Admin {
 
     private void loadApplicationDetails(ApplicationTreeModel model) {
         appPanel.reset();
+        sessionPanel.reset();
         if (model != null) {
             for (AppInstanceTreeModel inst : model.instances) {
                 try {
@@ -180,6 +208,17 @@ public class Admin {
                 } catch (ServiceException ex) {
                     Window.alert("Error: " + ex.getMessage());
                 }
+            }
+        }
+    }
+
+    private void loadSessionDetails(SessionTableModel model) {
+        sessionPanel.reset();
+        if (model != null) {
+            try {
+                applicationService.call(sessionDetailsCallback).getSession(model.host, model.application, model.id, model.remote);
+            } catch (ServiceException ex) {
+                Window.alert("Error: " + ex.getMessage());
             }
         }
     }

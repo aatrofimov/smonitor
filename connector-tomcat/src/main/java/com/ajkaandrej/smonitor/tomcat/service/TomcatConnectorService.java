@@ -94,7 +94,7 @@ public class TomcatConnectorService implements ConnectorService {
     public SessionDetails getSessionDetails(String host, String application, String session) {
         TomcatServer server = TomcatServer.getInstance();
         String id = TomcatUtil.createTomcatApplicationId(application);
-        SessionDetails result = TomcatUtil.createSessionDetails(server.getSession(host, id, session));
+        SessionDetails result = TomcatUtil.createSessionDetails(host, application, server.getSession(host, id, session));
         return result;
     }
 

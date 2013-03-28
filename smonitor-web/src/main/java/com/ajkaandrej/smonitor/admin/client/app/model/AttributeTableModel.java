@@ -15,43 +15,16 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.model;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetailsModel {
+public class AttributeTableModel {
     
-    public String remote;
-    public String hostName;
-    public int hostPort;
-    public String host;
-    public String application;
+    public String name;
+    public String type;
+    public long size;
+    public boolean serializable;
+    public long serializableSize;    
     
-    public String id;
-    
-    public String user;
-
-    public Date creationTime;
-    
-    public Date lastAccessedTime;
-        
-    public boolean valid;
-    
-    public long lastAccessedTimeInternal;
-        
-    public int maxInactiveInterval;
-    
-    public String info;
-    
-    public double size;
-
-    public double sizeSerializable;
-
-    public boolean newSession;
-    
-    public List<String> roles;
-
 }

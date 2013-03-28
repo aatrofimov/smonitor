@@ -18,38 +18,52 @@ package com.ajkaandrej.smonitor.admin.client.app.panel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationPanel extends TabLayoutPanel {
+public class ApplicationPanel extends Composite {
     
     private SessionsTable sessionTable;
     
     private ApplicationDetailsPanel applicationDetails;
     
+    private TabLayoutPanel tabPanel;
+    
     public ApplicationPanel() {
-        super(2.5, Unit.EM);
+        
+        tabPanel = new TabLayoutPanel(2.5, Unit.EM);
 
         applicationDetails = new ApplicationDetailsPanel();
-        add(applicationDetails, "Details");        
+        tabPanel.add(applicationDetails, "Details");        
         
         sessionTable = new SessionsTable();        
-        add(sessionTable, "Sessions");   
+        tabPanel.add(sessionTable, "Sessions");   
 
-        selectTab(0);
+        tabPanel.selectTab(0);
         reset();
+        
+        initWidget(tabPanel);
     }
     
     public final void reset() {        
         applicationDetails.reset();
         sessionTable.reset();
     }
-    
+
+    public ApplicationDetailsPanel getApplicationDetails() {
+        return applicationDetails;
+    }
+
+    public SessionsTable getSessionTable() {
+        return sessionTable;
+    }
+        
     public void addApplication(ApplicationDetails application) {        
         applicationDetails.add(ObjectFactory.create(application));
-        sessionTable.add(ObjectFactory.create(application.getServerContext(), application.getSessions()));
+        sessionTable.add(ObjectFactory.createSessions(application));
     }
 }

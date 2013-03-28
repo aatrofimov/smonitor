@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.app.model;
+package com.ajkaandrej.smonitor.admin.client.common;
+
+import com.google.gwt.cell.client.DateCell;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributeModel {
+public class ViewUtil {
     
-    public String name;
-    public String type;
-    public long size;
-    public boolean serializable;
-    public long serializableSize;    
-    
+    public static DateCell createDateCell() {
+        return new DateCell(ViewConstants.DATE_FORMAT);
+    }
 }

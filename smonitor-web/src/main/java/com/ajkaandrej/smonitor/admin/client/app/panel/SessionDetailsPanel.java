@@ -25,9 +25,8 @@ import com.google.gwt.user.client.ui.FlexTable;
  */
 public class SessionDetailsPanel extends EntityComposite<SessionDetailsModel> {
     
-    public SessionDetailsPanel(SessionDetailsModel session) {
-        this.data = session;
-        
+    public SessionDetailsPanel() {
+ 
         FlexTable layout = new FlexTable();
         
 //        layout.setCellSpacing(6);
@@ -40,4 +39,16 @@ public class SessionDetailsPanel extends EntityComposite<SessionDetailsModel> {
         initWidget(layout);
     }
  
+    private void updateView() {
+        
+    }
+    
+    public void reset() {
+        
+    }
+    
+    public void load(SessionDetailsModel model) {
+        this.data = model;
+        updateView();
+    }
 }

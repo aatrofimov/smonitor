@@ -13,38 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.app.model;
+package com.ajkaandrej.smonitor.admin.client.common;
 
-import java.util.Date;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionTableModel {
-    
-    public String id;
-    
-    public String user;
+public class ViewConstants {
 
-    public Date creationTime;
-    
-    public Date lastAccessedTime;
-        
-    public boolean valid;
-    
-    public long lastAccessedTimeInternal;
-        
-    public int maxInactiveInterval;    
-    
-    public String remote;
-    
-    public String host;
-    
-    public String hostName;
-    
-    public int hostPort;
-    
-    public String application;
-    
+    public static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
+    public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
 }

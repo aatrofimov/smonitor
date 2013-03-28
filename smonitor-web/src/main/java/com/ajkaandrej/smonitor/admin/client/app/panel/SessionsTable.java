@@ -17,17 +17,19 @@ package com.ajkaandrej.smonitor.admin.client.app.panel;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
-import com.google.gwt.cell.client.DateCell;
+import com.ajkaandrej.smonitor.admin.client.common.ViewUtil;
+import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.Comparator;
 import java.util.Date;
@@ -39,23 +41,31 @@ import java.util.List;
  */
 public class SessionsTable extends Composite {
 
-    private static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
-    private static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
-    private CellTable<SessionTableModel> table = new CellTable<SessionTableModel>();
+    private CellTable<SessionTableModel> table;
+    private ListDataProvider<SessionTableModel> data;
+    private SingleSelectionModel<SessionTableModel> ssm;
+    private SelectionHandler<SessionTableModel> selectionHandler;
 
-    private ListDataProvider<SessionTableModel> data = new ListDataProvider<SessionTableModel>();
-    
     public SessionsTable() {
+        data = new ListDataProvider<SessionTableModel>();
+        table = new CellTable<SessionTableModel>();
         table.setWidth(ConstantValues.PCT_100, true);
         table.setAutoHeaderRefreshDisabled(true);
         table.setAutoFooterRefreshDisabled(true);
         table.setPageSize(10);
-        
-        data.addDataDisplay(table);
-        
-        SingleSelectionModel<SessionTableModel> ssm = new SingleSelectionModel<SessionTableModel>();
-        table.setSelectionModel(ssm);
 
+        data.addDataDisplay(table);
+
+        ssm = new SingleSelectionModel<SessionTableModel>();
+        ssm.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (selectionHandler != null && ssm.getSelectedObject() != null) {
+                    selectionHandler.selectionChanged(ssm.getSelectedObject());
+                }
+            }
+        });        
+        table.setSelectionModel(ssm);
 
         TextColumn<SessionTableModel> hostColumn = new TextColumn<SessionTableModel>() {
             @Override
@@ -110,15 +120,14 @@ public class SessionsTable extends Composite {
         };
         table.addColumn(userColumn, "User");
 
-        DateCell dateCell = new DateCell(DATE_FORMAT);
-        Column<SessionTableModel, Date> createColumn = new Column<SessionTableModel, Date>(dateCell) {
+        Column<SessionTableModel, Date> createColumn = new Column<SessionTableModel, Date>(ViewUtil.createDateCell()) {
             @Override
             public Date getValue(SessionTableModel object) {
                 return object.creationTime;
             }
         };
         createColumn.setSortable(true);
-        
+
         ListHandler<SessionTableModel> createColumnSortHandler = new ListHandler<SessionTableModel>(data.getList());
         createColumnSortHandler.setComparator(createColumn, new Comparator<SessionTableModel>() {
             @Override
@@ -135,11 +144,10 @@ public class SessionsTable extends Composite {
             }
         });
         table.addColumnSortHandler(createColumnSortHandler);
-        
+
         table.addColumn(createColumn, "Create");
 
-        DateCell lastAccessedCell = new DateCell(DATE_FORMAT);
-        Column<SessionTableModel, Date> lastAccessedColumn = new Column<SessionTableModel, Date>(lastAccessedCell) {
+        Column<SessionTableModel, Date> lastAccessedColumn = new Column<SessionTableModel, Date>(ViewUtil.createDateCell()) {
             @Override
             public Date getValue(SessionTableModel object) {
                 return object.lastAccessedTime;
@@ -154,12 +162,17 @@ public class SessionsTable extends Composite {
 
         SimplePager pager = new SimplePager();
         pager.setDisplay(table);
-        
+
         VerticalPanel vp = new VerticalPanel();
         vp.add(table);
         vp.add(pager);
+        vp.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
 
         initWidget(vp);
+    }
+
+    public void setSelectionHandler(SelectionHandler<SessionTableModel> handler) {        
+        this.selectionHandler = handler;
     }
 
     public void reset() {

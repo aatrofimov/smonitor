@@ -51,14 +51,17 @@ public final class TomcatUtil {
         // empty constructor
     }
     
-    public static SessionDetails createSessionDetails(StandardSession session) {
+    public static SessionDetails createSessionDetails(String host, String application, StandardSession session) {
         SessionDetails result = null;
 
         if (session != null) {
             result = new SessionDetails();
+            result.setHost(host);
+            result.setApplication(application);
+            
             // session info
             result.setInfo(session.getInfo());
-
+            
             // create session basic information
             Session tmp = createSession(session);
             result.setCreationTime(tmp.getCreationTime());

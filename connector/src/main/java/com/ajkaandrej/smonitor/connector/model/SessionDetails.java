@@ -24,6 +24,10 @@ import java.util.List;
  */
 public class SessionDetails extends Session {
 
+    private String host;
+    
+    private String application;
+    
     private String info;
     
     private double size;
@@ -40,6 +44,22 @@ public class SessionDetails extends Session {
         attributes = new ArrayList<Attribute>();
         roles = new ArrayList<String>();
     }   
+    
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
     
     public List<String> getRoles() {
         return roles;
