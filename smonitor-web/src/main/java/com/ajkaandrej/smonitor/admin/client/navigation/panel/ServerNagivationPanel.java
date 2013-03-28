@@ -64,7 +64,7 @@ public class ServerNagivationPanel extends Composite {
         initWidget(tree);
     }
     
-    public void clear() {
+    public void reset() {
         model.clear();
     }
     

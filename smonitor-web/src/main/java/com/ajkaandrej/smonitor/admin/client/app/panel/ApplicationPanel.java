@@ -40,10 +40,10 @@ public class ApplicationPanel extends TabLayoutPanel {
         add(sessionTable, "Sessions");   
 
         selectTab(0);
+        reset();
     }
     
-    public void reset() {
-        selectTab(0);
+    public final void reset() {        
         applicationDetails.reset();
         sessionTable.reset();
     }

@@ -47,9 +47,15 @@ public class ApplicationTreeViewModel implements TreeViewModel {
     public ApplicationTreeViewModel(SingleSelectionModel<ApplicationTreeModel> selectionModel, SingleSelectionModel<AppInstanceTreeModel> appInstanceSelectionModel) {
         this.selectionModel = selectionModel;
         this.appInstanceSelectionModel = appInstanceSelectionModel;
+        selectionModel.getSelectedObject();
     }              
     
+    public ApplicationTreeModel getSelectApplication() {
+        return selectionModel.getSelectedObject();
+    }
+    
     public void clear() {
+        selectionModel.clear();
         dataProvider.getList().clear();
         dataProvider.flush();
     }

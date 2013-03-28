@@ -47,7 +47,7 @@ public class ApplicationNagivationPanel extends Composite {
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (appHandler != null) {
+                if (appHandler != null && event != null && selectionModel.getSelectedObject() != null) {
                     appHandler.selectionChanged(selectionModel.getSelectedObject());
                 }
             }
@@ -66,8 +66,13 @@ public class ApplicationNagivationPanel extends Composite {
         model = new ApplicationTreeViewModel(selectionModel, null);
         tree = new CellTree(model, null);
         initWidget(tree);
+
     }
 
+    public ApplicationTreeModel getSelectApplication() {
+        return model.getSelectApplication();
+    }
+    
     public void setAppHandler(SelectionHandler<ApplicationTreeModel> appHandler) {
         this.appHandler = appHandler;
     }
@@ -76,7 +81,7 @@ public class ApplicationNagivationPanel extends Composite {
         this.appInstanceHandler = appInstanceHandler;
     }
 
-    public void clear() {
+    public void reset() {
         model.clear();
     }
 

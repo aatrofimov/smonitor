@@ -63,14 +63,11 @@ public class Admin {
     private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
     private FooterPanel footer;
-    
     final ResponseCallback configCallback = new ResponseCallback() {
         @Override
         public void callback(Response response) {
-
         }
     };
-    
     final RemoteCallback<Server> serverCallback = new RemoteCallback<Server>() {
         @Override
         public void callback(Server server) {
@@ -93,14 +90,13 @@ public class Admin {
             }
         }
     };
-
     final RemoteCallback<String> versionCallback = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
             footer.setVersion(value);
         }
     };
-    
+
     @PostConstruct
     public void create() {
 
@@ -114,6 +110,7 @@ public class Admin {
         navigationPanel.getApplicationPanel().setAppHandler(new SelectionHandler<ApplicationTreeModel>() {
             @Override
             public void selectionChanged(ApplicationTreeModel item) {
+                navigationPanel.getReloadApplicationButton().setEnabled(true);
                 loadApplicationDetails(item);
             }
         });
@@ -125,26 +122,32 @@ public class Admin {
                 loadServer();
             }
         });
-        
+        navigationPanel.getReloadApplicationButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                loadApplicationDetails(navigationPanel.getApplicationPanel().getSelectApplication());
+            }
+        });
+
         navigationPanel.getConfigButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 relaodConfiguration();
             }
         });
-        
+
 //        navigationPanel.getApplicationPanel().setAppInstanceHandler(new SelectionHandler<AppInstanceTreeModel>() {
 //            @Override
 //            public void selectionChanged(AppInstanceTreeModel item) {
 //
 //            }
 //        });
-                
+
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         ConstantValues.set100(splitPanel);
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
-        splitPanel.addWest(navigationPanel, 200); 
-        splitPanel.add(appPanel);        
+        splitPanel.addWest(navigationPanel, 200);
+        splitPanel.add(appPanel);
         splitPanel.setWidgetMinSize(navigationPanel, 200);
 
         VerticalPanel mainPanel = new VerticalPanel();
@@ -153,28 +156,30 @@ public class Admin {
         mainPanel.add(footer);
         mainPanel.setCellHeight(splitPanel, ConstantValues.PCT_100);
         mainPanel.setCellHorizontalAlignment(footer, HasHorizontalAlignment.ALIGN_CENTER);
-        
+
         RootPanel.get().add(mainPanel);
     }
 
     @AfterInitialization
     private void init() {
         try {
-            footer.setVersion("Loading ...");            
+            footer.setVersion("Loading ...");
             monitorService.call(versionCallback).getVersion();
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
-        }        
+        }
         loadServer();
     }
-    
+
     private void loadApplicationDetails(ApplicationTreeModel model) {
         appPanel.reset();
-        for (AppInstanceTreeModel inst : model.instances) {
-            try {
-                applicationService.call(applicationDetailsCallback).getApplication(inst.host, model.id, inst.remote);
-            } catch (ServiceException ex) {
-                Window.alert("Error: " + ex.getMessage());
+        if (model != null) {
+            for (AppInstanceTreeModel inst : model.instances) {
+                try {
+                    applicationService.call(applicationDetailsCallback).getApplication(inst.host, model.id, inst.remote);
+                } catch (ServiceException ex) {
+                    Window.alert("Error: " + ex.getMessage());
+                }
             }
         }
     }
@@ -195,7 +200,7 @@ public class Admin {
             Window.alert("Error: " + ex.getMessage());
         }
     }
-    
+
     private void relaodConfiguration() {
         try {
             monitorService.call(configCallback).realoadConfiguration();

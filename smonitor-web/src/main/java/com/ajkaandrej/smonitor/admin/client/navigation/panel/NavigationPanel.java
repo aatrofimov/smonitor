@@ -40,12 +40,15 @@ public class NavigationPanel extends Composite {
     private ApplicationNagivationPanel applicationPanel;
     private PushButton refreshButton;
     private PushButton configButton;
+    private PushButton reloadApplicationButton;
     
     public static interface Images extends ClientBundle {
         
         ImageResource refresh();
         
         ImageResource config();
+        
+        ImageResource reloadApp();
     }
     
     public static final Images IMAGES = GWT.create(Images.class);
@@ -54,11 +57,16 @@ public class NavigationPanel extends Composite {
         tabPanel = createTabPanel();
        
         refreshButton = new PushButton(new Image(IMAGES.refresh()));
+        refreshButton.setTitle("Reload the servers");
         configButton = new PushButton(new Image(IMAGES.config()));
+        configButton.setTitle("Reload configuration");
+        reloadApplicationButton = new PushButton(new Image(IMAGES.reloadApp()));
+        reloadApplicationButton.setTitle("Reload selected application");
         
         HorizontalPanel sp = new HorizontalPanel();
         sp.setStyleName("navigationButtonBar");
         sp.add(refreshButton);
+        sp.add(reloadApplicationButton);
         sp.add(configButton);
         HTML spacer = new HTML(ConstantValues.HTML_TAG_DIV);        
         sp.add(spacer);
@@ -70,9 +78,16 @@ public class NavigationPanel extends Composite {
         dock.add(tabPanel);
         dock.setCellHeight(tabPanel, ConstantValues.PCT_100);
         dock.add(sp);
+        
+        reset();
+        
         initWidget(dock);
     }
 
+    public PushButton getReloadApplicationButton() {
+        return reloadApplicationButton;
+    }
+    
     public PushButton getRefreshButton() {
         return refreshButton;
     }
@@ -90,7 +105,6 @@ public class NavigationPanel extends Composite {
         result.add(serverPanel, "Servers");
         result.add(applicationPanel, "Applications");
         ConstantValues.set100(result);
-
         result.selectTab(0);
         return result;
     }
@@ -103,10 +117,16 @@ public class NavigationPanel extends Composite {
         return serverPanel;
     }
 
-    public void reset() {
-        tabPanel.selectTab(0);
-        serverPanel.clear();
-        applicationPanel.clear();
+    /**
+     * Resets the navigation panel to startup status.
+     */
+    public final void reset() {
+        // disable the reload appliction button
+        reloadApplicationButton.setEnabled(false);
+        // reset tab server
+        serverPanel.reset();
+        // reset tab application
+        applicationPanel.reset();
     }
 
     public void addServer(Server server) {
