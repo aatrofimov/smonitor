@@ -115,30 +115,28 @@ public final class ObjectFactory {
 
         if (application != null) {
             ServerContext context = application.getServerContext();
-            String id = application.getId();
+            String hostName = context.getHostName();
+            int port = context.getPort();
             String host = application.getHost();
             if (application.getSessions() != null) {
                 for (Session session : application.getSessions()) {
-                    result.add(create(host, id, context, session));
+                    result.add(create(hostName, port, host, session));
                 }
             }
         }
         return result;
     }
 
-    public static SessionTableModel create(String host, String application, ServerContext context, Session session) {
+    public static SessionTableModel create(String hostName, int port, String host, Session session) {
         SessionTableModel result = new SessionTableModel();
         result.creationTime = session.getCreationTime();
         result.id = session.getId();
         result.lastAccessedTime = session.getLastAccessedTime();
         result.lastAccessedTimeInternal = session.getLastAccessedTimeInternal();
         result.maxInactiveInterval = session.getMaxInactiveInterval();
-        result.application = application;
         result.host = host;
-        result.remote = context.getRemote();
-        result.hostName = context.getHostName();
-        result.hostPort = context.getPort();
-
+        result.hostName = hostName;
+        result.hostPort = port;
         return result;
     }
 

@@ -16,13 +16,15 @@
 package com.ajkaandrej.smonitor.admin.client;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.gwt.uc.handler.EntityTablePanelSelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.SessionPanel;
 import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
-import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.gwt.uc.handler.SelectionHandler;
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.panel.FooterPanel;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
@@ -153,10 +155,17 @@ public class Admin {
 //            }
 //        });
 
-        appPanel.getSessionTable().setSelectionHandler(new SelectionHandler<SessionTableModel>() {
+        appPanel.getSessionTable().setSelectionHandler(new EntityTablePanelSelectionHandler<ApplicationDetailsModel, SessionTableModel>() {
             @Override
-            public void selectionChanged(SessionTableModel item) {
-                loadSessionDetails(item);
+            public void selectionChanged(ApplicationDetailsModel model, SessionTableModel item) {
+                sessionPanel.reset();
+                if (model != null) {
+                    try {
+                        applicationService.call(sessionDetailsCallback).getSession(model.host, model.id, item.id, model.remote);
+                    } catch (ServiceException ex) {
+                        Window.alert("Error: " + ex.getMessage());
+                    }
+                }
             }
         });
 
@@ -208,17 +217,6 @@ public class Admin {
                 } catch (ServiceException ex) {
                     Window.alert("Error: " + ex.getMessage());
                 }
-            }
-        }
-    }
-
-    private void loadSessionDetails(SessionTableModel model) {
-        sessionPanel.reset();
-        if (model != null) {
-            try {
-                applicationService.call(sessionDetailsCallback).getSession(model.host, model.application, model.id, model.remote);
-            } catch (ServiceException ex) {
-                Window.alert("Error: " + ex.getMessage());
             }
         }
     }

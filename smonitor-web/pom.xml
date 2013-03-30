@@ -60,7 +60,7 @@
             <classifier>sources</classifier>
             <scope>provided</scope>
         </dependency>                
-        <!-- ERRAI -->
+        <!-- ERRAI -->       
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-common</artifactId>

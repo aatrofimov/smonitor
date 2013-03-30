@@ -239,7 +239,18 @@
             <snapshots>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
-        </repository>      
+        </repository>   
+        <repository>
+            <id>ppc</id>
+            <url>https://gwt-preprocessor.googlecode.com/svn/trunk/maven/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>             
     </repositories>
 
     <pluginRepositories>
@@ -255,6 +266,17 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </pluginRepository>
+        <pluginRepository>
+            <id>ppc</id>
+            <url>https://gwt-preprocessor.googlecode.com/svn/trunk/maven/maven2</url>
+            <layout>default</layout>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>        
     </pluginRepositories>
 
 </project>

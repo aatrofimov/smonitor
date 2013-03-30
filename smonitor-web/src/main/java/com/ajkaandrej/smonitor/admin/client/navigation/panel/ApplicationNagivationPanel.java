@@ -15,7 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
-import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.gwt.uc.handler.SelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;

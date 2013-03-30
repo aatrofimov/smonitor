@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.google.gwt.dom.client.Style.Unit;
@@ -63,7 +64,8 @@ public class ApplicationPanel extends Composite {
     }
         
     public void addApplication(ApplicationDetails application) {        
-        applicationDetails.add(ObjectFactory.create(application));
-        sessionTable.add(ObjectFactory.createSessions(application));
+        ApplicationDetailsModel app = ObjectFactory.create(application);
+        applicationDetails.add(app);
+        sessionTable.setData(app, ObjectFactory.createSessions(application));
     }
 }

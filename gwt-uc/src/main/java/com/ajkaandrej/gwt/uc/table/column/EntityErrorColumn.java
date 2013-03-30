@@ -13,34 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.app.model;
+package com.ajkaandrej.gwt.uc.table.column;
 
-import java.util.Date;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.user.cellview.client.Column;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionTableModel {
-    
-    public String id;
-    
-    public String user;
+public class EntityErrorColumn<T> extends Column<T, String> {
 
-    public Date creationTime;
+    private String message;
     
-    public Date lastAccessedTime;
-        
-    public boolean valid;
+    public EntityErrorColumn(String message) {
+        super(new TextCell());
+        this.message = message;
+    }
     
-    public long lastAccessedTimeInternal;
-        
-    public int maxInactiveInterval;    
-        
-    public String host;
-    
-    public String hostName;
-    
-    public int hostPort;
+    @Override
+    public String getValue(T object) {
+        return message;
+    }
     
 }

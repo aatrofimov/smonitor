@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.handler;
+package com.ajkaandrej.gwt.uc.table.column;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public interface SelectionHandler<T> {
-    
-    public void selectionChanged(T item);
+public abstract class EntityLongColumn<T> extends AbstractNumberColumn<T, Long> {
+
 }

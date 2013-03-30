@@ -15,99 +15,62 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
-import com.ajkaandrej.gwt.uc.panel.EntityComposite;
+import com.ajkaandrej.gwt.uc.panel.EntityTablePanel;
+import com.ajkaandrej.gwt.uc.table.EntityTable;
+import com.ajkaandrej.gwt.uc.table.column.EntityBooleanColumn;
+import com.ajkaandrej.gwt.uc.table.column.EntityLongColumn;
+import com.ajkaandrej.gwt.uc.table.column.EntityTextColumn;
 import com.ajkaandrej.smonitor.admin.client.app.model.AttributeTableModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
-import java.util.List;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.cellview.client.Column;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributesPanel extends EntityComposite<SessionDetailsModel> {
-    
-    private CellTable<AttributeTableModel> table;
-    private ListDataProvider<AttributeTableModel> dataProvider = new ListDataProvider<AttributeTableModel>();
+public class AttributesPanel extends EntityTablePanel<SessionDetailsModel,AttributeTableModel> {
     
     public AttributesPanel() {
-        table = new CellTable<AttributeTableModel>();
-        table.setWidth(ConstantValues.PCT_100, true);
-        table.setAutoHeaderRefreshDisabled(true);
-        table.setAutoFooterRefreshDisabled(true);
-        table.setPageSize(10);
+        super();
         
-        dataProvider.addDataDisplay(table);
-        
-        SingleSelectionModel<AttributeTableModel> ssm = new SingleSelectionModel<AttributeTableModel>();
-        table.setSelectionModel(ssm);
-        
-        TextColumn<AttributeTableModel> nameColumn = new TextColumn<AttributeTableModel>() {
+        EntityTable<AttributeTableModel> table = this.getTable();
+        table.addColumn("Name", true, new EntityTextColumn<AttributeTableModel>(){
             @Override
-            public String getValue(AttributeTableModel object) {
+            public String getObject(AttributeTableModel object) {
                 return object.name;
             }
-        };      
-        table.addColumn(nameColumn, "Name");
+        });
         
-        TextColumn<AttributeTableModel> typeColumn = new TextColumn<AttributeTableModel>() {
+        table.addColumn("Type", true, new EntityTextColumn<AttributeTableModel>(){
             @Override
-            public String getValue(AttributeTableModel object) {
+            public String getObject(AttributeTableModel object) {
                 return object.type;
             }
-        };      
-        table.addColumn(typeColumn, "Type");
-        
-        TextColumn<AttributeTableModel> serializableColumn = new TextColumn<AttributeTableModel>() {
+        });
+        Column serColumn = table.addColumn("Serializable", true, new EntityBooleanColumn<AttributeTableModel>(){
             @Override
-            public String getValue(AttributeTableModel object) {
-                return "" + object.serializable;
+            public Boolean getObject(AttributeTableModel object) {
+                return object.serializable;
             }
-        };      
-        table.addColumn(serializableColumn, "Serializable");
+        });
+        table.setColumnWidth(serColumn, 150, Style.Unit.PX);
         
-        TextColumn<AttributeTableModel> serializableSizeColumn = new TextColumn<AttributeTableModel>() {
+        Column serSizeColumn =  table.addColumn("Ser. size", true, new EntityLongColumn<AttributeTableModel>(){
             @Override
-            public String getValue(AttributeTableModel object) {
-                return "" + object.serializableSize;
+            public Long getObject(AttributeTableModel object) {
+                return object.serializableSize;
             }
-        };      
-        table.addColumn(serializableSizeColumn, "Serializable size");
+        });
+        table.setColumnWidth(serSizeColumn, 150, Style.Unit.PX);
         
-        TextColumn<AttributeTableModel> sizeColumn = new TextColumn<AttributeTableModel>() {
+        Column sizeColumn = table.addColumn("Size", true, new EntityLongColumn<AttributeTableModel>(){
             @Override
-            public String getValue(AttributeTableModel object) {
-                return "" + object.size;
+            public Long getObject(AttributeTableModel object) {
+                return object.size;
             }
-        };      
-        table.addColumn(sizeColumn, "Size");
-        
-        SimplePager pager = new SimplePager();
-        pager.setDisplay(table);
-        
-        VerticalPanel vp = new VerticalPanel();
-        vp.add(table);
-        vp.add(pager);
-        vp.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
-
-        initWidget(vp);        
+        });
+        table.setColumnWidth(sizeColumn, 100, Style.Unit.PX);      
     }
     
-    public void load(SessionDetailsModel session, List<AttributeTableModel> attributes) {
-        reset();
-        this.data = session;
-        dataProvider.getList().addAll(attributes);
-    }
-    
-    public void reset() {
-        dataProvider.getList().clear();
-    }
-
 }

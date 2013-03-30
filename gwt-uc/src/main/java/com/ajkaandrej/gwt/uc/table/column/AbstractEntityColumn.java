@@ -13,34 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.app.model;
+package com.ajkaandrej.gwt.uc.table.column;
 
-import java.util.Date;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.user.cellview.client.Column;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionTableModel {
-    
-    public String id;
-    
-    public String user;
+public abstract class AbstractEntityColumn<T,K extends Comparable<K>,C> extends Column<T, C>{
 
-    public Date creationTime;
+
+    public AbstractEntityColumn(Cell<C> cell) {
+        super(cell);
+    }
+
+    @Override
+    public C getValue(T object) {
+        return (C) getObject(object);
+    } 
     
-    public Date lastAccessedTime;
-        
-    public boolean valid;
-    
-    public long lastAccessedTimeInternal;
-        
-    public int maxInactiveInterval;    
-        
-    public String host;
-    
-    public String hostName;
-    
-    public int hostPort;
-    
+    public abstract K getObject(T object);
 }

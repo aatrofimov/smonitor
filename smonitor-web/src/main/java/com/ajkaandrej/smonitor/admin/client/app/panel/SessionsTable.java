@@ -15,171 +15,71 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
-import com.ajkaandrej.smonitor.admin.client.common.ViewUtil;
-import com.ajkaandrej.smonitor.admin.client.handler.SelectionHandler;
+import com.ajkaandrej.gwt.uc.panel.EntityTablePanel;
+import com.ajkaandrej.gwt.uc.table.EntityTable;
+import com.ajkaandrej.gwt.uc.table.column.EntityDateColumn;
+import com.ajkaandrej.gwt.uc.table.column.EntityIntegerColumn;
+import com.ajkaandrej.gwt.uc.table.column.EntityTextColumn;
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionsTable extends Composite {
-
-    private CellTable<SessionTableModel> table;
-    private ListDataProvider<SessionTableModel> data;
-    private SingleSelectionModel<SessionTableModel> ssm;
-    private SelectionHandler<SessionTableModel> selectionHandler;
-
+public class SessionsTable extends EntityTablePanel<ApplicationDetailsModel,SessionTableModel> {
+        
     public SessionsTable() {
-        data = new ListDataProvider<SessionTableModel>();
-        table = new CellTable<SessionTableModel>();
-        table.setWidth(ConstantValues.PCT_100, true);
-        table.setAutoHeaderRefreshDisabled(true);
-        table.setAutoFooterRefreshDisabled(true);
-        table.setPageSize(10);
-
-        data.addDataDisplay(table);
-
-        ssm = new SingleSelectionModel<SessionTableModel>();
-        ssm.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        super();
+        
+        EntityTable<SessionTableModel> table = this.getTable();
+        Column hostColumn = table.addColumn("Host", true, new EntityTextColumn<SessionTableModel>(){
             @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (selectionHandler != null && ssm.getSelectedObject() != null) {
-                    selectionHandler.selectionChanged(ssm.getSelectedObject());
-                }
-            }
-        });        
-        table.setSelectionModel(ssm);
-
-        TextColumn<SessionTableModel> hostColumn = new TextColumn<SessionTableModel>() {
-            @Override
-            public String getValue(SessionTableModel object) {
+            public String getObject(SessionTableModel object) {
                 return object.hostName;
             }
-        };
-        hostColumn.setSortable(true);
-
-        ListHandler<SessionTableModel> hostColumnSortHandler = new ListHandler<SessionTableModel>(data.getList());
-        hostColumnSortHandler.setComparator(hostColumn, new Comparator<SessionTableModel>() {
+        });        
+        table.setColumnWidth(hostColumn, 200, Unit.PX);
+        
+        Column portColumn = table.addColumn("Port", true, new EntityIntegerColumn<SessionTableModel>(){
             @Override
-            public int compare(SessionTableModel o1, SessionTableModel o2) {
-                if (o1 == o2) {
-                    return 0;
-                }
-
-                // Compare the name columns.
-                if (o1 != null) {
-                    return (o2 != null) ? o1.hostName.compareTo(o2.hostName) : 1;
-                }
-                return -1;
+            public Integer getObject(SessionTableModel object) {
+                return object.hostPort;
             }
         });
-        table.addColumnSortHandler(hostColumnSortHandler);
-
-        table.addColumn(hostColumn, "Host");
-
-        TextColumn<SessionTableModel> portColumn = new TextColumn<SessionTableModel>() {
+        table.setColumnWidth(portColumn, 50, Unit.PX);
+        
+        table.addColumn("Id", true, new EntityTextColumn<SessionTableModel>(){
             @Override
-            public String getValue(SessionTableModel object) {
-                return "" + object.hostPort;
-            }
-        };
-
-
-        table.addColumn(portColumn, "Port");
-
-        TextColumn<SessionTableModel> idColumn = new TextColumn<SessionTableModel>() {
-            @Override
-            public String getValue(SessionTableModel object) {
+            public String getObject(SessionTableModel object) {
                 return object.id;
             }
-        };
-        table.addColumn(idColumn, "ID");
-
-        TextColumn<SessionTableModel> userColumn = new TextColumn<SessionTableModel>() {
+        });
+        table.addColumn("User", true, new EntityTextColumn<SessionTableModel>(){
             @Override
-            public String getValue(SessionTableModel object) {
+            public String getObject(SessionTableModel object) {
                 return object.user;
             }
-        };
-        table.addColumn(userColumn, "User");
-
-        Column<SessionTableModel, Date> createColumn = new Column<SessionTableModel, Date>(ViewUtil.createDateCell()) {
+        });
+        Column createColumn = table.addColumn("Create", true, new EntityDateColumn<SessionTableModel>(){
             @Override
-            public Date getValue(SessionTableModel object) {
+            public Date getObject(SessionTableModel object) {
                 return object.creationTime;
             }
-        };
-        createColumn.setSortable(true);
-
-        ListHandler<SessionTableModel> createColumnSortHandler = new ListHandler<SessionTableModel>(data.getList());
-        createColumnSortHandler.setComparator(createColumn, new Comparator<SessionTableModel>() {
-            @Override
-            public int compare(SessionTableModel o1, SessionTableModel o2) {
-                if (o1 == o2) {
-                    return 0;
-                }
-
-                // Compare the name columns.
-                if (o1 != null) {
-                    return (o2 != null) ? o1.creationTime.compareTo(o2.creationTime) : 1;
-                }
-                return -1;
-            }
         });
-        table.addColumnSortHandler(createColumnSortHandler);
-
-        table.addColumn(createColumn, "Create");
-
-        Column<SessionTableModel, Date> lastAccessedColumn = new Column<SessionTableModel, Date>(ViewUtil.createDateCell()) {
+        table.setColumnWidth(createColumn, 180, Unit.PX);
+        
+        Column lastAccessedColumn = table.addColumn("Last accessed", true, new EntityDateColumn<SessionTableModel>(){
             @Override
-            public Date getValue(SessionTableModel object) {
+            public Date getObject(SessionTableModel object) {
                 return object.lastAccessedTime;
             }
-        };
-        table.addColumn(lastAccessedColumn, "Last accessed");
-
-        table.setColumnWidth(hostColumn, 200, Unit.PX);
-        table.setColumnWidth(createColumn, 180, Unit.PX);
-        table.setColumnWidth(lastAccessedColumn, 180, Unit.PX);
-        table.setColumnWidth(portColumn, 50, Unit.PX);
-
-        SimplePager pager = new SimplePager();
-        pager.setDisplay(table);
-
-        VerticalPanel vp = new VerticalPanel();
-        vp.add(table);
-        vp.add(pager);
-        vp.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
-
-        initWidget(vp);
+        });
+        table.setColumnWidth(lastAccessedColumn, 180, Unit.PX);               
+      
     }
 
-    public void setSelectionHandler(SelectionHandler<SessionTableModel> handler) {        
-        this.selectionHandler = handler;
-    }
-
-    public void reset() {
-        data.getList().clear();
-    }
-
-    public void add(List<SessionTableModel> sessions) {
-        data.getList().addAll(sessions);
-    }
 }
