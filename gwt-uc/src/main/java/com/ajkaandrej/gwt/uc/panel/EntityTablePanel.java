@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.gwt.uc.panel;
 
+import com.ajkaandrej.gwt.uc.common.EntityComposite;
 import com.ajkaandrej.gwt.uc.handler.EntityTablePanelSelectionHandler;
 import com.ajkaandrej.gwt.uc.table.EntityTable;
 import com.google.gwt.user.cellview.client.SimplePager;

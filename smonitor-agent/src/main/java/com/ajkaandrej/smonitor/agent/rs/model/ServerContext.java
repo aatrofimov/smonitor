@@ -23,8 +23,6 @@ public class ServerContext {
     
     private String hostName;
     
-    private String servletPath;
-    
     private String scheme;
     
     private String remote;
@@ -61,14 +59,6 @@ public class ServerContext {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public String getServletPath() {
-        return servletPath;
-    }
-
-    public void setServletPath(String servletPath) {
-        this.servletPath = servletPath;
     }
         
 }

@@ -35,7 +35,6 @@ public abstract class AbstractService {
             result.setScheme(context.getScheme());
             result.setHostName(context.getServerName());
             result.setPort(context.getServerPort());
-            result.setServletPath(context.getServletPath());
             result.setRemote(null);
         }
     }

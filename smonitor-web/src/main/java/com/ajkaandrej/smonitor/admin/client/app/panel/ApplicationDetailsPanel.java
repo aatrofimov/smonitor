@@ -40,7 +40,9 @@ public class ApplicationDetailsPanel extends Composite {
     }
 
     public void add(ApplicationDetailsModel model) {
-        vPanel.add(new ApplicationDetailsPanelItem(model));
+        ApplicationDetailsPanelItem item = new ApplicationDetailsPanelItem();
+        item.open(model);
+        vPanel.add(item);
     }
 
 }

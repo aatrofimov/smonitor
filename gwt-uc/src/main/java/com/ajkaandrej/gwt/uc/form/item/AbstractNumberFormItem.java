@@ -13,20 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.gwt.uc.panel;
+package com.ajkaandrej.gwt.uc.form.item;
 
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.cell.client.TextCell;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class EntityComposite<T> extends Composite {
-    
-    protected T data;
+public abstract class AbstractNumberFormItem<T, K> extends AbstractFormItem<T, K, String> {
 
-    public T getData() {
-        return data;
+    public AbstractNumberFormItem() {
+        super(new TextCell());
     }
-       
+
+    @Override
+    public String getValue(T object) {
+        if (object != null) {
+            K tmp = getObject(object);
+            if (tmp != null) {
+                return tmp.toString();
+            }
+        }
+        return null;
+    }
 }

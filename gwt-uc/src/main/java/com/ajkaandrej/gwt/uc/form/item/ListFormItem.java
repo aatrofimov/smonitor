@@ -13,24 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.gwt.uc.table.column;
+package com.ajkaandrej.gwt.uc.form.item;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
-import com.google.gwt.cell.client.DateCell;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import java.util.Date;
+import com.ajkaandrej.gwt.uc.form.cell.ListCell;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public abstract class EntityDateColumn<T> extends AbstractEntityColumn<T, Date, Date> {
-
-    public EntityDateColumn() {
-        this(ConstantValues.DATE_FORMAT);
-    }
+public abstract class ListFormItem<T> extends AbstractFormItem<T, List<String>, List<String>> {
     
-    public EntityDateColumn(DateTimeFormat format) {
-        super(new DateCell(format));
-    }       
+    public ListFormItem() {
+        super(new ListCell());
+    }
 }

@@ -56,7 +56,7 @@ public class SessionPanel extends Composite {
     
     public void load(SessionDetails session) {
         SessionDetailsModel details = ObjectFactory.create(session);
-        sessionDetailsPanel.load(details);
+        sessionDetailsPanel.open(details);
         
         List<AttributeTableModel> attributes = ObjectFactory.createAttributes(session);
         attributesPanel.setData(details, attributes);

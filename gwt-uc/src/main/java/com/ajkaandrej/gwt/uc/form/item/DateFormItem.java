@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.gwt.uc.table.column;
+package com.ajkaandrej.gwt.uc.form.item;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.google.gwt.cell.client.DateCell;
@@ -24,13 +24,14 @@ import java.util.Date;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public abstract class EntityDateColumn<T> extends AbstractEntityColumn<T, Date, Date> {
-
-    public EntityDateColumn() {
+public abstract class DateFormItem<T> extends AbstractFormItem<T, Date, Date> {
+    
+    
+    public DateFormItem() {
         this(ConstantValues.DATE_FORMAT);
     }
     
-    public EntityDateColumn(DateTimeFormat format) {
+    public DateFormItem(DateTimeFormat format) {
         super(new DateCell(format));
-    }       
+    }
 }

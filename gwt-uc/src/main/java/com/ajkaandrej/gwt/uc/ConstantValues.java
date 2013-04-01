@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.gwt.uc;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.UIObject;
 
 /**
@@ -29,6 +30,10 @@ public final class ConstantValues {
     
     public static final String HTML_TAG_DIV = "<div/>";
             
+    public static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
+    
+    public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
+    
     private ConstantValues() {
         // empty constructor
     }

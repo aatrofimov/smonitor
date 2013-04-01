@@ -13,24 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.gwt.uc.table.column;
+package com.ajkaandrej.gwt.uc.form.item;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
-import com.google.gwt.cell.client.DateCell;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import java.util.Date;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public abstract class EntityDateColumn<T> extends AbstractEntityColumn<T, Date, Date> {
+public abstract class AbstractFormItem<T, K, C> {
 
-    public EntityDateColumn() {
-        this(ConstantValues.DATE_FORMAT);
+    private Cell<C> cell;
+
+    public AbstractFormItem(Cell<C> cell) {
+        this.cell = cell;
     }
-    
-    public EntityDateColumn(DateTimeFormat format) {
-        super(new DateCell(format));
-    }       
+
+    public Cell<C> getCell() {
+        return cell;
+    }
+
+    public void render(Cell.Context context, T object, SafeHtmlBuilder sb) {
+        cell.render(context, getValue(object), sb);
+    }
+
+    public C getValue(T object) {
+        if (object != null) {
+            return (C) getObject(object);
+        }
+        return null;
+    }
+
+    public abstract K getObject(T object);
 }

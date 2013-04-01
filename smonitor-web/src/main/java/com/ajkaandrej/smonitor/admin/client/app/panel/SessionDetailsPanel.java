@@ -15,40 +15,118 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.gwt.uc.panel.EntityComposite;
+import com.ajkaandrej.gwt.uc.form.EntityForm;
+import com.ajkaandrej.gwt.uc.form.item.BooleanFormItem;
+import com.ajkaandrej.gwt.uc.form.item.DateFormItem;
+import com.ajkaandrej.gwt.uc.form.item.DoubleFormItem;
+import com.ajkaandrej.gwt.uc.form.item.IntegerFormItem;
+import com.ajkaandrej.gwt.uc.form.item.ListFormItem;
+import com.ajkaandrej.gwt.uc.form.item.TextFormItem;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
-import com.google.gwt.user.client.ui.FlexTable;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetailsPanel extends EntityComposite<SessionDetailsModel> {
-    
+public class SessionDetailsPanel extends EntityForm<SessionDetailsModel> {
+
     public SessionDetailsPanel() {
- 
-        FlexTable layout = new FlexTable();
-        
-//        layout.setCellSpacing(6);
-//        FlexTable.FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
-//
-//        layout.setHTML(0, 0, data.id);
-//        cellFormatter.setColSpan(0, 0, 6);
-//        cellFormatter.setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-  
-        initWidget(layout);
-    }
- 
-    private void updateView() {
-        
-    }
-    
-    public void reset() {
-        
-    }
-    
-    public void load(SessionDetailsModel model) {
-        this.data = model;
-        updateView();
+        super(4);
+
+        addCell("Id:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.id;
+            }
+        });
+        addCell("User:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.user;
+            }
+        });
+        addCell("Valid:", new BooleanFormItem<SessionDetailsModel>() {
+            @Override
+            public Boolean getObject(SessionDetailsModel object) {
+                return object.valid;
+            }
+        });
+        addCell("New:", new BooleanFormItem<SessionDetailsModel>() {
+            @Override
+            public Boolean getObject(SessionDetailsModel object) {
+                return object.newSession;
+            }
+        });
+
+        addCell("Host name:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.hostName;
+            }
+        });
+        addCell("Port:", new IntegerFormItem<SessionDetailsModel>() {
+            @Override
+            public Integer getObject(SessionDetailsModel object) {
+                return object.hostPort;
+            }
+        });
+        addCell("Host:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.host;
+            }
+        });
+        addCell("Application:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.application;
+            }
+        });
+
+        addCell("Info:", new TextFormItem<SessionDetailsModel>() {
+            @Override
+            public String getObject(SessionDetailsModel object) {
+                return object.info;
+            }
+        });
+        addCell("Size:", new DoubleFormItem<SessionDetailsModel>() {
+            @Override
+            public Double getObject(SessionDetailsModel object) {
+                return object.size;
+            }
+        });
+        addCell("Ser. size:", new DoubleFormItem<SessionDetailsModel>() {
+            @Override
+            public Double getObject(SessionDetailsModel object) {
+                return object.sizeSerializable;
+            }
+        });
+        addCell("Max inactive:", new IntegerFormItem<SessionDetailsModel>() {
+            @Override
+            public Integer getObject(SessionDetailsModel object) {
+                return object.maxInactiveInterval;
+            }
+        });
+
+        addCell("Create:", new DateFormItem<SessionDetailsModel>() {
+            @Override
+            public Date getObject(SessionDetailsModel object) {
+                return object.creationTime;
+            }
+        });
+        addCell("Last accessed:", new DateFormItem<SessionDetailsModel>() {
+            @Override
+            public Date getObject(SessionDetailsModel object) {
+                return object.lastAccessedTime;
+            }
+        });
+        addCell("Roles:", new ListFormItem<SessionDetailsModel>() {
+            @Override
+            public List<String> getObject(SessionDetailsModel object) {
+                return object.roles;
+            }
+        });        
     }
 }
