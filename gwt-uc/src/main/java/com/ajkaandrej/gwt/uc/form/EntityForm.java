@@ -22,6 +22,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class EntityForm<T> extends EntityComposite<T> {
             row++;
         }
         layout.setHTML(row, col, label);
+        layout.getFlexCellFormatter().setHorizontalAlignment(row, col, HasHorizontalAlignment.ALIGN_RIGHT);
         col++;
         layout.setHTML(row, col, render(row,col,data));
     }
