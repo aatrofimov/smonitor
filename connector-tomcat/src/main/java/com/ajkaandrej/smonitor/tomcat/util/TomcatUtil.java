@@ -63,13 +63,14 @@ public final class TomcatUtil {
             result.setInfo(session.getInfo());
             
             // create session basic information
-            Session tmp = createSession(session);
+            Session tmp = createSession(session);            
             result.setCreationTime(tmp.getCreationTime());
             result.setId(tmp.getId());
             result.setLastAccessedTime(tmp.getLastAccessedTime());
             result.setLastAccessedTimeInternal(tmp.getLastAccessedTimeInternal());
             result.setMaxInactiveInterval(tmp.getMaxInactiveInterval());
             result.setUser(tmp.getUser());
+            result.setValid(tmp.isValid());
             
             // load user roles
             GenericPrincipal principal = (GenericPrincipal) session.getPrincipal();

@@ -23,6 +23,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class EntityForm<T> extends EntityComposite<T> {
     private int column;
     private FlexTable layout;
     private List<AbstractFormItem> items;
+    private int firstRow;
+    private HeaderForm header;
 
     public EntityForm() {
         this(1);
@@ -42,17 +45,59 @@ public class EntityForm<T> extends EntityComposite<T> {
 
     public EntityForm(int column) {
         items = new ArrayList<AbstractFormItem>();
+        firstRow = 0;
         this.column = column;
         layout = new FlexTable();
         ConstantValues.setWidth100(layout);
         initWidget(layout);
     }
 
+    public HeaderForm getHeader() {
+        return header;
+    }
+
+    public Widget getHeaderWidget() {
+        if (header != null) {
+            return layout.getWidget(0, 0);
+        }
+        return null;
+    }
+
+    public void setHeaderStyleName(String style) {
+        FlexTable.FlexCellFormatter cf = layout.getFlexCellFormatter();
+        cf.setStyleName(0, 0, style);
+    }
+    
+    public void addHeader(HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant aligment) {
+        Widget w = null;
+        if (this.header != null) {
+            w = layout.getWidget(0, 0);
+            if (header != null) {
+                setHeader(w, header, aligment);
+            } else {
+                layout.removeRow(0);
+                firstRow = 0;
+            }
+        } else if (header != null) {
+            layout.insertRow(0);
+            setHeader(w, header, aligment);
+            firstRow = 1;
+        }
+    }
+
+    private void setHeader(Widget widget, HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant aligment) {
+        this.header = header;
+        layout.setWidget(0, 0, header.getWidget(data, widget));
+        FlexTable.FlexCellFormatter cf = layout.getFlexCellFormatter();
+        cf.setColSpan(0, 0, column * 2);
+        cf.setHorizontalAlignment(0, 0, aligment);
+    }
+
     public void addCell(String label, AbstractFormItem<T, ?, ?> item) {
         items.add(item);
 
         int row = layout.getRowCount();
-        if (row == 0) {
+        if (row == firstRow) {
             layout.insertRow(row);
         } else {
             row = row - 1;
@@ -66,7 +111,7 @@ public class EntityForm<T> extends EntityComposite<T> {
         layout.setHTML(row, col, label);
         layout.getFlexCellFormatter().setHorizontalAlignment(row, col, HasHorizontalAlignment.ALIGN_RIGHT);
         col++;
-        layout.setHTML(row, col, render(row,col,data));
+        layout.setHTML(row, col, render(row, col, data));
     }
 
     public void open(T data) {
@@ -75,7 +120,11 @@ public class EntityForm<T> extends EntityComposite<T> {
     }
 
     private void updateView() {
-        for (int row = 0; row < layout.getRowCount(); row++) {
+        if (header != null) {
+            Widget w = layout.getWidget(0, 0);
+            layout.setWidget(0, 0, header.getWidget(data, w));
+        }
+        for (int row = firstRow; row < layout.getRowCount(); row++) {
             for (int col = 1; col < layout.getCellCount(row); col = col + 2) {
                 layout.setHTML(row, col, render(row, col, data));
             }
@@ -83,7 +132,7 @@ public class EntityForm<T> extends EntityComposite<T> {
     }
 
     private SafeHtml render(int row, int col, T object) {
-        int index = (row * column) + col/2;
+        int index = ((row - firstRow) * column) + col / 2;
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
         Cell.Context context = new Cell.Context(col, row, object);
         items.get(index).render(context, object, sb);
