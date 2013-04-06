@@ -15,9 +15,9 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.panel.EntityDataGridPanel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
-import com.ajkaandrej.gwt.uc.panel.EntityTablePanel;
-import com.ajkaandrej.gwt.uc.table.EntityTable;
+import com.ajkaandrej.gwt.uc.table.EntityDataGrid;
 import com.ajkaandrej.gwt.uc.table.column.EntityDateColumn;
 import com.ajkaandrej.gwt.uc.table.column.EntityIntegerColumn;
 import com.ajkaandrej.gwt.uc.table.column.EntityTextColumn;
@@ -30,12 +30,12 @@ import java.util.Date;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionsTable extends EntityTablePanel<ApplicationDetailsModel,SessionTableModel> {
-        
+public class SessionsTable extends EntityDataGridPanel<ApplicationDetailsModel,SessionTableModel> {
+
     public SessionsTable() {
-        super();
-        
-        EntityTable<SessionTableModel> table = this.getTable();
+        super();        
+        setWidth("99%");
+        EntityDataGrid<SessionTableModel> table = this.getDataGrid();
         Column hostColumn = table.addColumn("Host", true, new EntityTextColumn<SessionTableModel>(){
             @Override
             public String getObject(SessionTableModel object) {
@@ -50,7 +50,7 @@ public class SessionsTable extends EntityTablePanel<ApplicationDetailsModel,Sess
                 return object.hostPort;
             }
         });
-        table.setColumnWidth(portColumn, 50, Unit.PX);
+        table.setColumnWidth(portColumn, 100, Unit.PX);
         
         table.addColumn("Id", true, new EntityTextColumn<SessionTableModel>(){
             @Override
@@ -78,8 +78,7 @@ public class SessionsTable extends EntityTablePanel<ApplicationDetailsModel,Sess
                 return object.lastAccessedTime;
             }
         });
-        table.setColumnWidth(lastAccessedColumn, 180, Unit.PX);               
-      
+        table.setColumnWidth(lastAccessedColumn, 180, Unit.PX);                     
     }
 
 }

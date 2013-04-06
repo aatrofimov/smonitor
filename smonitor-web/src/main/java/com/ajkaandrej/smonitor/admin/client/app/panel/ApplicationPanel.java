@@ -18,7 +18,10 @@ package com.ajkaandrej.smonitor.admin.client.app.panel;
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
@@ -28,7 +31,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
  */
 public class ApplicationPanel extends Composite {
     
-    private SessionsTable sessionTable;
+    private SessionPanel sessionPanel;
     
     private ApplicationDetailsPanel applicationDetails;
     
@@ -36,36 +39,50 @@ public class ApplicationPanel extends Composite {
     
     public ApplicationPanel() {
         
-        tabPanel = new TabLayoutPanel(2.5, Unit.EM);
-
+        sessionPanel = new SessionPanel(); 
         applicationDetails = new ApplicationDetailsPanel();
+        
+        tabPanel = new TabLayoutPanel(2.5, Unit.EM);           
         tabPanel.add(applicationDetails, "Details");        
         
-        sessionTable = new SessionsTable();        
-        tabPanel.add(sessionTable, "Sessions");   
+               
+        tabPanel.add(sessionPanel, "Sessions");   
+        tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
 
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                if (event.getSelectedItem() == 1) {
+                    sessionPanel.getSessionTable().onResize();
+                }
+            }
+        });
+        
         tabPanel.selectTab(0);
         reset();
         
         initWidget(tabPanel);
     }
     
+    public void onResize() {
+        sessionPanel.getSessionTable().onResize();        
+    }
+    
     public final void reset() {        
         applicationDetails.reset();
-        sessionTable.reset();
+        sessionPanel.reset();
     }
 
     public ApplicationDetailsPanel getApplicationDetails() {
         return applicationDetails;
     }
 
-    public SessionsTable getSessionTable() {
-        return sessionTable;
+    public SessionPanel getSessionPanel() {
+        return sessionPanel;
     }
         
     public void addApplication(ApplicationDetails application) {        
         ApplicationDetailsModel app = ObjectFactory.create(application);
         applicationDetails.add(app);
-        sessionTable.setData(app, ObjectFactory.createSessions(application));
+        sessionPanel.load(app, ObjectFactory.createSessions(application));
     }
 }

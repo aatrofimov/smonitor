@@ -16,11 +16,11 @@
 package com.ajkaandrej.gwt.uc.panel;
 
 import com.ajkaandrej.gwt.uc.common.EntityComposite;
+import com.ajkaandrej.gwt.uc.table.EntityDataGrid;
 import com.ajkaandrej.gwt.uc.table.handler.EntityTablePanelSelectionHandler;
-import com.ajkaandrej.gwt.uc.table.EntityTable;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.List;
@@ -29,17 +29,14 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class EntityTablePanel<E, T> extends EntityComposite<E> {
-    
-    private EntityTable<T> table;
-    
+public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
+
+    private EntityDataGrid<T> dataGrid;
     private EntityTablePanelSelectionHandler<E, T> selectionHandler;
     
-    public EntityTablePanel() {
-        table = new EntityTable<T>();
-        table.setWidth100(true);
-        table.setPageSize(10);
-        
+    public EntityDataGridPanel() {
+        dataGrid = new EntityDataGrid<T>();
+        dataGrid.setWidth100();
         final SingleSelectionModel<T> ssm = new SingleSelectionModel<T>();
         ssm.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -48,36 +45,30 @@ public class EntityTablePanel<E, T> extends EntityComposite<E> {
                     selectionHandler.selectionChanged(data, ssm.getSelectedObject());
                 }
             }
-        });        
-        table.setSelectionModel(ssm);
-        
-        
-        SimplePager pager = new SimplePager();
-        pager.setDisplay(table);
-        
-        VerticalPanel vp = new VerticalPanel();
-        vp.add(table);
-        vp.add(pager);
-        vp.setCellHorizontalAlignment(pager, HasHorizontalAlignment.ALIGN_CENTER);
-
-        initWidget(vp);        
+        });
+        dataGrid.setSelectionModel(ssm);
+        initWidget(dataGrid);
     }
 
     public void setSelectionHandler(EntityTablePanelSelectionHandler<E, T> selectionHandler) {
         this.selectionHandler = selectionHandler;
     }
-    
-    public EntityTable<T> getTable() {
-        return table;
+
+    public EntityDataGrid<T> getDataGrid() {
+        return dataGrid;
     }
 
+    public void onResize() {
+        dataGrid.onResize();
+    }
+    
     public void setData(E model, List<T> list) {
         reset();
         this.data = model;
-        table.addAll(list);
+        dataGrid.addAll(list);        
     }
-    
+
     public void reset() {
-        table.reset();
+        dataGrid.reset();
     }
 }

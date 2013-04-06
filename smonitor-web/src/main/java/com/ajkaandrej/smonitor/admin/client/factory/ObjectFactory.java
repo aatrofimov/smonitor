@@ -137,6 +137,7 @@ public final class ObjectFactory {
         result.host = host;
         result.hostName = hostName;
         result.hostPort = port;
+        result.user = session.getUser();
         return result;
     }
 

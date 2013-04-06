@@ -15,14 +15,20 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.gwt.uc.form.EntityForm;
+import com.ajkaandrej.gwt.uc.form.HeaderForm;
 import com.ajkaandrej.gwt.uc.form.item.BooleanFormItem;
 import com.ajkaandrej.gwt.uc.form.item.DateFormItem;
 import com.ajkaandrej.gwt.uc.form.item.DoubleFormItem;
 import com.ajkaandrej.gwt.uc.form.item.IntegerFormItem;
 import com.ajkaandrej.gwt.uc.form.item.ListFormItem;
 import com.ajkaandrej.gwt.uc.form.item.TextFormItem;
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +40,19 @@ public class SessionDetailsPanel extends EntityForm<SessionDetailsModel> {
 
     public SessionDetailsPanel() {
         super(4);
+        setStyleName("applicationDetailsPanelItem");
+
+        addHeader(new HeaderForm<SessionDetailsModel, Label>() {
+            @Override
+            public Label getWidget(SessionDetailsModel object, Label widget) {
+                Label result = widget;
+                if (result == null) {
+                    result = new Label("Session details");
+                } 
+                return result;
+            }
+        }, HasHorizontalAlignment.ALIGN_CENTER);
+        setHeaderStyleName("applicationDetailsPanelItemHeader");
 
         addCell("Id:", new TextFormItem<SessionDetailsModel>() {
             @Override
@@ -127,6 +146,6 @@ public class SessionDetailsPanel extends EntityForm<SessionDetailsModel> {
             public List<String> getObject(SessionDetailsModel object) {
                 return object.roles;
             }
-        });        
+        });
     }
 }

@@ -17,23 +17,21 @@ package com.ajkaandrej.gwt.uc.table;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.gwt.uc.table.column.AbstractEntityColumn;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.ajkaandrej.gwt.uc.table.handler.ColumnSortHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class EntityTable<T> extends CellTable<T> {
+public class EntityDataGrid<T> extends DataGrid<T> {
+  private ListDataProvider<T> dataProvider;
 
-    private ListDataProvider<T> dataProvider;
-
-    public EntityTable() {
+    public EntityDataGrid() {
         dataProvider = new ListDataProvider<T>();
         dataProvider.addDataDisplay(this);
         setEmptyTableWidget(new Label("Empty"));
@@ -51,10 +49,6 @@ public class EntityTable<T> extends CellTable<T> {
         setWidth(ConstantValues.PCT_100);
     }
 
-    public void setWidth100(boolean isFixedLayout) {
-        setWidth(ConstantValues.PCT_100, isFixedLayout);
-    }
-
     public void setHeight100() {
         setHeight(ConstantValues.PCT_100);
     }
@@ -65,6 +59,7 @@ public class EntityTable<T> extends CellTable<T> {
 
     public void addAll(List<T> data) {
         dataProvider.getList().addAll(data);
+        dataProvider.flush();
     }
 
     public Column<T, ?> addColumn(String name, AbstractEntityColumn<T, ?, ?> column) {
@@ -74,40 +69,8 @@ public class EntityTable<T> extends CellTable<T> {
     public <K extends Comparable<K>> Column<T, ?> addColumn(String name, boolean sorting, final AbstractEntityColumn<T, K, ?> column) {
         addColumn(column, name);
         if (sorting) {
-            column.setSortable(true);
-            ColumnSortEvent.ListHandler<T> hostColumnSortHandler = new ColumnSortEvent.ListHandler<T>(dataProvider.getList());
-            hostColumnSortHandler.setComparator(column, new Comparator<T>() {
-                @Override
-                public int compare(T o1, T o2) {
-                    int result = -1;
-                    if (o1 == o2) {
-                        result = 0;
-                    } else {
-                        if (o1 != null) {
-                            if (o2 != null) {
-                                K a = column.getObject(o1);
-                                K b = column.getObject(o2);
-                                if (a == b) {
-                                    result = 0;
-                                } else {
-                                    if (a != null) {
-                                        if (b != null) {
-                                            return a.compareTo(b);
-                                        } else {
-                                            result = 1;
-                                        }
-                                    }
-                                }
-                            } else {
-                                result = 1;
-                            }
-                        }
-                    }
-                    return result;
-                }
-            });
-            addColumnSortHandler(hostColumnSortHandler);
+            addColumnSortHandler(new ColumnSortHandler<T>(dataProvider.getList(), column));
         }
         return column;
-    }
+    }        
 }

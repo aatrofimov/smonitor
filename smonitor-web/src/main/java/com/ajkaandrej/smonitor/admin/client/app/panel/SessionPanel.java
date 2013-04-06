@@ -15,13 +15,21 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
+import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.AttributeTableModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
+import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
 import com.ajkaandrej.smonitor.agent.rs.model.SessionDetails;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.DisclosurePanel;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,23 +38,46 @@ import java.util.List;
  */
 public class SessionPanel extends Composite {
  
-    private TabLayoutPanel tabPanel;
+//    private TabLayoutPanel tabPanel;
     
     private SessionDetailsPanel sessionDetailsPanel;
         
     private AttributesPanel attributesPanel;
     
+    private SessionsTable sessionTable;
+    
     public SessionPanel() {
-        
-        tabPanel = new TabLayoutPanel(2.5, Style.Unit.EM);
-        
+         
+        sessionTable = new SessionsTable(); 
         sessionDetailsPanel = new SessionDetailsPanel();
-        tabPanel.add(sessionDetailsPanel, "Session");  
-        
         attributesPanel = new AttributesPanel();
-        tabPanel.add(attributesPanel, "Attributes");
+
+        DockLayoutPanel detailsVPanel = new DockLayoutPanel(Style.Unit.PX);
+        detailsVPanel.addNorth(sessionDetailsPanel, 150);
+        detailsVPanel.add(attributesPanel);
+
+        SplitLayoutPanel splitPanel = new SplitLayoutPanel(5) {
+
+            @Override
+            public void onResize() {
+                super.onResize();
+                sessionTable.onResize();
+            }
+            
+        };
+        ConstantValues.set100(splitPanel);
+        splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
         
-        initWidget(tabPanel);
+        
+        splitPanel.addSouth(detailsVPanel, 33);
+        splitPanel.add(sessionTable);
+        
+        splitPanel.setWidgetMinSize(detailsVPanel, 33);
+        initWidget(splitPanel);
+    }
+   
+    public SessionsTable getSessionTable() {
+        return sessionTable;
     }
     
     public void reset() {
@@ -54,11 +85,23 @@ public class SessionPanel extends Composite {
         attributesPanel.reset();
     }
     
+    public void load(ApplicationDetailsModel model, List<SessionTableModel> data) {
+        List<SessionTableModel> tmp = new ArrayList<SessionTableModel>();
+        for (int i=0; i<100; i++) {
+            for (int j=0; j<data.size(); j++) {
+                tmp.add(data.get(j));
+            }
+        }
+        
+        sessionTable.setData(model, tmp);
+    }
+    
     public void load(SessionDetails session) {
         SessionDetailsModel details = ObjectFactory.create(session);
         sessionDetailsPanel.open(details);
-        
+
         List<AttributeTableModel> attributes = ObjectFactory.createAttributes(session);
         attributesPanel.setData(details, attributes);
+        attributesPanel.getTable().flush();
     }
 }

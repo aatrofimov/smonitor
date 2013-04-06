@@ -16,6 +16,7 @@
 package com.ajkaandrej.smonitor.admin.client.panel;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 
 /**
  *
@@ -24,6 +25,6 @@ import com.google.gwt.user.client.ui.Composite;
 public class HeaderPanel extends Composite {
     
     public HeaderPanel() {
-        
+        initWidget(new HTML("Header"));
     }
 }

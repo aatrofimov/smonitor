@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='private.Admin'>  
+<module rename-to="private.Admin">  
   <inherits name="com.google.gwt.user.User"/>
   <inherits name="com.ajkaandrej.gwt.Uc"/>
   
   <inherits name="com.google.gwt.user.theme.clean.Clean" />
-  <!--<inherits name="com.google.gwt.user.theme.clean.CleanResources"/>-->
-  <!--<inherits name="com.google.gwt.user.theme.chrome.Chrome"/>-->
-    
+ 
   <inherits name="com.ajkaandrej.smonitor.agent.Agent"/>
   <inherits name="com.ajkaandrej.smonitor.SMonitor"/>
   

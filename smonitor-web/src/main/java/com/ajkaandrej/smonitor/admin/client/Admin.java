@@ -16,16 +16,16 @@
 package com.ajkaandrej.smonitor.admin.client;
 
 import com.ajkaandrej.gwt.uc.ConstantValues;
-import com.ajkaandrej.gwt.uc.handler.EntityTablePanelSelectionHandler;
+import com.ajkaandrej.gwt.uc.table.handler.EntityTablePanelSelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.AppInstanceTreeModel;
 import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
 import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
-import com.ajkaandrej.smonitor.admin.client.app.panel.SessionPanel;
 import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
 import com.ajkaandrej.gwt.uc.handler.SelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.panel.FooterPanel;
+import com.ajkaandrej.smonitor.admin.client.panel.HeaderPanel;
 import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.ApplicationDetails;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
@@ -34,14 +34,18 @@ import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 import com.ajkaandrej.smonitor.rs.model.Connection;
 import com.ajkaandrej.smonitor.rs.service.MonitorService;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -68,7 +72,7 @@ public class Admin {
     private NavigationPanel navigationPanel;
     private ApplicationPanel appPanel;
     private FooterPanel footer;
-    private SessionPanel sessionPanel;
+//    private SessionPanel sessionPanel;
     final ResponseCallback configCallback = new ResponseCallback() {
         @Override
         public void callback(Response response) {
@@ -89,7 +93,7 @@ public class Admin {
     final RemoteCallback<SessionDetails> sessionDetailsCallback = new RemoteCallback<SessionDetails>() {
         @Override
         public void callback(SessionDetails details) {
-            sessionPanel.load(details);
+            appPanel.getSessionPanel().load(details);
         }
     };
     final RemoteCallback<List<Connection>> connectionCallback = new RemoteCallback<List<Connection>>() {
@@ -155,10 +159,10 @@ public class Admin {
 //            }
 //        });
 
-        appPanel.getSessionTable().setSelectionHandler(new EntityTablePanelSelectionHandler<ApplicationDetailsModel, SessionTableModel>() {
+        appPanel.getSessionPanel().getSessionTable().setSelectionHandler(new EntityTablePanelSelectionHandler<ApplicationDetailsModel, SessionTableModel>() {
             @Override
             public void selectionChanged(ApplicationDetailsModel model, SessionTableModel item) {
-                sessionPanel.reset();
+                appPanel.getSessionPanel().reset();
                 if (model != null) {
                     try {
                         applicationService.call(sessionDetailsCallback).getSession(model.host, model.id, item.id, model.remote);
@@ -169,31 +173,29 @@ public class Admin {
             }
         });
 
-        sessionPanel = new SessionPanel();
-
-        SplitLayoutPanel appSplitPanel = new SplitLayoutPanel(5);
-        ConstantValues.set100(appSplitPanel);
-        appSplitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
-        appSplitPanel.addSouth(sessionPanel, 200);
-        appSplitPanel.add(appPanel);
-
-
+        // main application panel
         SplitLayoutPanel splitPanel = new SplitLayoutPanel(5);
         ConstantValues.set100(splitPanel);
         splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
         splitPanel.addWest(navigationPanel, 200);
-        splitPanel.add(appSplitPanel);
+        splitPanel.add(appPanel);
         splitPanel.setWidgetMinSize(navigationPanel, 200);
-
-
-        VerticalPanel mainPanel = new VerticalPanel();
+        
+        // main panel
+        DockLayoutPanel mainPanel = new DockLayoutPanel(Style.Unit.PX);
         ConstantValues.set100(mainPanel);
+        mainPanel.addNorth(new HeaderPanel(), 30);
+        mainPanel.addSouth(footer, 20);
         mainPanel.add(splitPanel);
-        mainPanel.add(footer);
-        mainPanel.setCellHeight(splitPanel, ConstantValues.PCT_100);
-        mainPanel.setCellHorizontalAlignment(footer, HasHorizontalAlignment.ALIGN_CENTER);
+        
+        Window.addResizeHandler(new ResizeHandler() {
 
-        RootPanel.get().add(mainPanel);
+            @Override
+            public void onResize(ResizeEvent event) {
+                appPanel.onResize();
+            }
+        });
+        RootLayoutPanel.get().add(mainPanel);
     }
 
     @AfterInitialization
@@ -209,7 +211,7 @@ public class Admin {
 
     private void loadApplicationDetails(ApplicationTreeModel model) {
         appPanel.reset();
-        sessionPanel.reset();
+        appPanel.getSessionPanel().reset();
         if (model != null) {
             for (AppInstanceTreeModel inst : model.instances) {
                 try {
