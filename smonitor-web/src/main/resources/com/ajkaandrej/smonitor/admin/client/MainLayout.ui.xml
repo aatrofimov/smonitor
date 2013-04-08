@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:s="urn:import:com.ajkaandrej.smonitor.admin.client.panel">
+    <g:DockLayoutPanel unit="PX">
+        <!-- HEADER -->
+        <g:north size="30">
+            <s:HeaderPanel ui:field="header"/>
+        </g:north>
+        
+        <!-- CENTER -->
+        <g:center>
+            <s:MainPanel ui:field="main" />            
+        </g:center>
+        
+        <!-- FOOTER -->
+        <g:south size="20">
+            <s:FooterPanel ui:field="footer"/>
+        </g:south>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

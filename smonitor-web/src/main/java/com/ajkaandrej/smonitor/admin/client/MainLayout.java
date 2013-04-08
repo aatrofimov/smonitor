@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.smonitor.admin.client.panel;
+package com.ajkaandrej.smonitor.admin.client;
 
+import com.ajkaandrej.smonitor.admin.client.panel.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,12 +26,22 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HeaderPanel extends Composite {
+public class MainLayout extends Composite {
     
-    interface MyUiBinder extends UiBinder<Widget, HeaderPanel> { }
+    interface MyUiBinder extends UiBinder<Widget, MainLayout> { }
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+   
     
-    public HeaderPanel() {
+    @UiField
+    MainPanel main;
+    
+    @UiField
+    HeaderPanel header;
+    
+    @UiField
+    FooterPanel footer;
+    
+    public MainLayout() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 }

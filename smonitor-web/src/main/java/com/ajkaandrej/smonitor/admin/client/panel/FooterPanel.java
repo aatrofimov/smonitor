@@ -15,10 +15,17 @@
  */
 package com.ajkaandrej.smonitor.admin.client.panel;
 
+import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
+import com.ajkaandrej.smonitor.rs.service.MonitorService;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 
 /**
  *
@@ -26,19 +33,29 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class FooterPanel extends Composite {
     
-    private Label versionLabel;
-    
-    public FooterPanel() {
+    interface MyUiBinder extends UiBinder<Widget, FooterPanel> { }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
+    final RemoteCallback<String> versionCallback = new RemoteCallback<String>() {
+        @Override
+        public void callback(String value) {
+            version.setInnerText(value);
+        }
+    };
         
-        HTML label = new HTML("jBoss session monitor created by <a href='https://github.com/andrejpetras'>Andrej Petras</a>. Version: ");
-        versionLabel = new Label();        
-        HorizontalPanel hp = new HorizontalPanel();
-        hp.add(label);
-        hp.add(versionLabel);
-        initWidget(hp);
+    @UiField
+    SpanElement version;
+        
+    public FooterPanel() {
+        initWidget(uiBinder.createAndBindUi(this));
     }
     
-    public void setVersion(String version) {
-        versionLabel.setText(version);
-    }
+    public void init() {
+        try {
+            version.setInnerText("Loading ...");
+            RestClient.create(MonitorService.class, versionCallback).getVersion();
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    }    
 }

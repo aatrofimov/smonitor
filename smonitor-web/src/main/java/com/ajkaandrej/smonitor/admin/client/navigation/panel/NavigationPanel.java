@@ -15,19 +15,28 @@
  */
 package com.ajkaandrej.smonitor.admin.client.navigation.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.Server;
+import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
+import com.ajkaandrej.smonitor.rs.model.Connection;
+import com.ajkaandrej.smonitor.rs.service.MonitorService;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
+import javax.inject.Inject;
+import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
+import org.jboss.errai.ioc.client.api.AfterInitialization;
 
 /**
  *
@@ -35,80 +44,71 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class NavigationPanel extends Composite {
 
-    private TabLayoutPanel tabPanel;
-    private ServerNagivationPanel serverPanel;
-    private ApplicationNagivationPanel applicationPanel;
-    private PushButton refreshButton;
-    private PushButton configButton;
-    private PushButton reloadApplicationButton;
+    interface MyUiBinder extends UiBinder<Widget, NavigationPanel> { }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     
-    public static interface Images extends ClientBundle {
-        
-        ImageResource refresh();
-        
-        ImageResource config();
-        
-        ImageResource reloadApp();
-    }
+    @UiField
+    TabLayoutPanel tabPanel;
     
-    public static final Images IMAGES = GWT.create(Images.class);
+    @UiField
+    ServerNagivationPanel serverPanel;
+    @UiField
+    ApplicationNagivationPanel applicationPanel;
+        
+    @UiField
+    PushButton refreshButton;
+    @UiField
+    PushButton configButton;
     
-    public NavigationPanel() {
-        tabPanel = createTabPanel();
-       
-        refreshButton = new PushButton(new Image(IMAGES.refresh()));
-        refreshButton.setTitle("Reload the servers");
-        configButton = new PushButton(new Image(IMAGES.config()));
-        configButton.setTitle("Reload configuration");
-        reloadApplicationButton = new PushButton(new Image(IMAGES.reloadApp()));
-        reloadApplicationButton.setTitle("Reload selected application");
+    @Inject
+    private Caller<MonitorService> monitorService;
+    @Inject
+    private Caller<ServerService> serverService;
+    
+    final RemoteCallback<List<Connection>> connectionCallback = new RemoteCallback<List<Connection>>() {
+        @Override
+        public void callback(List<Connection> connections) {
+            if (connections != null) {
+                for (Connection con : connections) {
+                    loadConnection(con);
+                }
+            }
+        }
+    };
+    
+    final RemoteCallback<Server> serverCallback = new RemoteCallback<Server>() {
+        @Override
+        public void callback(Server server) {
+            addServer(server);
+        }
+    };
+    
+    final ResponseCallback configCallback = new ResponseCallback() {
+        @Override
+        public void callback(Response response) {
+        }
+    };
+    
+    public NavigationPanel() {               
+        initWidget(uiBinder.createAndBindUi(this));   
         
-        HorizontalPanel sp = new HorizontalPanel();
-        sp.setStyleName("navigationButtonBar");
-        sp.add(refreshButton);
-        sp.add(reloadApplicationButton);
-        sp.add(configButton);
-        HTML spacer = new HTML(ConstantValues.HTML_TAG_DIV);        
-        sp.add(spacer);
-        sp.setCellWidth(spacer, ConstantValues.PCT_100);
-        ConstantValues.setWidth100(sp);
+        refreshButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                loadServers();
+            }
+        });
         
-        VerticalPanel dock = new VerticalPanel();
-        ConstantValues.set100(dock);
-        dock.add(tabPanel);
-        dock.setCellHeight(tabPanel, ConstantValues.PCT_100);
-        dock.add(sp);
-        
+        configButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                relaodConfiguration();
+            }
+        });
+ 
         reset();
-        
-        initWidget(dock);
     }
-
-    public PushButton getReloadApplicationButton() {
-        return reloadApplicationButton;
-    }
-    
-    public PushButton getRefreshButton() {
-        return refreshButton;
-    }
-
-    public PushButton getConfigButton() {
-        return configButton;
-    }
-        
-    private TabLayoutPanel createTabPanel() {
-        serverPanel = new ServerNagivationPanel();
-        applicationPanel = new ApplicationNagivationPanel();
-
-        TabLayoutPanel result = new TabLayoutPanel(2.5, Style.Unit.EM);
-        result.setAnimationDuration(1000);
-        result.add(serverPanel, "Servers");
-        result.add(applicationPanel, "Applications");
-        ConstantValues.set100(result);
-        result.selectTab(0);
-        return result;
-    }
-
+           
     public ApplicationNagivationPanel getApplicationPanel() {
         return applicationPanel;
     }
@@ -121,8 +121,6 @@ public class NavigationPanel extends Composite {
      * Resets the navigation panel to startup status.
      */
     public final void reset() {
-        // disable the reload appliction button
-        reloadApplicationButton.setEnabled(false);
         // reset tab server
         serverPanel.reset();
         // reset tab application
@@ -133,4 +131,30 @@ public class NavigationPanel extends Composite {
         serverPanel.addServer(server);
         applicationPanel.addServer(server);
     }
+  
+    @AfterInitialization
+    public void loadServers() {
+        try {
+            reset();
+            monitorService.call(connectionCallback).getServerConnections();
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    }
+    
+    public void loadConnection(Connection connection) {
+        try {
+            serverService.call(serverCallback).getServer(connection.getUrl());
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    } 
+    
+    public void relaodConfiguration() {
+        try {
+            monitorService.call(configCallback).realoadConfiguration();
+        } catch (ServiceException ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+    }    
 }

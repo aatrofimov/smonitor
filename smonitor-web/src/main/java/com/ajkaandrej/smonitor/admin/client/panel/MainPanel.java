@@ -15,8 +15,13 @@
  */
 package com.ajkaandrej.smonitor.admin.client.panel;
 
+import com.ajkaandrej.smonitor.admin.client.navigation.model.ApplicationTreeModel;
+import com.ajkaandrej.smonitor.admin.client.app.panel.ApplicationPanel;
+import com.ajkaandrej.smonitor.admin.client.navigation.panel.NavigationPanel;
+import com.ajkaandrej.gwt.uc.handler.SelectionHandler;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -24,12 +29,25 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HeaderPanel extends Composite {
-    
-    interface MyUiBinder extends UiBinder<Widget, HeaderPanel> { }
-    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-    
-    public HeaderPanel() {
-        initWidget(uiBinder.createAndBindUi(this));
+public class MainPanel extends Composite {
+
+    interface MyUiBinder extends UiBinder<Widget, MainPanel> {
     }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
+    @UiField
+    NavigationPanel navigationPanel;
+    @UiField
+    ApplicationPanel appPanel;
+
+    public MainPanel() {
+        initWidget(uiBinder.createAndBindUi(this));
+        navigationPanel.getApplicationPanel().setAppHandler(new SelectionHandler<ApplicationTreeModel>() {
+            @Override
+            public void selectionChanged(ApplicationTreeModel model) {
+                appPanel.loadApplication(model);
+            }
+        });
+    }
+
 }

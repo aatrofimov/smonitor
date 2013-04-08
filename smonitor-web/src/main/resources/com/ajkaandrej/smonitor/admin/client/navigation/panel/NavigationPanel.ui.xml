@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:s="urn:import:com.ajkaandrej.smonitor.admin.client.navigation.panel"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:image field="refresh" resource="refresh.png"/>
+    <ui:image field="config" resource="config.png"/>
+
+    
+    <g:VerticalPanel>
+        <g:cell>    
+            <g:TabLayoutPanel ui:field="tabPanel" barHeight="2.5" barUnit="EM">
+                <g:tab >
+                    <g:header>Applications</g:header>
+                    <s:ServerNagivationPanel ui:field="serverPanel" />
+                </g:tab>                
+                <g:tab>
+                    <g:header>Servers</g:header>
+                    <s:ApplicationNagivationPanel ui:field="applicationPanel" />
+                </g:tab>
+            </g:TabLayoutPanel>
+        </g:cell>
+        <g:cell>
+            <g:HorizontalPanel>
+                <g:cell>
+                    <g:PushButton ui:field="refreshButton" enabled="true">
+                        <g:upFace image="{refresh}" />
+                    </g:PushButton>
+                </g:cell>               
+                <g:cell>
+                    <g:PushButton ui:field="configButton" enabled="true">
+                        <g:upFace image="{config}" />
+                    </g:PushButton>
+                </g:cell>
+                <g:cell>                    
+                    <g:HTML>
+                        <div styles="width: 100%"/>
+                    </g:HTML>
+                </g:cell>                                
+            </g:HorizontalPanel>
+        </g:cell>
+    </g:VerticalPanel>
+</ui:UiBinder>
