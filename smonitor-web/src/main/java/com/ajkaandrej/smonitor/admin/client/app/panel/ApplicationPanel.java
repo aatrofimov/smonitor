@@ -31,12 +31,14 @@ import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import javax.inject.Inject;
-import org.jboss.errai.common.client.api.Caller;
+import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 
 /**
  *
@@ -44,81 +46,42 @@ import org.jboss.errai.common.client.api.RemoteCallback;
  */
 public class ApplicationPanel extends Composite {
 
-    @Inject
-    private Caller<ApplicationService> applicationService;
+    interface MyUiBinder extends UiBinder<Widget, ApplicationPanel> { }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+    
     final RemoteCallback<ApplicationDetails> applicationDetailsCallback = new RemoteCallback<ApplicationDetails>() {
         @Override
         public void callback(ApplicationDetails details) {
             addApplication(details);
         }
     };
-    final RemoteCallback<SessionDetails> sessionDetailsCallback = new RemoteCallback<SessionDetails>() {
-        @Override
-        public void callback(SessionDetails details) {
-            sessionPanel.load(details);
-        }
-    };
-    private SessionPanel sessionPanel;
-    private ApplicationDetailsPanel applicationDetails;
-    private TabLayoutPanel tabPanel;
+
+    
+    @UiField
+    SessionPanel sessionPanel;
+    @UiField
+    ApplicationDetailsPanel applicationDetails;
+    @UiField
+    TabLayoutPanel tabPanel;
 
     public ApplicationPanel() {
+        initWidget(uiBinder.createAndBindUi(this)); 
 
-        sessionPanel = new SessionPanel();
-        applicationDetails = new ApplicationDetailsPanel();
-
-        tabPanel = new TabLayoutPanel(2.5, Unit.EM);
-        tabPanel.add(applicationDetails, "Details");
-
-
-        tabPanel.add(sessionPanel, "Sessions");
         tabPanel.addSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 if (event.getSelectedItem() == 1) {
-                    sessionPanel.getSessionTable().onResize();
+                    sessionPanel.onSelectTab();
                 }
             }
         });
 
-        sessionPanel.getSessionTable().setSelectionHandler(new EntityTablePanelSelectionHandler<ApplicationDetailsModel, SessionTableModel>() {
-            @Override
-            public void selectionChanged(ApplicationDetailsModel model, SessionTableModel item) {
-                sessionPanel.reset();
-                if (model != null) {
-                    try {
-                        applicationService.call(sessionDetailsCallback).getSession(model.host, model.id, item.id, model.remote);
-                    } catch (ServiceException ex) {
-                        Window.alert("Error: " + ex.getMessage());
-                    }
-                }
-            }
-        });
-
-        tabPanel.selectTab(0);
         reset();
-
-        Window.addResizeHandler(new ResizeHandler() {
-            @Override
-            public void onResize(ResizeEvent event) {
-                sessionPanel.getSessionTable().onResize();
-            }
-        });
-
-        initWidget(tabPanel);
     }
 
     public final void reset() {
         applicationDetails.reset();
         sessionPanel.reset();
-    }
-
-    public ApplicationDetailsPanel getApplicationDetails() {
-        return applicationDetails;
-    }
-
-    public SessionPanel getSessionPanel() {
-        return sessionPanel;
     }
 
     public void addApplication(ApplicationDetails application) {
@@ -133,7 +96,7 @@ public class ApplicationPanel extends Composite {
         if (model != null) {
             for (AppInstanceTreeModel inst : model.instances) {
                 try {
-                    applicationService.call(applicationDetailsCallback).getApplication(inst.host, model.id, inst.remote);
+                    RestClient.create(ApplicationService.class, applicationDetailsCallback).getApplication(inst.host, model.id, inst.remote);
                 } catch (ServiceException ex) {
                     Window.alert("Error: " + ex.getMessage());
                 }

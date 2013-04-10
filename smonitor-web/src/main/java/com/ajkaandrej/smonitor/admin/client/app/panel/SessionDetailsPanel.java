@@ -15,7 +15,6 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
 import com.ajkaandrej.gwt.uc.form.EntityForm;
 import com.ajkaandrej.gwt.uc.form.HeaderForm;
 import com.ajkaandrej.gwt.uc.form.item.BooleanFormItem;
@@ -24,9 +23,7 @@ import com.ajkaandrej.gwt.uc.form.item.DoubleFormItem;
 import com.ajkaandrej.gwt.uc.form.item.IntegerFormItem;
 import com.ajkaandrej.gwt.uc.form.item.ListFormItem;
 import com.ajkaandrej.gwt.uc.form.item.TextFormItem;
-import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import java.util.Date;

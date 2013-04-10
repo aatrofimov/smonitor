@@ -6,9 +6,8 @@
     <ui:image field="refresh" resource="refresh.png"/>
     <ui:image field="config" resource="config.png"/>
 
-    
-    <g:VerticalPanel>
-        <g:cell>    
+    <g:DockLayoutPanel unit="PX">
+        <g:center>
             <g:TabLayoutPanel ui:field="tabPanel" barHeight="2.5" barUnit="EM">
                 <g:tab >
                     <g:header>Applications</g:header>
@@ -18,9 +17,9 @@
                     <g:header>Servers</g:header>
                     <s:ApplicationNagivationPanel ui:field="applicationPanel" />
                 </g:tab>
-            </g:TabLayoutPanel>
-        </g:cell>
-        <g:cell>
+            </g:TabLayoutPanel>            
+        </g:center>
+        <g:south size="30" >
             <g:HorizontalPanel>
                 <g:cell>
                     <g:PushButton ui:field="refreshButton" enabled="true">
@@ -37,7 +36,7 @@
                         <div styles="width: 100%"/>
                     </g:HTML>
                 </g:cell>                                
-            </g:HorizontalPanel>
-        </g:cell>
-    </g:VerticalPanel>
+            </g:HorizontalPanel>            
+        </g:south>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

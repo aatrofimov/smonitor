@@ -23,6 +23,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -36,6 +37,9 @@ public class MainPanel extends Composite {
     private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
     @UiField
+    SplitLayoutPanel splitPanel;
+    
+    @UiField
     NavigationPanel navigationPanel;
     @UiField
     ApplicationPanel appPanel;
@@ -48,6 +52,7 @@ public class MainPanel extends Composite {
                 appPanel.loadApplication(model);
             }
         });
+        splitPanel.setWidgetMinSize(navigationPanel, 200);
     }
 
 }

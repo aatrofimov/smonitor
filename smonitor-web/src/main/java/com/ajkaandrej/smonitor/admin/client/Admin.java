@@ -15,16 +15,7 @@
  */
 package com.ajkaandrej.smonitor.admin.client;
 
-import com.ajkaandrej.smonitor.admin.client.panel.FooterPanel;
-import com.ajkaandrej.smonitor.admin.client.panel.MainPanel;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 import javax.annotation.PostConstruct;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;

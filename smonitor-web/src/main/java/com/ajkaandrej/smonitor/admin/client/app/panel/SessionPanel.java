@@ -15,69 +15,101 @@
  */
 package com.ajkaandrej.smonitor.admin.client.app.panel;
 
-import com.ajkaandrej.gwt.uc.ConstantValues;
+import com.ajkaandrej.gwt.uc.table.handler.EntityTablePanelSelectionHandler;
 import com.ajkaandrej.smonitor.admin.client.app.model.ApplicationDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.AttributeTableModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionDetailsModel;
 import com.ajkaandrej.smonitor.admin.client.app.model.SessionTableModel;
 import com.ajkaandrej.smonitor.admin.client.factory.ObjectFactory;
+import com.ajkaandrej.smonitor.agent.rs.exception.ServiceException;
 import com.ajkaandrej.smonitor.agent.rs.model.SessionDetails;
-import com.google.gwt.dom.client.Style;
+import com.ajkaandrej.smonitor.agent.rs.service.ApplicationService;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class SessionPanel extends Composite {
- 
-//    private TabLayoutPanel tabPanel;
+  
+    interface MyUiBinder extends UiBinder<Widget, SessionPanel> { }
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
     
-    private SessionDetailsPanel sessionDetailsPanel;
-        
-    private AttributesPanel attributesPanel;
+    final RemoteCallback<SessionDetails> sessionDetailsCallback = new RemoteCallback<SessionDetails>() {
+        @Override
+        public void callback(SessionDetails details) {
+            load(details);
+        }
+    };
     
-    private SessionsTable sessionTable;
+    @UiField
+    SessionDetailsPanel sessionDetailsPanel;
+    
+    @UiField
+    AttributesPanel attributesPanel;
+    
+    @UiField
+    SessionsTable sessionTable;
+    
+    @UiField(provided = true)
+    SplitLayoutPanel splitPanel;
+    
+    @UiField
+    DockLayoutPanel detailsVPanel;
     
     public SessionPanel() {
          
-        sessionTable = new SessionsTable(); 
-        sessionDetailsPanel = new SessionDetailsPanel();
-        attributesPanel = new AttributesPanel();
-
-        DockLayoutPanel detailsVPanel = new DockLayoutPanel(Style.Unit.PX);
-        detailsVPanel.addNorth(sessionDetailsPanel, 150);
-        detailsVPanel.add(attributesPanel);
-
-        SplitLayoutPanel splitPanel = new SplitLayoutPanel(5) {
+        splitPanel = new SplitLayoutPanel(5) {
 
             @Override
             public void onResize() {
                 super.onResize();
-                sessionTable.onResize();
+                onSelectTab();
             }
             
         };
-        ConstantValues.set100(splitPanel);
-        splitPanel.getElement().getStyle().setProperty("border", "0px solid #e7e7e7");
         
+        initWidget(uiBinder.createAndBindUi(this));   
+
+        splitPanel.setWidgetMinSize(detailsVPanel, 20);
         
-        splitPanel.addSouth(detailsVPanel, 33);
-        splitPanel.add(sessionTable);
+        sessionTable.setSelectionHandler(new EntityTablePanelSelectionHandler<ApplicationDetailsModel, SessionTableModel>() {
+            @Override
+            public void selectionChanged(ApplicationDetailsModel model, SessionTableModel item) {
+                reset();
+                if (model != null) {
+                    try {
+                        RestClient.create(ApplicationService.class, sessionDetailsCallback).getSession(model.host, model.id, item.id, model.remote);
+                    } catch (ServiceException ex) {
+                        Window.alert("Error: " + ex.getMessage());
+                    }
+                }
+            }
+        });   
         
-        splitPanel.setWidgetMinSize(detailsVPanel, 33);
-        initWidget(splitPanel);
+        Window.addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(ResizeEvent event) {
+                onSelectTab();
+            }
+        });        
     }
    
-    public SessionsTable getSessionTable() {
-        return sessionTable;
+    public void onSelectTab() {
+        sessionTable.onResize();
     }
     
     public void reset() {
@@ -96,7 +128,7 @@ public class SessionPanel extends Composite {
         sessionTable.setData(model, tmp);
     }
     
-    public void load(SessionDetails session) {
+    private void load(SessionDetails session) {
         SessionDetailsModel details = ObjectFactory.create(session);
         sessionDetailsPanel.open(details);
 

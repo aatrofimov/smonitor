@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.AfterInitialization;
 
 /**
@@ -59,11 +60,6 @@ public class NavigationPanel extends Composite {
     PushButton refreshButton;
     @UiField
     PushButton configButton;
-    
-    @Inject
-    private Caller<MonitorService> monitorService;
-    @Inject
-    private Caller<ServerService> serverService;
     
     final RemoteCallback<List<Connection>> connectionCallback = new RemoteCallback<List<Connection>>() {
         @Override
@@ -136,7 +132,7 @@ public class NavigationPanel extends Composite {
     public void loadServers() {
         try {
             reset();
-            monitorService.call(connectionCallback).getServerConnections();
+            RestClient.create(MonitorService.class, connectionCallback).getServerConnections();
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }
@@ -144,7 +140,7 @@ public class NavigationPanel extends Composite {
     
     public void loadConnection(Connection connection) {
         try {
-            serverService.call(serverCallback).getServer(connection.getUrl());
+            RestClient.create(ServerService.class, serverCallback).getServer(connection.getUrl());
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }
@@ -152,7 +148,7 @@ public class NavigationPanel extends Composite {
     
     public void relaodConfiguration() {
         try {
-            monitorService.call(configCallback).realoadConfiguration();
+            RestClient.create(MonitorService.class, configCallback).realoadConfiguration();
         } catch (ServiceException ex) {
             Window.alert("Error: " + ex.getMessage());
         }

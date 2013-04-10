@@ -4,7 +4,7 @@
              xmlns:a="urn:import:com.ajkaandrej.smonitor.admin.client.app.panel"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <g:SplitLayoutPanel>
+    <g:SplitLayoutPanel ui:field="splitPanel">
         <g:west size="200">
             <s:NavigationPanel ui:field="navigationPanel" />
         </g:west>
