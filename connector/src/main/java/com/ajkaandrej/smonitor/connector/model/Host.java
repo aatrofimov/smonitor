@@ -19,42 +19,83 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The host.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class Host {
-    
+
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The name.
+     */
     private String name;
-    
+    /**
+     * The list of applications.
+     */
     private List<Application> applications;
-    
+
+    /**
+     * The default constructor.
+     */
     public Host() {
         applications = new ArrayList<Application>();
-    }    
+    }
 
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id the id.
+     */
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
     public void setName(String name) {
         this.name = name;
     }
-        
+
+    /**
+     * Gets the applications.
+     *
+     * @return the applications.
+     */
     public List<Application> getApplications() {
         return applications;
     }
 
+    /**
+     * Sets the applications.
+     *
+     * @param applications the applications.
+     */
     public void setApplications(List<Application> applications) {
         this.applications = applications;
-    }     
+    }
 }

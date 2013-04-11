@@ -16,9 +16,16 @@
 package com.ajkaandrej.smonitor.connector.model;
 
 /**
- *
+ * The attribute details.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class AttributeDetails extends Attribute {
     
+    /**
+     * The default constructor.
+     */
+    public AttributeDetails() {
+        // empty constructor
+    }
 }

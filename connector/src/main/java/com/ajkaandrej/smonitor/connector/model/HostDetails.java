@@ -16,7 +16,8 @@
 package com.ajkaandrej.smonitor.connector.model;
 
 /**
- *
+ * The host details.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class HostDetails extends Host {

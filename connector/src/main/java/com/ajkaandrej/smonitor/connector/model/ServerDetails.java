@@ -16,7 +16,8 @@
 package com.ajkaandrej.smonitor.connector.model;
 
 /**
- *
+ * The server details.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ServerDetails extends Server {

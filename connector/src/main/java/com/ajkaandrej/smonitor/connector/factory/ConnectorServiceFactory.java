@@ -20,13 +20,18 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
- *
+ * The connector factory.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public final class ConnectorServiceFactory {
-    
+   
+    /** The connector service. */
     private static ConnectorService service = null;
     
+    /**
+     * Load the connector service implementation
+     */
     static {
         ServiceLoader<ConnectorService> list = ServiceLoader.load(ConnectorService.class);
         if (list != null) {
@@ -37,10 +42,18 @@ public final class ConnectorServiceFactory {
         }        
     }
     
+    /**
+     * The default constructor
+     */
     private ConnectorServiceFactory() {
-        
+        // empty constructor
     }
     
+    /**
+     * Gets the connector service instance.
+     * 
+     * @return the connector service instance.
+     */
     public static ConnectorService getService() {
         return service;
     }
