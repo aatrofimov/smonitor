@@ -19,33 +19,63 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.UIObject;
 
 /**
+ * The GWT constants.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public final class ConstantValues {
-    
+
+    /**
+     * The 100% value.
+     */
     public static final String PCT_100 = "100%";
-    
+    /**
+     * The target blank.
+     */
     public static final String TARGET_BLANK = "_blank";
-    
+    /**
+     * The div tag.
+     */
     public static final String HTML_TAG_DIV = "<div/>";
-            
+    /**
+     * The date pattern.
+     */
     public static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
-    
+    /**
+     * The date time format.
+     */
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
-    
+
+    /**
+     * The private constructor.
+     */
     private ConstantValues() {
         // empty constructor
     }
-    
+
+    /**
+     * Sets the object width to 100%.
+     *
+     * @param object the object.
+     */
     public static void setWidth100(UIObject object) {
         object.setWidth(PCT_100);
     }
-    
+
+    /**
+     * Sets the object height to 100%.
+     *
+     * @param object the object.
+     */
     public static void setHeight100(UIObject object) {
         object.setHeight(PCT_100);
     }
-    
+
+    /**
+     * Sets the object width and height to 100%.
+     *
+     * @param object the object.
+     */
     public static void set100(UIObject object) {
         setWidth100(object);
         setHeight100(object);

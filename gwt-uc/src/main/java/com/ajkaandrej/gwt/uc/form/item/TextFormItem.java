@@ -18,11 +18,15 @@ package com.ajkaandrej.gwt.uc.form.item;
 import com.google.gwt.cell.client.TextCell;
 
 /**
- *
+ * The text form item.
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public abstract class TextFormItem<T> extends AbstractFormItem<T, String, String> {
     
+    /**
+     * The default constructor.
+     */
     public TextFormItem() {
         super(new TextCell());
     }

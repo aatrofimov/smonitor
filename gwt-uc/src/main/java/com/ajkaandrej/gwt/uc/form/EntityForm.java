@@ -28,21 +28,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The entity form.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public class EntityForm<T> extends EntityComposite<T> {
 
+    /**
+     * The number of column.
+     */
     private int column;
+    /**
+     * The layout.
+     */
     private FlexTable layout;
+    /**
+     * The list of form items.
+     */
     private List<AbstractFormItem> items;
+    /**
+     * The first row.
+     */
     private int firstRow;
+    /**
+     * The header.
+     */
     private HeaderForm header;
 
+    /**
+     * The default constructor.
+     */
     public EntityForm() {
         this(1);
     }
 
+    /**
+     * The default constructor.
+     *
+     * @param column the number of column.
+     */
     public EntityForm(int column) {
         items = new ArrayList<AbstractFormItem>();
         firstRow = 0;
@@ -52,10 +77,20 @@ public class EntityForm<T> extends EntityComposite<T> {
         initWidget(layout);
     }
 
+    /**
+     * Gets the header.
+     *
+     * @return the header.
+     */
     public HeaderForm getHeader() {
         return header;
     }
 
+    /**
+     * Gets the header widget.
+     *
+     * @return the header widget.
+     */
     public Widget getHeaderWidget() {
         if (header != null) {
             return layout.getWidget(0, 0);
@@ -63,36 +98,60 @@ public class EntityForm<T> extends EntityComposite<T> {
         return null;
     }
 
+    /**
+     * Sets the header style.
+     *
+     * @param style the header style.
+     */
     public void setHeaderStyleName(String style) {
         FlexTable.FlexCellFormatter cf = layout.getFlexCellFormatter();
         cf.setStyleName(0, 0, style);
     }
-    
-    public void addHeader(HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant aligment) {
+
+    /**
+     * Adds the header.
+     *
+     * @param header the header.
+     * @param aligment the alignment.
+     */
+    public void addHeader(HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant alignment) {
         Widget w = null;
         if (this.header != null) {
             w = layout.getWidget(0, 0);
             if (header != null) {
-                setHeader(w, header, aligment);
+                setHeader(w, header, alignment);
             } else {
                 layout.removeRow(0);
                 firstRow = 0;
             }
         } else if (header != null) {
             layout.insertRow(0);
-            setHeader(w, header, aligment);
+            setHeader(w, header, alignment);
             firstRow = 1;
         }
     }
 
-    private void setHeader(Widget widget, HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant aligment) {
+    /**
+     * Sets the header.
+     *
+     * @param widget the widget.
+     * @param header the header form.
+     * @param alignment the alignment.
+     */
+    private void setHeader(Widget widget, HeaderForm header, HasHorizontalAlignment.HorizontalAlignmentConstant alignment) {
         this.header = header;
         layout.setWidget(0, 0, header.getWidget(data, widget));
         FlexTable.FlexCellFormatter cf = layout.getFlexCellFormatter();
         cf.setColSpan(0, 0, column * 2);
-        cf.setHorizontalAlignment(0, 0, aligment);
+        cf.setHorizontalAlignment(0, 0, alignment);
     }
 
+    /**
+     * Adds the cell.
+     *
+     * @param label the label.
+     * @param item the form item.
+     */
     public void addCell(String label, AbstractFormItem<T, ?, ?> item) {
         items.add(item);
 
@@ -114,11 +173,19 @@ public class EntityForm<T> extends EntityComposite<T> {
         layout.setHTML(row, col, render(row, col, data));
     }
 
+    /**
+     * Opens the data.
+     *
+     * @param data the data.
+     */
     public void open(T data) {
         this.data = data;
         updateView();
     }
 
+    /**
+     * Updates the view.
+     */
     private void updateView() {
         if (header != null) {
             Widget w = layout.getWidget(0, 0);
@@ -131,6 +198,15 @@ public class EntityForm<T> extends EntityComposite<T> {
         }
     }
 
+    /**
+     * Renders the object at the row and col position.
+     *
+     * @param row the row.
+     * @param col the col.
+     * @param object the object.
+     * @return the safe HTML corresponding to the object at row and col
+     * position.
+     */
     private SafeHtml render(int row, int col, T object) {
         int index = ((row - firstRow) * column) + col / 2;
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
@@ -139,6 +215,9 @@ public class EntityForm<T> extends EntityComposite<T> {
         return sb.toSafeHtml();
     }
 
+    /**
+     * Resets the form.
+     */
     public void reset() {
         this.data = null;
         updateView();

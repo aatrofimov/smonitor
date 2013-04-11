@@ -16,8 +16,9 @@
 package com.ajkaandrej.gwt.uc.form.item;
 
 /**
- *
+ * The integer form item.
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public abstract class IntegerFormItem<T> extends AbstractNumberFormItem<T, Integer> {
   

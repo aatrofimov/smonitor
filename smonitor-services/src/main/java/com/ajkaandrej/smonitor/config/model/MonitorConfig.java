@@ -18,32 +18,58 @@ package com.ajkaandrej.smonitor.config.model;
 import java.util.List;
 
 /**
+ * The monitor configuration.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class MonitorConfig extends Configuration {
 
+    /**
+     * The module name.
+     */
     private static final String MODULE = "smonitor";
-    
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -2314191168502475822L;
-    
+    /**
+     * The list of connections.
+     */
     private static final String KEY_CONNECTIONS = "connections";
-    
+    /**
+     * The default value.
+     */
     private static final String KEY_CONNECTIONS_DEFAULT = "";
-    
+
+    /**
+     * The default constructor.
+     */
     public MonitorConfig() {
         super(MODULE);
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setDefaultValues() {
         setValue(KEY_CONNECTIONS, KEY_CONNECTIONS_DEFAULT);
     }
-    
+
+    /**
+     * Gets the connections.
+     *
+     * @return the connections.
+     */
     public List<String> getConnections() {
         return getStringList(KEY_CONNECTIONS);
     }
-    
+
+    /**
+     * Sets the connections.
+     *
+     * @param items the connections.
+     */
     public void setConnections(List<String> items) {
         setStringList(KEY_CONNECTIONS, items);
     }

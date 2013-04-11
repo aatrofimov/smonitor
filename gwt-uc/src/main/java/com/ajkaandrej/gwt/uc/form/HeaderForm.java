@@ -18,10 +18,20 @@ package com.ajkaandrej.gwt.uc.form;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * The header form.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
+ * @param <W> the widget.
  */
 public abstract class HeaderForm<T, W extends Widget> {
-    
+
+    /**
+     * Gets the widget for the object and current widget.
+     *
+     * @param object the object.
+     * @param widget the current widget.
+     * @return the new widget.
+     */
     public abstract W getWidget(T object, W widget);
 }

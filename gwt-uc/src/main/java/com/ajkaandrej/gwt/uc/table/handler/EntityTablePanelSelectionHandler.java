@@ -16,10 +16,19 @@
 package com.ajkaandrej.gwt.uc.table.handler;
 
 /**
+ * The entity tab selection handler.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <E> the entity.
+ * @param <T> the list item.
  */
 public interface EntityTablePanelSelectionHandler<E, T> {
-    
+
+    /**
+     * The selection change method.
+     *
+     * @param model the model.
+     * @param item the selected item.
+     */
     public void selectionChanged(E model, T item);
 }

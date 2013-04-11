@@ -23,29 +23,56 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import java.util.List;
 
 /**
+ * The list cell.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ListCell extends AbstractCell<List<String>> {
 
+    /**
+     * The template.
+     */
     interface Template extends SafeHtmlTemplates {
 
+        /**
+         * The begin.
+         */
         @SafeHtmlTemplates.Template("<select multiple tabindex=\"-1\" size=\"{0}\">")
         SafeHtml begin(int size);
 
+        /**
+         * The deselected.
+         */
         @SafeHtmlTemplates.Template("<option multiple value=\"{0}\">{0}</option>")
         SafeHtml deselected(String option);
 
+        /**
+         * The selected.
+         */
         @SafeHtmlTemplates.Template("<option multiple value=\"{0}\" selected=\"selected\">{0}</option>")
         SafeHtml selected(String option);
     }
+    /**
+     * The template.
+     */
     private static ListCell.Template template;
+    /**
+     * The size.
+     */
     private int size;
 
+    /**
+     * The default constructor.
+     */
     public ListCell() {
         this(3);
     }
 
+    /**
+     * The default constructor.
+     *
+     * @param size the size.
+     */
     public ListCell(int size) {
         this.size = size;
         if (template == null) {
@@ -53,14 +80,27 @@ public class ListCell extends AbstractCell<List<String>> {
         }
     }
 
+    /**
+     * Gets the size.
+     *
+     * @return the size.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Sets the size.
+     *
+     * @param size the size.
+     */
     public void setSize(int size) {
         this.size = size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void render(Context context, List<String> value, SafeHtmlBuilder sb) {
         sb.append(template.begin(size));

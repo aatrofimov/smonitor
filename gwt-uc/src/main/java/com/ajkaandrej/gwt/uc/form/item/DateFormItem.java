@@ -21,16 +21,25 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import java.util.Date;
 
 /**
+ * The date form item.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public abstract class DateFormItem<T> extends AbstractFormItem<T, Date, Date> {
-    
-    
+
+    /**
+     * The default constructor.
+     */
     public DateFormItem() {
         this(ConstantValues.DATE_FORMAT);
     }
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param format the date format.
+     */
     public DateFormItem(DateTimeFormat format) {
         super(new DateCell(format));
     }

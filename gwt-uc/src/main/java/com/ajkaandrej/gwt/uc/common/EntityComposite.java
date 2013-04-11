@@ -18,15 +18,24 @@ package com.ajkaandrej.gwt.uc.common;
 import com.google.gwt.user.client.ui.Composite;
 
 /**
+ * The entity composite.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public class EntityComposite<T> extends Composite {
-    
+
+    /**
+     * The entity.
+     */
     protected T data;
 
+    /**
+     * Gets the entity.
+     *
+     * @return the entity.
+     */
     public T getData() {
         return data;
     }
-       
 }

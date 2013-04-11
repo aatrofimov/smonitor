@@ -21,11 +21,20 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * The column sort handler.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public class ColumnSortHandler<T> extends ColumnSortEvent.ListHandler<T> {
 
+    /**
+     * The default constructor.
+     *
+     * @param <K> the comparable entity.
+     * @param list the list.
+     * @param column the column.
+     */
     public <K extends Comparable<K>> ColumnSortHandler(List<T> list, final AbstractEntityColumn<T, K, ?> column) {
         super(list);
         column.setSortable(true);

@@ -19,11 +19,14 @@ import com.ajkaandrej.gwt.uc.form.cell.ListCell;
 import java.util.List;
 
 /**
- *
+ * The list form item.
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public abstract class ListFormItem<T> extends AbstractFormItem<T, List<String>, List<String>> {
-    
+        /**
+     * The default constructor.
+     */
     public ListFormItem() {
         super(new ListCell());
     }

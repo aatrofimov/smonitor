@@ -24,20 +24,38 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * The monitor service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 @Path("monitor")
 public interface MonitorService {
- 
+
+    /**
+     * Gets the version.
+     *
+     * @return the version.
+     * @throws ServiceException if the method fails.
+     */
     @GET
     @Path("version")
     public String getVersion() throws ServiceException;
-    
+
+    /**
+     * Reloads the configuration.
+     *
+     * @throws ServiceException if the method fails.
+     */
     @GET
     @Path("reloadConfig")
     public void realoadConfiguration() throws ServiceException;
-    
+
+    /**
+     * Gets the list of connections.
+     *
+     * @return the list of connections.
+     * @throws ServiceException if the method fails.
+     */
     @GET
     @Path("connections")
     @Produces(MediaType.APPLICATION_JSON)

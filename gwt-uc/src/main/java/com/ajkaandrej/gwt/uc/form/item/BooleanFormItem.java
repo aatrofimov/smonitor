@@ -16,8 +16,9 @@
 package com.ajkaandrej.gwt.uc.form.item;
 
 /**
- *
+ * The boolean form item.
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public abstract class BooleanFormItem<T> extends AbstractNumberFormItem<T, Boolean> {
   

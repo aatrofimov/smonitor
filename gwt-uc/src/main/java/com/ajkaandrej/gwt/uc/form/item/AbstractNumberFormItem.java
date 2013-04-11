@@ -18,15 +18,24 @@ package com.ajkaandrej.gwt.uc.form.item;
 import com.google.gwt.cell.client.TextCell;
 
 /**
- *
+ * The abstract number form item.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
+ * @param <K> the object value.
  */
 public abstract class AbstractNumberFormItem<T, K> extends AbstractFormItem<T, K, String> {
 
+    /**
+     * The default constructor.
+     */
     public AbstractNumberFormItem() {
         super(new TextCell());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getValue(T object) {
         if (object != null) {

@@ -27,17 +27,24 @@ import java.util.List;
 import java.util.Properties;
 
 /**
+ * The monitor service implementation.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class MonitorServiceImpl implements MonitorService {
 
-    /** The MAVEN property file. */
+    /**
+     * The MAVEN property file.
+     */
     private static final String PROPERTY_FILE = "META-INF/maven/com.ajkaandrej.smonitor/smonitor-services/pom.properties";
-    
-    /** The version key. */
+    /**
+     * The version key.
+     */
     private static final String KEY_VERSION = "version";
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() throws ServiceException {
         Properties properties = new Properties();
@@ -45,21 +52,25 @@ public class MonitorServiceImpl implements MonitorService {
         try {
             properties.load(input);
         } catch (IOException ex) {
+            //FIXME: exception handling
             ex.printStackTrace();
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException ex) {
+                    //FIXME: exception handling
                     ex.printStackTrace();
                 }
             }
         }
-        
+
         return properties.getProperty(KEY_VERSION);
     }
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Connection> getServerConnections() throws ServiceException {
         List<Connection> result = new ArrayList<Connection>();
@@ -68,7 +79,7 @@ public class MonitorServiceImpl implements MonitorService {
             con.setName("localhost");
             con.setUrl(null);
             result.add(con);
-            
+
             ConfigurationService service = ConfigurationServiceFactory.getService();
             MonitorConfig config = service.loadConfiguration(MonitorConfig.class);
             List<String> tmp = config.getConnections();
@@ -81,18 +92,23 @@ public class MonitorServiceImpl implements MonitorService {
                 }
             }
         } catch (Exception ex) {
+            //FIXME: exception handling
             ex.printStackTrace();
         }
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void realoadConfiguration() throws ServiceException {
         try {
             ConfigurationService service = ConfigurationServiceFactory.getService();
             service.reloadConfigurations();
         } catch (Exception ex) {
+            //FIXME: exception handling
             ex.printStackTrace();
-        }        
+        }
     }
 }

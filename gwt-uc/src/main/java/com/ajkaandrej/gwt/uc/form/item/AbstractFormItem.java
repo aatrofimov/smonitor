@@ -19,25 +19,55 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
+ * The abstract form item.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
+ * @param <K> the object value.
+ * @param <C> the cell value.
  */
 public abstract class AbstractFormItem<T, K, C> {
 
+    /**
+     * The cell.
+     */
     private Cell<C> cell;
 
+    /**
+     * The default constructor.
+     *
+     * @param cell the cell.
+     */
     public AbstractFormItem(Cell<C> cell) {
         this.cell = cell;
     }
 
+    /**
+     * Gets the cell.
+     *
+     * @return the cell.
+     */
     public Cell<C> getCell() {
         return cell;
     }
 
+    /**
+     * Renders the form item.
+     *
+     * @param context the context.
+     * @param object the object.
+     * @param sb the safe HTML builder.
+     */
     public void render(Cell.Context context, T object, SafeHtmlBuilder sb) {
         cell.render(context, getValue(object), sb);
     }
 
+    /**
+     * Gets the cell value.
+     *
+     * @param object the object.
+     * @return the cell value.
+     */
     public C getValue(T object) {
         if (object != null) {
             return (C) getObject(object);
@@ -45,5 +75,11 @@ public abstract class AbstractFormItem<T, K, C> {
         return null;
     }
 
+    /**
+     * Gets the object value.
+     *
+     * @param object the entity.
+     * @return the object value.
+     */
     public abstract K getObject(T object);
 }

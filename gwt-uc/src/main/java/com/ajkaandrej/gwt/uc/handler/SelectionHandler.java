@@ -16,10 +16,17 @@
 package com.ajkaandrej.gwt.uc.handler;
 
 /**
+ * The selection handler.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <T> the entity.
  */
 public interface SelectionHandler<T> {
-    
+
+    /**
+     * The selection changed
+     *
+     * @param item the selected item.
+     */
     public void selectionChanged(T item);
 }

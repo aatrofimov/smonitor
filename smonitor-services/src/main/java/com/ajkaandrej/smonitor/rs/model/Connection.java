@@ -16,28 +16,54 @@
 package com.ajkaandrej.smonitor.rs.model;
 
 /**
+ * The connection.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class Connection {
-    
-    private String name;
-    
-    private String url;   
 
+    /**
+     * The name.
+     */
+    private String name;
+    /**
+     * The URL.
+     */
+    private String url;
+
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the URL.
+     *
+     * @param url the URL.
+     */
     public void setUrl(String url) {
         this.url = url;
     }
 
+    /**
+     * Gets the URL.
+     *
+     * @return the URL.
+     */
     public String getUrl() {
         return url;
-    }        
+    }
 }

@@ -26,15 +26,21 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.List;
 
 /**
- *
+ * The entity table panel.
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <E> the entity.
+ * @param <T> the table item.
  */
 public class EntityTablePanel<E, T> extends EntityComposite<E> {
-    
+    /** The entity table. */
     private EntityTable<T> table;
-    
+        /**
+     * The entity table panel selection handler.
+     */
     private EntityTablePanelSelectionHandler<E, T> selectionHandler;
-    
+        /**
+     * The default constructor.
+     */
     public EntityTablePanel() {
         table = new EntityTable<T>();
         table.setWidth100(true);
@@ -62,15 +68,27 @@ public class EntityTablePanel<E, T> extends EntityComposite<E> {
 
         initWidget(vp);        
     }
-
+    /**
+     * Sets the selection handler.
+     *
+     * @param selectionHandler the selection handler.
+     */
     public void setSelectionHandler(EntityTablePanelSelectionHandler<E, T> selectionHandler) {
         this.selectionHandler = selectionHandler;
     }
-    
+    /**
+     * Gets the entity table.
+     * @return the entity table.
+     */
     public EntityTable<T> getTable() {
         return table;
     }
 
+    /**
+     * Sets the data.
+     * @param model the model.
+     * @param list the list of items.
+     */
     public void setData(E model, List<T> list) {
         reset();
         this.data = model;

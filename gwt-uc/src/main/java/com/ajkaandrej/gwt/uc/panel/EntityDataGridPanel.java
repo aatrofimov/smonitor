@@ -18,22 +18,31 @@ package com.ajkaandrej.gwt.uc.panel;
 import com.ajkaandrej.gwt.uc.common.EntityComposite;
 import com.ajkaandrej.gwt.uc.table.EntityDataGrid;
 import com.ajkaandrej.gwt.uc.table.handler.EntityTablePanelSelectionHandler;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.List;
 
 /**
+ * The entity data grid panel.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <E> the entity.
+ * @param <T> the list item.
  */
 public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
 
+    /**
+     * The data grid.
+     */
     private EntityDataGrid<T> dataGrid;
+    /**
+     * The entity table panel selection handler.
+     */
     private EntityTablePanelSelectionHandler<E, T> selectionHandler;
-    
+
+    /**
+     * The default constructor.
+     */
     public EntityDataGridPanel() {
         dataGrid = new EntityDataGrid<T>();
         dataGrid.setWidth100();
@@ -50,24 +59,38 @@ public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
         initWidget(dataGrid);
     }
 
+    /**
+     * Sets the selection handler.
+     *
+     * @param selectionHandler the selection handler.
+     */
     public void setSelectionHandler(EntityTablePanelSelectionHandler<E, T> selectionHandler) {
         this.selectionHandler = selectionHandler;
     }
 
+    /**
+     * Gets the data grid.
+     *
+     * @return the data grid.
+     */
     public EntityDataGrid<T> getDataGrid() {
         return dataGrid;
     }
 
-    public void onResize() {
-        dataGrid.onResize();
-    }
-    
+    /**
+     * Sets the data.
+     * @param model the model.
+     * @param list the list of items.
+     */
     public void setData(E model, List<T> list) {
         reset();
         this.data = model;
-        dataGrid.addAll(list);        
+        dataGrid.addAll(list);
     }
 
+    /**
+     * Resets the panel.
+     */
     public void reset() {
         dataGrid.reset();
     }

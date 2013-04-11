@@ -109,7 +109,7 @@ public class SessionPanel extends Composite {
     }
    
     public void onSelectTab() {
-        sessionTable.onResize();
+        sessionTable.getDataGrid().onResize();
     }
     
     public void reset() {
