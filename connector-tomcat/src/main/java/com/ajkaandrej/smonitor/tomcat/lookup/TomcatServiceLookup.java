@@ -19,22 +19,46 @@ import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 
 /**
+ * The tomcat service look-up class.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public abstract class TomcatServiceLookup {
-    
+
+    /**
+     * The name.
+     */
     private String name;
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param name the name.
+     */
     public TomcatServiceLookup(String name) {
         this.name = name;
     }
-    
+
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
-        
+
+    /**
+     * Gets the tomcat server instance.
+     *
+     * @return the tomcat server instance.
+     */
     public abstract Server getServer();
-    
+
+    /**
+     * The tomcat server service instance.
+     *
+     * @return the tomcat server service instance.
+     */
     public abstract Service getService();
 }

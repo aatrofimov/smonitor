@@ -39,18 +39,40 @@ import org.apache.catalina.realm.GenericPrincipal;
 import org.apache.catalina.session.StandardSession;
 
 /**
+ * The tomcat utility.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public final class TomcatUtil {
 
+    /**
+     * The application prefix.
+     */
     private static final String APP_PREFIX = "/";
+    /**
+     * The root application.
+     */
     private static final String ROOT_NAME = "ROOT";
+    /**
+     * The root id.
+     */
     private static final String ROOT_ID = "";
+
+    /**
+     * The default constructor.
+     */
     private TomcatUtil() {
         // empty constructor
     }
-    
+
+    /**
+     * Creates the session details.
+     *
+     * @param host the host.
+     * @param application the application.
+     * @param session the session.
+     * @return the session details.
+     */
     public static SessionDetails createSessionDetails(String host, String application, StandardSession session) {
         SessionDetails result = null;
 
@@ -58,12 +80,12 @@ public final class TomcatUtil {
             result = new SessionDetails();
             result.setHost(host);
             result.setApplication(application);
-            
+
             // session info
             result.setInfo(session.getInfo());
-            
+
             // create session basic information
-            Session tmp = createSession(session);            
+            Session tmp = createSession(session);
             result.setCreationTime(tmp.getCreationTime());
             result.setId(tmp.getId());
             result.setLastAccessedTime(tmp.getLastAccessedTime());
@@ -71,7 +93,7 @@ public final class TomcatUtil {
             result.setMaxInactiveInterval(tmp.getMaxInactiveInterval());
             result.setUser(tmp.getUser());
             result.setValid(tmp.isValid());
-            
+
             // load user roles
             GenericPrincipal principal = (GenericPrincipal) session.getPrincipal();
             if (principal != null) {
@@ -106,6 +128,13 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Creates the attribute.
+     *
+     * @param name the name.
+     * @param value the value.
+     * @return the attribute.
+     */
     private static Attribute createAttribute(String name, Object value) {
         Attribute attr = new Attribute();
         attr.setName(name);
@@ -118,19 +147,25 @@ public final class TomcatUtil {
         return attr;
     }
 
+    /**
+     * Creates the application details.
+     *
+     * @param context the context.
+     * @return the application details.
+     */
     public static ApplicationDetails createApplicationDetails(StandardContext context) {
         ApplicationDetails result = null;
         if (context != null) {
 
             result = new ApplicationDetails();
-            Application app = createApplication(context);            
+            Application app = createApplication(context);
             result.setId(app.getId());
-            result.setName(app.getName());            
+            result.setName(app.getName());
             result.setHost(app.getHost());
-            
+
             result.setContext(context.getEncodedPath());
             result.setStartTime(new Date(context.getStartTime()));
-            
+
             Manager manager = context.getManager();
             if (manager != null) {
                 // The distributable flag for the sessions supported by this Manager
@@ -162,6 +197,12 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Creates the session.
+     *
+     * @param session the session.
+     * @return the session.
+     */
     private static Session createSession(org.apache.catalina.Session session) {
         Session result = null;
         if (session != null) {
@@ -187,6 +228,12 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Creates the server.
+     *
+     * @param service the tomcat server service.
+     * @return the server.
+     */
     public static Server createServer(Service service) {
         Server result = null;
         if (service != null) {
@@ -223,14 +270,20 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Creates the application.
+     *
+     * @param context the container.
+     * @return the application.
+     */
     private static Application createApplication(Container context) {
         Application result = null;
-        if (context != null) {            
+        if (context != null) {
             result = new Application();
             result.setId(getTomcatApplicationId(context));
             Container parent = context.getParent();
             if (parent != null) {
-                result.setHost(parent.getName());                
+                result.setHost(parent.getName());
             }
             // The name string (suitable for use by humans)
             result.setName(getApplicationName(context.getName()));
@@ -238,6 +291,11 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Gets the list of sessions.
+     * @param sessions the tomcat list of session.
+     * @return the list of sessions.
+     */
     public static List<Session> getSessions(org.apache.catalina.Session[] sessions) {
         List<Session> result = new ArrayList<Session>();
         if (sessions != null) {
@@ -251,6 +309,12 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Gets the list of applications.
+     *
+     * @param contexts the list of containers.
+     * @return the list of applications.
+     */
     public static List<Application> getApplications(Container[] contexts) {
         List<Application> result = new ArrayList<Application>();
         if (contexts != null) {
@@ -264,6 +328,12 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Gets the application name.
+     *
+     * @param name the tomcat application name.
+     * @return the application name.
+     */
     private static String getApplicationName(String name) {
         String result = name;
         if (name == null || name.isEmpty()) {
@@ -276,6 +346,12 @@ public final class TomcatUtil {
         return result;
     }
 
+    /**
+     * Gets the tomcat application id.
+     *
+     * @param container the container.
+     * @return the tomcat application id.
+     */
     private static String getTomcatApplicationId(Container container) {
         String result = null;
         if (container != null) {
@@ -283,7 +359,13 @@ public final class TomcatUtil {
         }
         return result;
     }
-    
+
+    /**
+     * Creates the tomcat application id.
+     *
+     * @param name the application name.
+     * @return the tomcat application id.
+     */
     public static String createTomcatApplicationId(String name) {
         String result = name;
         if (ROOT_NAME.equals(name)) {

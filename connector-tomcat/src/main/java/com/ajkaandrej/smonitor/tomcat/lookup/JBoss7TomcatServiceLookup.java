@@ -15,8 +15,8 @@
  */
 package com.ajkaandrej.smonitor.tomcat.lookup;
 
-import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.core.StandardServer;
@@ -29,51 +29,76 @@ import org.jboss.msc.service.ServiceName;
 
 /**
  * The jBoss 7 tomcat 7 lookup service class.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
 
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JBoss7TomcatServiceLookup.class.getName());
+    /**
+     * The JMX domain.
+     */
+    private static final String JMX_DOMAIN = "web";
+    /**
+     * The name.
+     */
     private static final String NAME = "Tomcat7";
-    
+
+    /**
+     * The default constructor.
+     */
     public JBoss7TomcatServiceLookup() {
         super(NAME);
     }
-            
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Server getServer() {
         StandardServer result = null;
         WebServer webServer = getWebServer();
         if (webServer == null) {
-            System.out.println("webServer NULL!");
-        } else {            
+            LOGGER.log(Level.SEVERE, "The web server is null!");
+        } else {
             result = webServer.getServer();
         }
         return result;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Service getService() {
         StandardService result = null;
         WebServer webServer = getWebServer();
         if (webServer == null) {
-            System.out.println("webServer NULL!");
-        } else {     
+            LOGGER.log(Level.SEVERE, "The web server is null!");
+        } else {
             result = webServer.getService();
         }
         return result;
     }
-    
+
+    /**
+     * Gets the web server.
+     *
+     * @return the web server.
+     */
     private static WebServer getWebServer() {
         WebServer result = null;
-        ServiceName service = ServiceName.JBOSS.append("web");
+        ServiceName service = ServiceName.JBOSS.append(JMX_DOMAIN);
         ServiceContainer container = CurrentServiceContainer.getServiceContainer();
         ServiceController<?> controller = container.getService(service);
         if (controller == null) {
-            System.out.println(" NULL!");
+            LOGGER.log(Level.SEVERE, "The service controller is null!");
         } else {
             result = (WebServer) controller.getService();
         }
         return result;
-    }    
+    }
 }

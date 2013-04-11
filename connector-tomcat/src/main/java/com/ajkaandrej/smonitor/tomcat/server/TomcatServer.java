@@ -31,27 +31,48 @@ import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
-import org.apache.catalina.Session;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.session.StandardSession;
 
 /**
+ * The tomcat server.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class TomcatServer {
 
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(TomcatServer.class.getName());
+    /**
+     * The tomcat server instance.
+     */
     private static TomcatServer INSTANCE;
+    /**
+     * The tomcat server.
+     */
     private Server server;
+    /**
+     * The tomcat server service.
+     */
     private Service service;
+    /**
+     * The version.
+     */
     private String version;
+    /**
+     * The name.
+     */
     private String name;
 
+    /**
+     * The default constructor.
+     */
     private TomcatServer() {
         TomcatServiceLookup util = null;
-
+        // get the mBean server
         MBeanServer mBeanServer = MBeanServerFactory.findMBeanServer(null).get(0);
 
         // check jboss 7
@@ -72,6 +93,7 @@ public class TomcatServer {
             }
         }
 
+        // set-up the tomcat server instance       
         if (util != null) {
             server = util.getServer();
             service = util.getService();
@@ -81,6 +103,11 @@ public class TomcatServer {
         }
     }
 
+    /**
+     * Gets the server instance.
+     *
+     * @return the server instance.
+     */
     public static TomcatServer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TomcatServer();
@@ -88,31 +115,62 @@ public class TomcatServer {
         return INSTANCE;
     }
 
+    /**
+     * Gets the version.
+     *
+     * @return the version.
+     */
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Gets the tomcat server instance.
+     *
+     * @return the tomcat server instance.
+     */
     public Server getServer() {
         return server;
     }
 
+    /**
+     * Gets the tomcat server service instance.
+     *
+     * @return the tomcat server service instance.
+     */
     public Service getService() {
         return service;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the list of hosts.
+     *
+     * @return the list of hosts.
+     */
     public Container[] getHosts() {
         Container[] result = null;
         Engine engineService = (Engine) service.getContainer();
         if (engineService != null) {
             result = engineService.findChildren();
         }
-        return result;        
+        return result;
     }
-    
+
+    /**
+     * Gets the host by name.
+     *
+     * @param host the host name.
+     * @return the host corresponding to the name.
+     */
     public StandardHost getHost(String host) {
         StandardHost result = null;
         Engine engineService = (Engine) service.getContainer();
@@ -122,6 +180,11 @@ public class TomcatServer {
         return result;
     }
 
+    /**
+     * Gets the list of contexts.
+     *
+     * @return the list of contexts.
+     */
     public Container[] getContexts() {
         List<Container> result = new ArrayList<Container>();
         Container root = service.getContainer();
@@ -134,9 +197,15 @@ public class TomcatServer {
                 }
             }
         }
-        return result.toArray(new Container[result.size()]);                
+        return result.toArray(new Container[result.size()]);
     }
 
+    /**
+     * Gets the list of contexts.
+     *
+     * @param host the host name.
+     * @return the list of context corresponding to the host name.
+     */
     public Container[] getContexts(String host) {
         Container[] result = null;
         StandardHost hostContainer = getHost(host);
@@ -145,9 +214,16 @@ public class TomcatServer {
         } else {
             LOGGER.log(Level.SEVERE, "No host {0} found", new Object[]{host});
         }
-        return result;        
+        return result;
     }
-    
+
+    /**
+     * Gets the standard context for the host and application name.
+     *
+     * @param host the host.
+     * @param webApp the application name.
+     * @return the standard context.
+     */
     public StandardContext getContext(String host, String webApp) {
         StandardContext result = null;
         StandardHost hostContainer = getHost(host);
@@ -159,6 +235,15 @@ public class TomcatServer {
         return result;
     }
 
+    /**
+     * Gets the standard session for host, application and session id.
+     *
+     * @param host the host.
+     * @param webApp the application.
+     * @param sessionId the session id.
+     * @return the standard context corresponding to the host, application and
+     * session id.
+     */
     public StandardSession getSession(String host, String webApp, String sessionId) {
         StandardSession result = null;
         StandardContext context = getContext(host, webApp);
@@ -178,7 +263,14 @@ public class TomcatServer {
         }
         return result;
     }
-    
+
+    /**
+     * Gets the list of sessions for the host and application.
+     *
+     * @param host the host.
+     * @param webApp the application.
+     * @return the list of sessions.
+     */
     public org.apache.catalina.Session[] getSessions(String host, String webApp) {
         org.apache.catalina.Session[] result = null;
         StandardContext context = getContext(host, webApp);
@@ -196,6 +288,6 @@ public class TomcatServer {
         } else {
             LOGGER.log(Level.SEVERE, "No context found for web application {0}, host {1}", new Object[]{webApp, host});
         }
-        return result;        
+        return result;
     }
 }

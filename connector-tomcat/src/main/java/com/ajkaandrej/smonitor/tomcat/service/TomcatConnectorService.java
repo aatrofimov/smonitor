@@ -28,21 +28,31 @@ import com.ajkaandrej.smonitor.tomcat.server.TomcatServer;
 import java.util.List;
 
 /**
+ * The tomcat connector service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class TomcatConnectorService implements ConnectorService {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
-        return TomcatServer.getInstance().getVersion();        
+        return TomcatServer.getInstance().getVersion();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return TomcatServer.getInstance().getName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Server getServer() {
         TomcatServer server = TomcatServer.getInstance();
@@ -50,38 +60,56 @@ public class TomcatConnectorService implements ConnectorService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Host getHost(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Host> getHosts() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Application> getApplications() {
         TomcatServer server = TomcatServer.getInstance();
-        List<Application> result = TomcatUtil.getApplications(server.getContexts());        
+        List<Application> result = TomcatUtil.getApplications(server.getContexts());
         return result;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Application> getApplications(String host) {
         TomcatServer server = TomcatServer.getInstance();
-        List<Application> result = TomcatUtil.getApplications(server.getContexts(host));        
+        List<Application> result = TomcatUtil.getApplications(server.getContexts(host));
         return result;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDetails getApplicationDetails(String host, String application) {
         TomcatServer server = TomcatServer.getInstance();
         String id = TomcatUtil.createTomcatApplicationId(application);
-        ApplicationDetails result = TomcatUtil.createApplicationDetails(server.getContext(host, id));        
+        ApplicationDetails result = TomcatUtil.createApplicationDetails(server.getContext(host, id));
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Session> getSessions(String host, String application) {
         TomcatServer server = TomcatServer.getInstance();
@@ -89,7 +117,10 @@ public class TomcatConnectorService implements ConnectorService {
         List<Session> result = TomcatUtil.getSessions(server.getSessions(host, id));
         return result;
     }
-        
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SessionDetails getSessionDetails(String host, String application, String session) {
         TomcatServer server = TomcatServer.getInstance();
@@ -98,10 +129,13 @@ public class TomcatConnectorService implements ConnectorService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AttributeDetails getAttributeDetails(String host, String application, String session, String attribute) {
         TomcatServer server = TomcatServer.getInstance();
         String id = TomcatUtil.createTomcatApplicationId(application);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }    
+    }
 }
