@@ -21,14 +21,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 
 /**
+ * The abstract service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public abstract class AbstractService {
-    
+
+    /**
+     * The HTTP SERVLET request.
+     */
     @Context
     private HttpServletRequest context;
-    
+
+    /**
+     * Creates the server context.
+     *
+     * @param request the server request.
+     */
     protected void createServerRequest(ServerRequest request) {
         if (request != null) {
             ServerContext result = request.getServerContext();

@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
     <parent>
         <groupId>com.ajkaandrej.smonitor</groupId>
         <artifactId>smonitor</artifactId>
@@ -11,7 +10,6 @@
     <name>smonitor-agent</name>
     <artifactId>smonitor-agent</artifactId>
     <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
             <groupId>com.ajkaandrej.smonitor</groupId>
@@ -36,8 +34,7 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-    </dependencies>
-    
+    </dependencies>    
     <build>      
         <plugins>
             <plugin>

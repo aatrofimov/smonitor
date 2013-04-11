@@ -20,19 +20,30 @@ import com.ajkaandrej.smonitor.agent.rs.model.Server;
 import com.ajkaandrej.smonitor.agent.rs.service.ServerService;
 
 /**
+ * The server client service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ServerClientService extends AbstractClientService<ServerService> {
 
+    /**
+     * The default constructor.
+     *
+     * @param remote the remote server.
+     */
     public ServerClientService(String remote) {
         super(ServerService.class, remote);
     }
-    
+
+    /**
+     * Gets the server.
+     *
+     * @return the server.
+     * @throws ServiceException if the method fails.
+     */
     public Server getServer() throws ServiceException {
         Server result = getService().getServer(null);
         updateServerRequest(result);
         return result;
     }
-    
 }

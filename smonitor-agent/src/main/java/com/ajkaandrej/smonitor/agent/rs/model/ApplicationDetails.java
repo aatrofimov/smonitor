@@ -20,194 +20,318 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The application details.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ApplicationDetails extends Application implements ServerRequest {
-    
+
+    /**
+     * The server context.
+     */
     private ServerContext serverContext;
-    
+    /**
+     * The count of active sessions.
+     */
     private int activeSessions;
+    /**
+     * The cluster flag.
+     */
     private boolean distributable;
+    /**
+     * The count of expired sessions.
+     */
     private int expiredSessions;
+    /**
+     * The maximal active sessions.
+     */
     private int maxActive;
+    /**
+     * The maximal inactive interval.
+     */
     private int maxInactiveInterval;
+    /**
+     * The count of reject sessions.
+     */
     private int rejectedSessions;
+    /**
+     * The session average alive time.
+     */
     private int sessionAverageAliveTime;
+    /**
+     * The session counter.
+     */
     private int sessionCounter;
+    /**
+     * The session ID length.
+     */
     private int sessionIdLength;
-    private int sessionMaxAliveTime;
-    
+    /**
+     * The session maximal alive time.
+     */
+    private int SessionMaxAliveTime;
+    /**
+     * The application context.
+     */
     private String context;
+    /**
+     * The start time.
+     */
     private Date startTime;
-    
+    /**
+     * The list of sessions.
+     */
     private List<Session> sessions;
 
+    /**
+     * The default constructor.
+     */
     public ApplicationDetails() {
         sessions = new ArrayList<Session>();
         serverContext = new ServerContext();
     }
 
+    /**
+     * Gets the start time.
+     *
+     * @return the start time.
+     */
     public Date getStartTime() {
         return startTime;
     }
 
+    /**
+     * Sets the start time.
+     *
+     * @param startTime the start time.
+     */
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    
+
+    /**
+     * Gets the application context.
+     *
+     * @return the application context.
+     */
     public String getContext() {
         return context;
     }
 
+    /**
+     * Sets the application context.
+     *
+     * @param context the application context.
+     */
     public void setContext(String context) {
         this.context = context;
     }
-    
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
-    }    
-    
+
+    /**
+     * Gets the list of sessions.
+     *
+     * @return the list of sessions.
+     */
     public List<Session> getSessions() {
         return sessions;
     }
 
+    /**
+     * Sets the list of sessions.
+     *
+     * @param sessions the list of sessions.
+     */
     public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
     }
-     
-   public int getActiveSessions() {
+
+    /**
+     * Gets the count of active sessions.
+     *
+     * @return the count of active sessions.
+     */
+    public int getActiveSessions() {
         return activeSessions;
     }
 
+    /**
+     * Sets the number of active sessions.
+     *
+     * @param activeSessions the number of active sessions.
+     */
     public void setActiveSessions(int activeSessions) {
         this.activeSessions = activeSessions;
     }
 
     /**
-     * @return the distributable
+     * Returns
+     * <code>true</code> if the application is clustered.
+     *
+     * @return the cluster flag.
      */
     public boolean isDistributable() {
         return distributable;
     }
 
     /**
-     * @param distributable the distributable to set
+     * Sets the application clustered flag.
+     *
+     * @param distributable the cluster flag.
      */
     public void setDistributable(boolean distributable) {
         this.distributable = distributable;
     }
 
     /**
-     * @return the expiredSessions
+     * Gets the number of expired sessions.
+     *
+     * @return the expiredSessions the number of expired sessions.
      */
     public int getExpiredSessions() {
         return expiredSessions;
     }
 
     /**
-     * @param expiredSessions the expiredSessions to set
+     * Sets the number of expired sessions.
+     *
+     * @param expiredSessions the number of expired sessions.
      */
     public void setExpiredSessions(int expiredSessions) {
         this.expiredSessions = expiredSessions;
     }
 
     /**
-     * @return the maxActive
+     * Gets the number of maximal active sessions.
+     *
+     * @return the maxActive the number of maximal active sessions.
      */
     public int getMaxActive() {
         return maxActive;
     }
 
     /**
-     * @param maxActive the maxActive to set
+     * Sets the maximal number of active sessions.
+     *
+     * @param maxActive the maximal number of active sessions.
      */
     public void setMaxActive(int maxActive) {
         this.maxActive = maxActive;
     }
 
     /**
-     * @return the maxInactiveInterval
+     * Gets the maximal interval of inactive session.
+     *
+     * @return the maxInactiveIntervalt the maximal interval of inactive
+     * session.
      */
     public int getMaxInactiveInterval() {
         return maxInactiveInterval;
     }
 
     /**
-     * @param maxInactiveInterval the maxInactiveInterval to set
+     * Sets the maximal interval of inactive session.
+     *
+     * @param maxInactiveInterval the maximal interval of inactive session.
      */
     public void setMaxInactiveInterval(int maxInactiveInterval) {
         this.maxInactiveInterval = maxInactiveInterval;
     }
 
     /**
-     * @return the rejectedSessions
+     * Gets the number of rejected sessions.
+     *
+     * @return the rejectedSessions the number of rejected sessions.
      */
     public int getRejectedSessions() {
         return rejectedSessions;
     }
 
     /**
-     * @param rejectedSessions the rejectedSessions to set
+     * Sets the number of rejected sessions.
+     *
+     * @param rejectedSessions the number of rejected sessions.
      */
     public void setRejectedSessions(int rejectedSessions) {
         this.rejectedSessions = rejectedSessions;
     }
 
     /**
-     * @return the sessionAverageAliveTime
+     * Gets the session average alive time.
+     *
+     * @return the sessionAverageAliveTime the session average alive time.
      */
     public int getSessionAverageAliveTime() {
         return sessionAverageAliveTime;
     }
 
     /**
-     * @param sessionAverageAliveTime the sessionAverageAliveTime to set
+     * Sets the session average alive time.
+     *
+     * @param sessionAverageAliveTime the session average alive time.
      */
     public void setSessionAverageAliveTime(int sessionAverageAliveTime) {
         this.sessionAverageAliveTime = sessionAverageAliveTime;
     }
 
     /**
-     * @return the sessionCounter
+     * Gets the session counter.
+     *
+     * @return the session counter.
      */
     public int getSessionCounter() {
         return sessionCounter;
     }
 
     /**
-     * @param sessionCounter the sessionCounter to set
+     * Sets the session counter.
+     *
+     * @param sessionCounter the session counter.
      */
     public void setSessionCounter(int sessionCounter) {
         this.sessionCounter = sessionCounter;
     }
 
     /**
-     * @return the sessionIdLength
+     * Gets the session ID length.
+     *
+     * @return the session ID length.
      */
     public int getSessionIdLength() {
         return sessionIdLength;
     }
 
     /**
-     * @param sessionIdLength the sessionIdLength to set
+     * Sets the session ID length.
+     *
+     * @param sessionIdLength the session ID length.
      */
     public void setSessionIdLength(int sessionIdLength) {
         this.sessionIdLength = sessionIdLength;
     }
 
     /**
-     * @return the SessionMaxAliveTime
+     * Gets the session maximal alive time.
+     *
+     * @return the session maximal alive time.
      */
     public int getSessionMaxAliveTime() {
-        return sessionMaxAliveTime;
+        return SessionMaxAliveTime;
     }
 
     /**
-     * @param sessionMaxAliveTime the SessionMaxAliveTime to set
+     * Sets the session maximal alive time.
+     *
+     * @param SessionMaxAliveTime the session maximal alive time.
      */
-    public void setSessionMaxAliveTime(int sessionMaxAliveTime) {
-        this.sessionMaxAliveTime = sessionMaxAliveTime;
-    }    
+    public void setSessionMaxAliveTime(int SessionMaxAliveTime) {
+        this.SessionMaxAliveTime = SessionMaxAliveTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServerContext getServerContext() {
+        return serverContext;
+    }
 }

@@ -16,11 +16,15 @@
 package com.ajkaandrej.smonitor.agent.rs.model;
 
 /**
- *
+ * The server request interface.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public interface ServerRequest {
-    
+    /**
+     * Gets the server context.
+     * @return the server context.
+     */
     public ServerContext getServerContext();
     
 }

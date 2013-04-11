@@ -18,11 +18,14 @@ package com.ajkaandrej.smonitor.agent.rs.exception;
 import java.io.Serializable;
 
 /**
+ * The service exception.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ServiceException extends Exception implements Serializable {
-    
+
+    /**
+     * The UID for this class.
+     */
     private static final long serialVersionUID = -1344259616590560173L;
-    
 }

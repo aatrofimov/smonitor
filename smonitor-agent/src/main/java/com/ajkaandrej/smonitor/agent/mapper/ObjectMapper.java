@@ -19,18 +19,33 @@ import java.lang.reflect.Type;
 import org.modelmapper.ModelMapper;
 
 /**
+ * The object mapper.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ObjectMapper {
 
+    /**
+     * The object mapper instance.
+     */
     private static ObjectMapper INSTANCE;
+    /**
+     * The model mapper.
+     */
     private ModelMapper mapper;
 
+    /**
+     * The default constructor.
+     */
     private ObjectMapper() {
         mapper = new ModelMapper();
     }
 
+    /**
+     * Gets the object mapper instance.
+     *
+     * @return the object mapper instance.
+     */
     public static ObjectMapper getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ObjectMapper();
@@ -38,6 +53,13 @@ public class ObjectMapper {
         return INSTANCE;
     }
 
+    /**
+     * Maps a instance to an new instance of destinationType.
+     *
+     * @param <D> destination type
+     * @param source object to map from
+     * @param destinationType type to map to
+     */
     public <D extends Object> D map(Object source, Class<D> destinationType) {
         D result = null;
         if (source != null) {
@@ -46,12 +68,26 @@ public class ObjectMapper {
         return result;
     }
 
+    /**
+     * Maps {@code source} to {@code destination}.
+     *
+     * @param source object to map from
+     * @param destination object to map to
+     */
     public void map(Object source, Object destination) {
         if (source != null && destination != null) {
             mapper.map(source, destination);
         }
     }
 
+    /**
+     * Maps {@code source} to an instance of {@code destinationType}.
+     *
+     * @param <D> destination type
+     * @param source object to map from
+     * @param destinationType type to map to
+     * @return fully mapped instance of {@code destinationType}
+     */
     public <D extends Object> D map(Object source, Type destinationType) {
         D result = null;
         if (source != null) {

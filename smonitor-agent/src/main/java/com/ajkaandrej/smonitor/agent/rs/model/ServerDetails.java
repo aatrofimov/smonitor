@@ -19,6 +19,25 @@ package com.ajkaandrej.smonitor.agent.rs.model;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerDetails extends Server {
-    
+public class ServerDetails extends Server implements ServerRequest {
+
+    /**
+     * The server context.
+     */
+    private ServerContext serverContext;
+
+    /**
+     * The default constructor.
+     */
+    public ServerDetails() {
+        serverContext = new ServerContext();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServerContext getServerContext() {
+        return serverContext;
+    }
 }

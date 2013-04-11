@@ -30,6 +30,9 @@ import com.ajkaandrej.smonitor.agent.rs.model.Server;
  */
 public class ServerServiceImpl extends AbstractService implements ServerService {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Server getServer(String remote) throws ServiceException {
         Server result;
@@ -44,6 +47,9 @@ public class ServerServiceImpl extends AbstractService implements ServerService 
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostDetails getHost(String host, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -29,18 +29,23 @@ import java.util.List;
 import org.modelmapper.TypeToken;
 
 /**
+ * The implementation of application service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ApplicationServiceImpl extends AbstractService implements ApplicationService {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Application> getApplications(String host, String remote) throws ServiceException {
-        System.out.println("host " + host + " remote " + remote);        
+        System.out.println("host " + host + " remote " + remote);
         List<Application> result;
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
-            Type listType = new TypeToken<List<Application>>(){}.getType();
+            Type listType = new TypeToken<List<Application>>() {
+            }.getType();
             result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
         } else {
             ApplicationClientService client = new ApplicationClientService(remote);
@@ -48,14 +53,18 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         }
         return result;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Application> getApplications(String remote) throws ServiceException {
         System.out.println("Remote " + remote);
         List<Application> result;
         if (remote == null || remote.isEmpty()) {
             ConnectorService service = ConnectorServiceFactory.getService();
-            Type listType = new TypeToken<List<Application>>(){}.getType();
+            Type listType = new TypeToken<List<Application>>() {
+            }.getType();
             result = ObjectMapper.getInstance().map(service.getApplications(), listType);
         } else {
             ApplicationClientService client = new ApplicationClientService(remote);
@@ -64,6 +73,9 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationDetails getApplication(String host, String name, String remote) throws ServiceException {
         ApplicationDetails result;
@@ -79,6 +91,9 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SessionDetails getSession(String host, String application, String id, String remote) throws ServiceException {
         System.out.println("host " + host + " application " + application + " id " + id + " remote " + remote);
@@ -94,16 +109,25 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AttributeDetails getAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AttributeDetails updateAttribute(String host, String application, String session, String name, AttributeDetails attribute, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

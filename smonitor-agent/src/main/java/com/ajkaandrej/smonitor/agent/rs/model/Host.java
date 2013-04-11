@@ -24,37 +24,77 @@ import java.util.List;
  */
 public class Host {
     
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The name.
+     */
     private String name;
-    
-    private List<Application> applications;
-    
-    public Host() {
-        applications = new ArrayList<Application>();
-    }    
+    /**
+     * The list of applications.
+     */
+    private List<com.ajkaandrej.smonitor.connector.model.Application> applications;
 
+    /**
+     * The default constructor.
+     */
+    public Host() {
+        applications = new ArrayList<com.ajkaandrej.smonitor.connector.model.Application>();
+    }
+
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id the id.
+     */
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    /**
+     * Gets the name.
+     *
+     * @return the name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param name the name.
+     */
     public void setName(String name) {
         this.name = name;
     }
-        
-    public List<Application> getApplications() {
+
+    /**
+     * Gets the applications.
+     *
+     * @return the applications.
+     */
+    public List<com.ajkaandrej.smonitor.connector.model.Application> getApplications() {
         return applications;
     }
 
-    public void setApplications(List<Application> applications) {
+    /**
+     * Sets the applications.
+     *
+     * @param applications the applications.
+     */
+    public void setApplications(List<com.ajkaandrej.smonitor.connector.model.Application> applications) {
         this.applications = applications;
-    }     
+    }   
 }

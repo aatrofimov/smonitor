@@ -33,14 +33,27 @@ import javax.ws.rs.core.MediaType;
 @Path("server")
 public interface ServerService {
 
+    /**
+     * Gets the server.
+     *
+     * @param remote the remote server.
+     * @return the server.
+     * @throws ServiceException if the method fails.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Server getServer(@QueryParam("remote") String remote) throws ServiceException; 
-    
+    Server getServer(@QueryParam("remote") String remote) throws ServiceException;
+
+    /**
+     * Gets the host details.
+     *
+     * @param host the host.
+     * @param remote the remote server.
+     * @return the host details.
+     * @throws ServiceException if the method fails.
+     */
     @GET
     @Path("{host}")
     @Produces(MediaType.APPLICATION_JSON)
     HostDetails getHost(@PathParam("host") String host, @QueryParam("remote") String remote) throws ServiceException;
-    
-    
 }

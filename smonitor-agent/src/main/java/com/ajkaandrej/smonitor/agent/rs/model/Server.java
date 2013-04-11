@@ -24,12 +24,21 @@ import java.util.List;
  */
 public class Server implements ServerRequest {
     
+    /**
+     * The id.
+     */
     private String id;
-    
+    /**
+     * The name.
+     */
     private String name;
-     
+    /**
+     * The list of hosts.
+     */
     private List<Host> hosts;
-    
+    /**
+     * The server context.
+     */
     private ServerContext serverContext;
         
     public Server() {

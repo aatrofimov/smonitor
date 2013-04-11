@@ -19,29 +19,53 @@ import com.ajkaandrej.smonitor.agent.rs.model.ServerRequest;
 import org.jboss.resteasy.client.ProxyFactory;
 
 /**
+ * The abstract client service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class AbstractClientService<T> {
-    
+
+    /**
+     * The agent monitor URL.
+     */
     private static final String AGENT_SERVLER = "/smonitor-agent";
-  
+    /**
+     * The service.
+     */
     private T service;
-    
+    /**
+     * The remote destination.
+     */
     private String remote;
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param clazz the service class.
+     * @param remote the remote destination.
+     */
     public AbstractClientService(Class<T> clazz, String remote) {
-        service = ProxyFactory.create(clazz, remote + AGENT_SERVLER);    
+        service = ProxyFactory.create(clazz, remote + AGENT_SERVLER);
         this.remote = remote;
     }
-    
+
+    /**
+     * Gets the service.
+     *
+     * @return the service.
+     */
     protected T getService() {
         return service;
     }
-    
+
+    /**
+     * Updates the server request.
+     *
+     * @param request the server request.
+     */
     protected void updateServerRequest(ServerRequest request) {
         if (request != null) {
             request.getServerContext().setRemote(remote);
-        }        
+        }
     }
 }
