@@ -35,13 +35,13 @@ public class Host {
     /**
      * The list of applications.
      */
-    private List<com.ajkaandrej.smonitor.connector.model.Application> applications;
+    private List<Application> applications;
 
     /**
      * The default constructor.
      */
     public Host() {
-        applications = new ArrayList<com.ajkaandrej.smonitor.connector.model.Application>();
+        applications = new ArrayList<Application>();
     }
 
     /**
@@ -85,7 +85,7 @@ public class Host {
      *
      * @return the applications.
      */
-    public List<com.ajkaandrej.smonitor.connector.model.Application> getApplications() {
+    public List<Application> getApplications() {
         return applications;
     }
 
@@ -94,7 +94,7 @@ public class Host {
      *
      * @param applications the applications.
      */
-    public void setApplications(List<com.ajkaandrej.smonitor.connector.model.Application> applications) {
+    public void setApplications(List<Application> applications) {
         this.applications = applications;
     }   
 }

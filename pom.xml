@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <name>smonitor</name>
-    <groupId>com.ajkaandrej.smonitor</groupId>
+    <groupId>org.lorislab.smonitor</groupId>
     <artifactId>smonitor</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -21,8 +21,8 @@
     
     <developers>
         <developer>
-            <id>andrej</id>
-            <email>andrej@ajka-andrej.com</email>
+            <id>andrejpetras</id>
+            <email>andrej.petras@lorislab.org</email>
         </developer>
     </developers>
 	
@@ -35,7 +35,7 @@
         <module>smonitor-services</module>      
         <module>smonitor-agent</module>
         <module>smonitor-agent-web</module>
-		<module>gwt-uc</module>
+        <module>gwt-uc</module>
         <module>smonitor-web</module>
     </modules>
 
