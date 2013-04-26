@@ -16,10 +16,10 @@
 package org.lorislab.smonitor.config.service;
 
 import org.lorislab.smonitor.config.exception.ConfigurationException;
-import org.lorislab.smonitor.config.model.Configuration;
 
 /**
- *
+ * The configuration service.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public interface ConfigurationService {
@@ -32,7 +32,7 @@ public interface ConfigurationService {
      * @return the configuration model.
      * @throws ConfigurationException if the method fails.
      */
-    public <T extends Configuration> T loadConfiguration(Class<T> clazz) throws ConfigurationException;
+    public <T> T loadConfiguration(Class<T> clazz) throws ConfigurationException;
 
     /**
      * Reloads the server configuration.
@@ -40,16 +40,7 @@ public interface ConfigurationService {
      * @throws ConfigurationException if the method fails.
      */
     public void reloadConfigurations() throws ConfigurationException;
-         
-    /**
-     * Loads the configuration model.
-     *
-     * @param <T> the configuration model.
-     * @return the configuration model.
-     * @throws ConfigurationException if the method fails.
-     */
-    public <T extends Configuration> T loadConfiguration(T model) throws ConfigurationException;
-    
+
     /**
      * Saves the configuration model.
      * 
@@ -58,6 +49,6 @@ public interface ConfigurationService {
      * @return the saved configuration model.
      * @throws ConfigurationException if the method fails.
      */
-    public <T extends Configuration> T saveConfiguration(T model) throws ConfigurationException;
+    public <T> T saveConfiguration(T model) throws ConfigurationException;
  
 }

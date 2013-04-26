@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ * Copyright 2013 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,36 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.config.exception;
+package org.lorislab.smonitor.config.xml.adapter;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * The configuration exception.
+ * The date adapter.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ConfigurationException extends Exception {
+public class DateAdapter extends XmlAdapter<String, Date> {
 
     /**
-     * The UID for this class.
+     * The simple date format.
      */
-    private static final long serialVersionUID = 4130633452476054466L;
+    private static SimpleDateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
-     * Creates the configuration exception.
-     *
-     * @param message the message.
+     * {@inheritDoc}
      */
-    public ConfigurationException(String message) {
-        super(message);
+    @Override
+    public Date unmarshal(String v) throws Exception {
+        return DF.parse(v);
     }
 
     /**
-     * Creates the configuration exception.
-     *
-     * @param message the message.
-     * @param exception the exception.
+     * {@inheritDoc}
      */
-    public ConfigurationException(String message, Throwable exception) {
-        super(message, exception);
+    @Override
+    public String marshal(Date v) throws Exception {
+        return DF.format(v);
     }
 }

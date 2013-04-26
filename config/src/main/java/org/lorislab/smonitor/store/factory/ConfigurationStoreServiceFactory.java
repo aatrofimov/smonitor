@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.config.factory;
+package org.lorislab.smonitor.store.factory;
 
-import org.lorislab.smonitor.config.service.ConfigurationService;
 import java.util.Iterator;
 import java.util.ServiceLoader;
+import org.lorislab.smonitor.store.service.ConfigurationStoreService;
 
 /**
  * The configuration service factory.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public final class ConfigurationServiceFactory {
+public final class ConfigurationStoreServiceFactory {
 
     /**
      * The configuration service instance.
      */
-    private static ConfigurationService SERVICE = null;
+    private static ConfigurationStoreService SERVICE = null;
 
+    /**
+     * The static block.
+     */
     static {
-        ServiceLoader<ConfigurationService> list = ServiceLoader.load(ConfigurationService.class);
+        ServiceLoader<ConfigurationStoreService> list = ServiceLoader.load(ConfigurationStoreService.class);
         if (list != null) {
-            Iterator<ConfigurationService> iter = list.iterator();
+            Iterator<ConfigurationStoreService> iter = list.iterator();
             if (iter.hasNext()) {
                 SERVICE = iter.next();
             }
@@ -44,16 +47,16 @@ public final class ConfigurationServiceFactory {
     /**
      * The default private constructor
      */
-    private ConfigurationServiceFactory() {
+    private ConfigurationStoreServiceFactory() {
         // empty constructor
     }
 
     /**
-     * Gets the configuration service.
+     * Gets the configuration store service.
      *
-     * @return the configuration service instance.
+     * @return the configuration service store instance.
      */
-    public static ConfigurationService getService() {
+    public static ConfigurationStoreService getService() {
         return SERVICE;
     }
 }
