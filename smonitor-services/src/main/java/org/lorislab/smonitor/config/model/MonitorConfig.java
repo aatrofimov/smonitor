@@ -15,63 +15,48 @@
  */
 package org.lorislab.smonitor.config.model;
 
-import org.lorislab.smonitor.config.model.Configuration;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import org.lorislab.smonitor.config.annotation.Config;
 
 /**
  * The monitor configuration.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class MonitorConfig extends Configuration {
-
-    /**
-     * The module name.
-     */
-    private static final String MODULE = "smonitor";
+@Config
+public class MonitorConfig implements Serializable {
     /**
      * The UID for this class.
      */
     private static final long serialVersionUID = -2314191168502475822L;
-    /**
-     * The list of connections.
-     */
-    private static final String KEY_CONNECTIONS = "connections";
-    /**
-     * The default value.
-     */
-    private static final String KEY_CONNECTIONS_DEFAULT = "";
 
+    private List<String> connections;
+    
     /**
      * The default constructor.
      */
     public MonitorConfig() {
-        super(MODULE);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setDefaultValues() {
-        setValue(KEY_CONNECTIONS, KEY_CONNECTIONS_DEFAULT);
+        connections = new ArrayList<String>();
     }
 
     /**
      * Gets the connections.
      *
      * @return the connections.
-     */
+     */    
     public List<String> getConnections() {
-        return getStringList(KEY_CONNECTIONS);
+        return connections;
     }
 
     /**
      * Sets the connections.
      *
-     * @param items the connections.
-     */
-    public void setConnections(List<String> items) {
-        setStringList(KEY_CONNECTIONS, items);
+     * @param connections the connections.
+     */    
+    public void setConnections(List<String> connections) {
+        this.connections = connections;
     }
+    
 }
