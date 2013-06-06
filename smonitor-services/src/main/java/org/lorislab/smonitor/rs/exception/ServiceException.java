@@ -15,21 +15,34 @@
  */
 package org.lorislab.smonitor.rs.exception;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Andrej Petras
  */
-public class ServiceException  extends Exception implements Serializable {
+public class ServiceException  extends RuntimeException {
     
-    private static final long serialVersionUID = 2565999887640605851L;
+    private static final long serialVersionUID = -4382293726363854140L;
     
-    public ServiceException(String msg) {
+    private String ref;
+    
+    
+    public ServiceException(String ref, String msg) {        
         super(msg);
+        this.ref = ref;
     }
     
-    public ServiceException(String msg, Throwable ex) {
+    public ServiceException(String ref, Throwable ex) {
+        super(ex);
+        this.ref = ref;
+    }
+
+    public ServiceException(String ref, String msg, Throwable ex) {
         super(msg, ex);
+        this.ref = ref;
     }    
+
+    public String getRef() {
+        return ref;
+    }
+        
 }

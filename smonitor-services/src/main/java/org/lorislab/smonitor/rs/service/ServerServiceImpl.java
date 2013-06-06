@@ -45,7 +45,7 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
-    public ServerInfo getServer(String guid) throws ServiceException {
+    public ServerInfo getServer(String guid) {
         ServerInfo result = null;
         AgentData data = service.findByBuid(guid);
         if (data != null) {
@@ -55,11 +55,12 @@ public class ServerServiceImpl implements ServerService {
             try {
                 server = serverService.getServer();
             } catch (Exception ex) {
-                throw new ServiceException("Could not connect to the server " + data.getServer(), ex);
+                throw new ServiceException(guid, "Could not connect to the server " + data.getServer(), ex);
             }
             
             if (server != null) {
                 result = new ServerInfo();
+                result.setGuid(guid);
                 result.setId(server.getId());
                 result.setName(server.getName());
                 

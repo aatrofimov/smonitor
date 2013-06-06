@@ -27,6 +27,7 @@ import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityBooleanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import org.lorislab.smonitor.rs.admin.model.Agent;
+import org.lorislab.smonitor.rs.model.ServerInfo;
 
 /**
  *
@@ -47,7 +48,7 @@ public class AgentGridPanel extends Composite {
         dataGrid = new EntityDataGrid<AgentWrapper>();
         dataGrid.setWidth100();
         selectionModel = new SingleSelectionModel<AgentWrapper>();
-        dataGrid.setSelectionModel(selectionModel);        
+        dataGrid.setSelectionModel(selectionModel);
         initWidget(dataGrid);
         createColumns();
     }
@@ -77,26 +78,49 @@ public class AgentGridPanel extends Composite {
         dataGrid.add(w);
     }
 
+    public void update(String guid, String error) {
+        AgentWrapper item = find(guid);
+        if (item != null) {
+            item.clear();
+            item.error = error;
+            dataGrid.update(item);
+        }
+    }
+
+    public void update(ServerInfo server) {
+        AgentWrapper item = find(server.getGuid());
+        if (item != null) {
+            item.clear();
+            item.connected = true;
+            item.server = server;            
+            dataGrid.update(item);
+        }        
+    }
+
     public void update(final Agent data) {
         if (data != null) {
-            final String guid = data.getGuid();
-            AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
-                @Override
-                public AgentWrapper isItem(AgentWrapper item) {
-                    if (item.agent.getGuid().equals(guid)) {
-                        return item;
-                    }
-                    return null;
-                }
-            });
+            AgentWrapper item = find(data.getGuid());
             if (item != null) {
+                item.clear();
                 item.agent = data;
-                item.server = null;
                 dataGrid.update(item);
             } else {
                 add(data);
             }
         }
+    }
+
+    public AgentWrapper find(final String guid) {
+        AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
+            @Override
+            public AgentWrapper isItem(AgentWrapper item) {
+                if (item.agent.getGuid().equals(guid)) {
+                    return item;
+                }
+                return null;
+            }
+        });
+        return item;
     }
 
     public void remove(final String guid) {
@@ -159,10 +183,10 @@ public class AgentGridPanel extends Composite {
         Column colStatus = table.addColumn("Status", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {
-                if (object.server != null) {
+                if (object.connected) {
                     return "Connected";
                 }
-                return "Not connected";
+                return object.error;
             }
         });
         table.setColumnWidth(colStatus, 200, Style.Unit.PX);

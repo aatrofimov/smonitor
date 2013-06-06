@@ -13,24 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.rs.service;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import org.lorislab.smonitor.rs.model.ServerInfo;
+package org.lorislab.smonitor.rs.exception;
 
 /**
  *
  * @author Andrej Petras
  */
-@Path("server")
-public interface ServerService {
+public class RestServiceException {
     
-    @GET
-    @Path("{guid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public ServerInfo getServer(@PathParam("guid") String guid);
+    private String ref;
+    
+    private String message;
+
+    private String details;
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+        
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+        
 }

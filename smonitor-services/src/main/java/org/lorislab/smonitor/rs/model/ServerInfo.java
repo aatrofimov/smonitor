@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class ServerInfo {
     
+    private String guid;
+    
     /**
      * The id.
      */
@@ -37,6 +39,13 @@ public class ServerInfo {
      */
     private List<ServerApplication> applications;
 
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
     
     public String getId() {
         return id;

@@ -36,25 +36,20 @@ public class ConfigServiceImpl implements ConfigService {
 
     //TODO: load from manifest
     @Override
-    public String getVersion() throws ServiceException {
+    public String getVersion() {
         Properties properties = new Properties();
-        InputStream input = ConfigServiceImpl.class.getClassLoader().getResourceAsStream(PROPERTY_FILE);
-        try {
-            properties.load(input);
-        } catch (Exception ex) {
-            //FIXME: exception handling
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
+        try {            
+            InputStream input = ConfigServiceImpl.class.getClassLoader().getResourceAsStream(PROPERTY_FILE);
+            try {
+                properties.load(input);
+            } finally {
+                if (input != null) {
                     input.close();
-                } catch (Exception ex) {
-                    //FIXME: exception handling
-                    ex.printStackTrace();
                 }
             }
+        } catch (Exception ex) {
+            throw new ServiceException(null, "Error load version properties", ex);
         }
-
         return properties.getProperty(KEY_VERSION);
     }
 }

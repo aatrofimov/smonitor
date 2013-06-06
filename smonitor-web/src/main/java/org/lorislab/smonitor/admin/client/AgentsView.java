@@ -18,8 +18,12 @@ package org.lorislab.smonitor.admin.client;
 import org.lorislab.smonitor.admin.client.panel.AgentDialogBox;
 import org.lorislab.smonitor.gwt.uc.dialogbox.EntityDialogBox;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -28,13 +32,31 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.List;
+import javax.inject.Inject;
+import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.MarshallingWrapper;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestErrorCallback;
+import org.jboss.errai.marshalling.client.Marshalling;
+import org.jboss.errai.marshalling.client.MarshallingSessionProviderFactory;
+import org.jboss.errai.marshalling.client.api.Marshaller;
+import org.jboss.errai.marshalling.client.api.MarshallerFactory;
+import org.jboss.errai.marshalling.client.api.MarshallerFramework;
+import org.jboss.errai.marshalling.client.api.MarshallingSession;
+import org.jboss.errai.marshalling.client.api.ParserFactory;
+import org.jboss.errai.marshalling.client.api.json.EJObject;
+import org.jboss.errai.marshalling.client.api.json.EJValue;
+import org.jboss.errai.marshalling.client.api.json.impl.gwt.GWTJSON;
 import org.lorislab.smonitor.gwt.uc.dialogbox.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
+import org.lorislab.smonitor.rs.exception.RestServiceException;
+import org.lorislab.smonitor.rs.model.ServerInfo;
+import org.lorislab.smonitor.rs.service.ServerService;
 
 /**
  *
@@ -125,6 +147,32 @@ public class AgentsView extends Composite {
         @Override
         public void callback(List<Agent> value) {
             agentPanel.set(value);
+            for (Agent agent : value) {
+                RestClient.create(ServerService.class, serverInfo, serverInfoError).getServer(agent.getGuid());
+            }
+        }
+    };
+
+    final RestErrorCallback serverInfoError = new RestErrorCallback() {
+        @Override
+        public boolean error(Request message, Throwable throwable) {
+            try {
+                throw throwable;
+            } catch (ResponseException e) {
+                Response response = e.getResponse();
+                RestServiceException exception = MarshallingWrapper.fromJSON(response.getText(), RestServiceException.class);  
+                agentPanel.update(exception.getRef(), exception.getMessage());
+            } catch (Throwable t) {
+                Window.alert(t.getMessage());
+            }            
+            return false;
+        }
+    };
+   
+    final RemoteCallback<ServerInfo> serverInfo = new RemoteCallback<ServerInfo>() {
+        @Override
+        public void callback(ServerInfo value) {
+            agentPanel.update(value);
         }
     };
 

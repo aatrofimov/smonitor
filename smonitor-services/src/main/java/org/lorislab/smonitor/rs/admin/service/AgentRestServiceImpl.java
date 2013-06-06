@@ -38,7 +38,7 @@ public class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public List<Agent> get() throws ServiceException {
+    public List<Agent> get() {
         List<Agent> result = new ArrayList<Agent>();
         List<AgentData> items = service.findAll();
         if (items != null) {
@@ -51,7 +51,7 @@ public class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent get(@PathParam("guid") String guid) throws ServiceException {
+    public Agent get(@PathParam("guid") String guid) {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
         if (item != null) {
@@ -66,7 +66,7 @@ public class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent update(String guid, Agent data) throws ServiceException {
+    public Agent update(String guid, Agent data) {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
         item = update(item, data);
@@ -78,7 +78,7 @@ public class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public String delete(String guid) throws ServiceException {
+    public String delete(String guid) {
         String result = null;
         boolean tmp = service.deleteById(guid);
         if (tmp) {
@@ -88,7 +88,7 @@ public class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public boolean changePassword(ChangeAgentKeyRequest data) throws ServiceException {
+    public boolean changePassword(ChangeAgentKeyRequest data) {
         boolean result = false;
         if (data != null) {
             if (data.getKey1() != null && data.getKey2() != null) {

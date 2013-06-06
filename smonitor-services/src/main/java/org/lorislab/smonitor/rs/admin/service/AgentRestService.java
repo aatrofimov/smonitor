@@ -27,7 +27,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
-import org.lorislab.smonitor.rs.exception.ServiceException;
 
 /**
  *
@@ -38,31 +37,31 @@ public interface AgentRestService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Agent> get() throws ServiceException;
+    public List<Agent> get();
        
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent get(@PathParam("guid") String guid) throws ServiceException;
+    public Agent get(@PathParam("guid") String guid);
         
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent create() throws ServiceException;
+    public Agent create();
     
     @POST
     @Path("{guid}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent update(@PathParam("guid") String guid, Agent agent) throws ServiceException;
+    public Agent update(@PathParam("guid") String guid, Agent agent);
     
     @DELETE
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String delete(@PathParam("guid") String guid) throws ServiceException;
+    public String delete(@PathParam("guid") String guid);
     
     @POST
     @Path("password")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)    
-    public boolean changePassword(ChangeAgentKeyRequest data) throws ServiceException;    
+    public boolean changePassword(ChangeAgentKeyRequest data);    
 }

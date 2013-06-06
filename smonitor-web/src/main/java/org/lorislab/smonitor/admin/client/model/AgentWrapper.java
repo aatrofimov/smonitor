@@ -28,4 +28,13 @@ public class AgentWrapper {
     
     public ServerInfo server;
         
+    public boolean connected;
+    
+    public String error;
+    
+    public void clear() {
+        server = null;
+        connected = false;
+        error = null;
+    }
 }

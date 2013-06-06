@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import org.lorislab.smonitor.rs.admin.service.AgentRestServiceImpl;
+import org.lorislab.smonitor.rs.exception.RestServiceExceptionMapper;
 
 /**
  *
@@ -37,7 +38,7 @@ public class RSActivator extends Application {
         RESOURCES.add(AgentRestServiceImpl.class);        
         RESOURCES.add(ServerServiceImpl.class);
         
-//        SINGLETONS.add(new AgentRestServiceImpl());
+        SINGLETONS.add(new RestServiceExceptionMapper());
     }
     
     @Override
