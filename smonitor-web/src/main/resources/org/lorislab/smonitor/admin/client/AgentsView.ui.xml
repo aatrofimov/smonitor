@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:s="urn:import:org.lorislab.smonitor.admin.client.panel">
+    
+    <g:DockLayoutPanel unit="EM">
+        <g:center>
+            <s:AgentGridPanel ui:field="agentPanel" />
+        </g:center>
+
+        <g:south size="3">
+            <g:HorizontalPanel spacing="5">
+                <g:Button ui:field="btnAgentRefresh" >Refresh</g:Button>
+                <g:Button ui:field="btnAgentAdd" >Add</g:Button>
+                <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
+                <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
+            </g:HorizontalPanel>
+        </g:south>
+    </g:DockLayoutPanel>
+    
+   
+</ui:UiBinder>

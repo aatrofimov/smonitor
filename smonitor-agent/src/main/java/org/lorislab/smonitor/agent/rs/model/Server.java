@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class Server implements ServerRequest {
+public class Server {
 
     /**
      * The id.
@@ -36,25 +36,12 @@ public class Server implements ServerRequest {
      * The list of hosts.
      */
     private List<Host> hosts;
-    /**
-     * The server context.
-     */
-    private ServerContext serverContext;
 
     /**
      * The default constructor.
      */
     public Server() {
         hosts = new ArrayList<Host>();
-        serverContext = new ServerContext();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
     }
 
     /**

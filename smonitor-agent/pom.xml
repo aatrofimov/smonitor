@@ -38,12 +38,26 @@
     <build>      
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.xml</exclude>
-                    </excludes>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-rest-client-lib</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>rsclient</classifier>
+                            <includes>
+                                <include>**/model/**</include>
+                                <include>**/exception/*</include>
+                                <include>**/service/*Service.*</include>
+                                <include>**/security/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>            
         </plugins>
     </build>

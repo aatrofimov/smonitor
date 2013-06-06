@@ -5,7 +5,7 @@
   
   <inherits name="com.google.gwt.user.theme.clean.Clean" />
  
-  <inherits name="org.lorislab.smonitor.agent.Agent"/>
+  <!--<inherits name="org.lorislab.smonitor.agent.Agent"/>-->
   <inherits name="org.lorislab.smonitor.SMonitor"/>
   
   <inherits name="org.jboss.errai.enterprise.Jaxrs"/>

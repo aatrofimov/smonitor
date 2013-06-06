@@ -33,14 +33,15 @@ public class Admin {
     @PostConstruct
     public void create() {
         
-        RestClient.setJacksonMarshallingActive(true);
-        
+        RestClient.setJacksonMarshallingActive(true);        
+        RestClient.setApplicationRoot("rs");
+
         mainLayout = new MainLayout();
         RootLayoutPanel.get().add(mainLayout);
     }
 
     @AfterInitialization
     private void init() {
-        mainLayout.footer.init();
+        mainLayout.init();
     }
 }

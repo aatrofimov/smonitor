@@ -24,12 +24,8 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetails extends Application implements ServerRequest {
+public class ApplicationDetails extends Application {
 
-    /**
-     * The server context.
-     */
-    private ServerContext serverContext;
     /**
      * The count of active sessions.
      */
@@ -88,7 +84,6 @@ public class ApplicationDetails extends Application implements ServerRequest {
      */
     public ApplicationDetails() {
         sessions = new ArrayList<Session>();
-        serverContext = new ServerContext();
     }
 
     /**
@@ -325,13 +320,5 @@ public class ApplicationDetails extends Application implements ServerRequest {
      */
     public void setSessionMaxAliveTime(int SessionMaxAliveTime) {
         this.SessionMaxAliveTime = SessionMaxAliveTime;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
-    }
+    }  
 }

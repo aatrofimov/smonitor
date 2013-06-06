@@ -19,25 +19,6 @@ package org.lorislab.smonitor.agent.rs.model;
  * The attribute details.
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributeDetails extends Attribute implements ServerRequest {
-
-    /**
-     * The server context.
-     */
-    private ServerContext serverContext;
-
-    /**
-     * The default constructor.
-     */
-    public AttributeDetails() {
-        serverContext = new ServerContext();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
-    }
+public class AttributeDetails extends Attribute {
+   
 }

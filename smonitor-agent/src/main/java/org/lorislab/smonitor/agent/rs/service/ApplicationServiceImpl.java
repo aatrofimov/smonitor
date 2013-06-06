@@ -16,9 +16,8 @@
 package org.lorislab.smonitor.agent.rs.service;
 
 import org.lorislab.smonitor.agent.mapper.ObjectMapper;
-import org.lorislab.smonitor.agent.rs.client.ApplicationClientService;
 import org.lorislab.smonitor.connector.factory.ConnectorServiceFactory;
-import org.lorislab.smonitor.agent.rs.exception.ServiceException;
+import org.lorislab.smonitor.agent.rs.exception.AgentException;
 import org.lorislab.smonitor.agent.rs.model.Application;
 import org.lorislab.smonitor.agent.rs.model.ApplicationDetails;
 import org.lorislab.smonitor.agent.rs.model.AttributeDetails;
@@ -33,24 +32,18 @@ import org.modelmapper.TypeToken;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationServiceImpl extends AbstractService implements ApplicationService {
+public class ApplicationServiceImpl implements ApplicationService {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Application> getApplications(String host, String remote) throws ServiceException {
-        System.out.println("host " + host + " remote " + remote);
+    public List<Application> getApplications(String host) throws AgentException {
         List<Application> result;
-        if (remote == null || remote.isEmpty()) {
-            ConnectorService service = ConnectorServiceFactory.getService();
-            Type listType = new TypeToken<List<Application>>() {
-            }.getType();
-            result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
-        } else {
-            ApplicationClientService client = new ApplicationClientService(remote);
-            result = client.getApplications();
-        }
+        ConnectorService service = ConnectorServiceFactory.getService();
+        Type listType = new TypeToken<List<Application>>() {
+        }.getType();
+        result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
         return result;
     }
 
@@ -58,18 +51,12 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public List<Application> getApplications(String remote) throws ServiceException {
-        System.out.println("Remote " + remote);
+    public List<Application> getApplications() throws AgentException {
         List<Application> result;
-        if (remote == null || remote.isEmpty()) {
-            ConnectorService service = ConnectorServiceFactory.getService();
-            Type listType = new TypeToken<List<Application>>() {
-            }.getType();
-            result = ObjectMapper.getInstance().map(service.getApplications(), listType);
-        } else {
-            ApplicationClientService client = new ApplicationClientService(remote);
-            result = client.getApplications();
-        }
+        ConnectorService service = ConnectorServiceFactory.getService();
+        Type listType = new TypeToken<List<Application>>() {
+        }.getType();
+        result = ObjectMapper.getInstance().map(service.getApplications(), listType);
         return result;
     }
 
@@ -77,17 +64,10 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public ApplicationDetails getApplication(String host, String name, String remote) throws ServiceException {
+    public ApplicationDetails getApplication(String host, String name) throws AgentException {
         ApplicationDetails result;
-        System.out.println("host " + host + " application " + name + " remote " + remote);
-        if (remote == null || remote.isEmpty()) {
-            ConnectorService service = ConnectorServiceFactory.getService();
-            result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
-            createServerRequest(result);
-        } else {
-            ApplicationClientService client = new ApplicationClientService(remote);
-            result = client.getApplication(host, name);
-        }
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
         return result;
     }
 
@@ -95,17 +75,10 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public SessionDetails getSession(String host, String application, String id, String remote) throws ServiceException {
-        System.out.println("host " + host + " application " + application + " id " + id + " remote " + remote);
+    public SessionDetails getSession(String host, String application, String id) throws AgentException {
         SessionDetails result;
-        if (remote == null || remote.isEmpty()) {
-            ConnectorService service = ConnectorServiceFactory.getService();
-            result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
-            createServerRequest(result);
-        } else {
-            ApplicationClientService client = new ApplicationClientService(remote);
-            result = client.getSession(host, application, id);
-        }
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
         return result;
     }
 
@@ -113,7 +86,7 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public AttributeDetails getAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
+    public AttributeDetails getAttribute(String host, String application, String session, String name) throws AgentException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -121,7 +94,7 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public AttributeDetails updateAttribute(String host, String application, String session, String name, AttributeDetails attribute, String remote) throws ServiceException {
+    public AttributeDetails updateAttribute(String host, String application, String session, String name, AttributeDetails attribute) throws AgentException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -129,7 +102,7 @@ public class ApplicationServiceImpl extends AbstractService implements Applicati
      * {@inheritDoc}
      */
     @Override
-    public void deleteAttribute(String host, String application, String session, String name, String remote) throws ServiceException {
+    public void deleteAttribute(String host, String application, String session, String name) throws AgentException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -15,14 +15,13 @@
  */
 package org.lorislab.smonitor.agent.rs.service;
 
-import org.lorislab.smonitor.agent.rs.exception.ServiceException;
+import org.lorislab.smonitor.agent.rs.exception.AgentException;
 import org.lorislab.smonitor.agent.rs.model.HostDetails;
 import org.lorislab.smonitor.agent.rs.model.Server;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -36,24 +35,22 @@ public interface ServerService {
     /**
      * Gets the server.
      *
-     * @param remote the remote server.
      * @return the server.
-     * @throws ServiceException if the method fails.
+     * @throws AgentException if the method fails.
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Server getServer(@QueryParam("remote") String remote) throws ServiceException;
+    Server getServer() throws AgentException;
 
     /**
      * Gets the host details.
      *
      * @param host the host.
-     * @param remote the remote server.
      * @return the host details.
-     * @throws ServiceException if the method fails.
+     * @throws AgentException if the method fails.
      */
     @GET
     @Path("{host}")
     @Produces(MediaType.APPLICATION_JSON)
-    HostDetails getHost(@PathParam("host") String host, @QueryParam("remote") String remote) throws ServiceException;
+    HostDetails getHost(@PathParam("host") String host) throws AgentException;
 }

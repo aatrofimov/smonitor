@@ -20,25 +20,6 @@ package org.lorislab.smonitor.agent.rs.model;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HostDetails extends Host implements ServerRequest {
-
-    /**
-     * The server context.
-     */
-    private ServerContext serverContext;
-
-    /**
-     * The default constructor.
-     */
-    public HostDetails() {
-        serverContext = new ServerContext();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
-    }
+public class HostDetails extends Host {
+   
 }

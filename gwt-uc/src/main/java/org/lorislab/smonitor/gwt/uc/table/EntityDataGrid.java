@@ -22,6 +22,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,13 +30,14 @@ import java.util.List;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class EntityDataGrid<T> extends DataGrid<T> {
-  private ListDataProvider<T> dataProvider;
+
+    private ListDataProvider<T> dataProvider;
 
     public EntityDataGrid() {
         dataProvider = new ListDataProvider<T>();
         dataProvider.addDataDisplay(this);
         setEmptyTableWidget(new Label("Empty"));
-        
+
         setAutoHeaderRefreshDisabled(true);
         setAutoFooterRefreshDisabled(true);
     }
@@ -57,9 +59,56 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         dataProvider.getList().clear();
     }
 
+    public void add(T data) {
+        dataProvider.getList().add(data);
+        dataProvider.flush();
+    }
+
     public void addAll(List<T> data) {
         dataProvider.getList().addAll(data);
         dataProvider.flush();
+    }
+
+    public void refresh() {
+        dataProvider.refresh();
+    }
+    
+    public void update(T data) {
+        if (data != null) {
+            int index = dataProvider.getList().indexOf(data);
+            if (index != -1) {
+                dataProvider.getList().set(index, data);
+                dataProvider.flush();
+            }
+        }
+    }
+
+    public void remove(T data) {
+        if (data != null) {
+            dataProvider.getList().remove(data);
+            dataProvider.flush();
+        }
+    }
+
+    public void remove(FilterItem<T> filter) {
+        T item = find(filter);
+        if (item != null) {
+            remove(item);
+        }
+    }
+    
+    public T find(FilterItem<T> filter) {
+        T result = null;
+        if (filter != null) {
+            List<T> items = dataProvider.getList();
+            if (items != null && !items.isEmpty()) {
+                Iterator<T> iter = items.iterator();
+                while (result == null && iter.hasNext()) {
+                    result = filter.isItem(iter.next());
+                }
+            }
+        }
+        return result;
     }
 
     public Column<T, ?> addColumn(String name, AbstractEntityColumn<T, ?, ?> column) {
@@ -72,5 +121,10 @@ public class EntityDataGrid<T> extends DataGrid<T> {
             addColumnSortHandler(new ColumnSortHandler<T>(dataProvider.getList(), column));
         }
         return column;
-    }        
+    }
+
+    public interface FilterItem<T> {
+
+        public T isItem(T item);
+    }
 }

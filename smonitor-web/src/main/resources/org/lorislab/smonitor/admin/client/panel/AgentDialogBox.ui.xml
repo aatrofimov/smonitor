@@ -1,0 +1,64 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+    <g:DockLayoutPanel width="400" height="200" unit="PX">
+        
+        <g:north size="20">    
+            <g:Label ui:field="title" text="Agent dialog"/>        
+        </g:north>
+    
+        <g:center>
+            <g:Grid width="100%">
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Name:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:TextBox ui:field="txtName" maxLength="30" width="100%"/>
+                    </g:customCell>                    
+                </g:row>
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Server:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:TextBox ui:field="txtServer" maxLength="30" width="100%"/>
+                    </g:customCell>                                        
+                </g:row>
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Key:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:TextBox ui:field="txtKey" maxLength="30" width="100%"/>
+                    </g:customCell>                                        
+                </g:row>                
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Enabled:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:CheckBox ui:field="chEnabled"></g:CheckBox>
+                    </g:customCell>                                        
+                </g:row>                
+            </g:Grid>            
+        </g:center>
+
+        <g:south size="45">
+            <g:HorizontalPanel spacing="5">
+                <g:cell horizontalAlignment="ALIGN_RIGHT" width="100%">
+                    <g:Button ui:field="btnCreate" >Create</g:Button>
+                </g:cell>
+                <g:cell horizontalAlignment="ALIGN_RIGHT" width="100%">
+                    <g:Button ui:field="btnUpdate" >Update</g:Button>
+                </g:cell>                
+                <g:cell horizontalAlignment="ALIGN_RIGHT" width="100%">
+                    <g:Button ui:field="btnCancel" >Cancel</g:Button>
+                </g:cell>                                
+            </g:HorizontalPanel>
+        </g:south>
+        
+    </g:DockLayoutPanel>
+</ui:UiBinder>

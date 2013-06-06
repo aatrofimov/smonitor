@@ -23,11 +23,11 @@
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
         </dependency> 
-        <dependency>
+<!--        <dependency>
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>config-file</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>        -->
         <!-- MAPPER -->
         <dependency>
             <groupId>org.modelmapper</groupId>

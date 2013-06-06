@@ -18,8 +18,7 @@ package org.lorislab.smonitor.agent.rs.service;
 import org.lorislab.smonitor.connector.service.ConnectorService;
 import org.lorislab.smonitor.connector.factory.ConnectorServiceFactory;
 import org.lorislab.smonitor.agent.mapper.ObjectMapper;
-import org.lorislab.smonitor.agent.rs.client.ServerClientService;
-import org.lorislab.smonitor.agent.rs.exception.ServiceException;
+import org.lorislab.smonitor.agent.rs.exception.AgentException;
 import org.lorislab.smonitor.agent.rs.model.HostDetails;
 import org.lorislab.smonitor.agent.rs.model.Server;
 
@@ -28,22 +27,16 @@ import org.lorislab.smonitor.agent.rs.model.Server;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerServiceImpl extends AbstractService implements ServerService {
+public class ServerServiceImpl implements ServerService {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Server getServer(String remote) throws ServiceException {
+    public Server getServer() throws AgentException {
         Server result;
-        if (remote == null || remote.isEmpty()) {
-            ConnectorService service = ConnectorServiceFactory.getService();
-            result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
-            createServerRequest(result);
-        } else {
-            ServerClientService client = new ServerClientService(remote);
-            result = client.getServer();
-        }
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
         return result;
     }
 
@@ -51,7 +44,7 @@ public class ServerServiceImpl extends AbstractService implements ServerService 
      * {@inheritDoc}
      */
     @Override
-    public HostDetails getHost(String host, String remote) throws ServiceException {
+    public HostDetails getHost(String host) throws AgentException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

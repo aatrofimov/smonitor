@@ -40,22 +40,24 @@ public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
      */
     private EntityTablePanelSelectionHandler<E, T> selectionHandler;
 
+    private SingleSelectionModel<T> selectionModel;
+    
     /**
      * The default constructor.
      */
     public EntityDataGridPanel() {
         dataGrid = new EntityDataGrid<T>();
         dataGrid.setWidth100();
-        final SingleSelectionModel<T> ssm = new SingleSelectionModel<T>();
-        ssm.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        selectionModel = new SingleSelectionModel<T>();
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (selectionHandler != null && ssm.getSelectedObject() != null) {
-                    selectionHandler.selectionChanged(data, ssm.getSelectedObject());
+                if (selectionHandler != null && selectionModel.getSelectedObject() != null) {
+                    selectionHandler.selectionChanged(data, selectionModel.getSelectedObject());
                 }
             }
         });
-        dataGrid.setSelectionModel(ssm);
+        dataGrid.setSelectionModel(selectionModel);
         initWidget(dataGrid);
     }
 
@@ -83,11 +85,19 @@ public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
      * @param list the list of items.
      */
     public void setData(E model, List<T> list) {
-        reset();
         this.data = model;
-        dataGrid.addAll(list);
+        setData(list);
     }
 
+    public void setData(List<T> list) {
+        reset();
+        dataGrid.addAll(list);
+    }
+       
+    public SingleSelectionModel<T> getSelectionModel() {
+        return selectionModel;
+    }
+    
     /**
      * Resets the panel.
      */

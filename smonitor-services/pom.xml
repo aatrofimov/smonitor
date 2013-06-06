@@ -13,15 +13,21 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>config</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>smonitor-agent</artifactId>
+            <artifactId>datastore</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>        
+        <dependency>
+            <groupId>org.lorislab.smonitor</groupId>
+            <artifactId>smonitor-agent-client</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>        

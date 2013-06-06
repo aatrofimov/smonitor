@@ -16,34 +16,85 @@
 package org.lorislab.smonitor.admin.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.admin.client.panel.FooterPanel;
-import org.lorislab.smonitor.admin.client.panel.HeaderPanel;
-import org.lorislab.smonitor.admin.client.panel.MainPanel;
+import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.lorislab.smonitor.rs.service.ConfigService;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class MainLayout extends Composite {
-    
-    interface MyUiBinder extends UiBinder<Widget, MainLayout> { }
-    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-   
-    
+
     @UiField
-    MainPanel main;
-    
+    SimpleLayoutPanel mainPanel;
     @UiField
-    HeaderPanel header;
-    
+    SpanElement version;
     @UiField
-    FooterPanel footer;
-    
+    MenuItem btnAgents;
+    @UiField
+    MenuItem btnSessions;
+    @UiField
+    MenuItem btnLogout;
+    private AgentsView agentsView;
+    private SessionsView sessionsView;
+
     public MainLayout() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        agentsView = new AgentsView();
+        sessionsView = new SessionsView();
+
+        mainPanel.setWidget(agentsView);
+
+        btnAgents.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                mainPanel.setWidget(agentsView);
+            }
+        });
+        btnSessions.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                mainPanel.setWidget(sessionsView);
+            }
+        });
+        btnLogout.setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                Window.alert("Logout!");
+            }
+        });
     }
+
+    public void init() {
+        try {
+            version.setInnerText("Loading ...");
+            RestClient.create(ConfigService.class, versionCallback).getVersion();
+        } catch (Exception ex) {
+            Window.alert("Error: " + ex.getMessage());
+        }
+        agentsView.refresh();
+    }
+
+    interface MyUiBinder extends UiBinder<Widget, MainLayout> {
+    }
+    
+    private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+    
+    final RemoteCallback<String> versionCallback = new RemoteCallback<String>() {
+        @Override
+        public void callback(String value) {
+            version.setInnerText(value);
+        }
+    };
 }

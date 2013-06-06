@@ -20,25 +20,15 @@
         </dependency>
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>config-file</artifactId>
-            <version>${project.version}</version>
-        </dependency>                 
-        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>smonitor-agent</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
             <artifactId>smonitor-services</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>h2</artifactId>
+                    <groupId>com.h2database</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>          
-        <!-- MAPPER -->
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <scope>compile</scope>
-        </dependency>
         <!-- GWT -->
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
@@ -46,13 +36,6 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>        
-        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>smonitor-agent</artifactId>
-            <version>${project.version}</version>
-            <classifier>sources</classifier>
-            <scope>provided</scope>
-        </dependency> 
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>smonitor-services</artifactId>
@@ -162,6 +145,8 @@
                     <warName>smonitor</warName>
                     <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@</outputFileNameMapping>
                     <packagingExcludes>**/javax/**/*,**/com/**/*,**/org/**/*</packagingExcludes>
+                    <!--<packagingExcludes>**/javax/**/*,**/com/**/*,**/org/jboss/**/*</packagingExcludes>-->
+                    <!--<packagingIncludes>**/lorislab/**/*</packagingIncludes>-->
                 </configuration>
             </plugin>
             <plugin>

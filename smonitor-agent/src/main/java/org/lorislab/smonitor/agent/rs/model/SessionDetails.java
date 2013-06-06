@@ -20,10 +20,10 @@ import java.util.List;
 
 /**
  * The session details.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetails extends Session implements ServerRequest {
+public class SessionDetails extends Session {
 
     /**
      * The host.
@@ -57,26 +57,16 @@ public class SessionDetails extends Session implements ServerRequest {
      * The list of attributes.
      */
     private List<Attribute> attributes;
-        /**
-     * The server context.
-     */
-    private ServerContext serverContext;
-        /**
+
+    /**
      * The default constructor.
      */
     public SessionDetails() {
         attributes = new ArrayList<Attribute>();
         roles = new ArrayList<String>();
-        serverContext = new ServerContext();
     }
+  
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServerContext getServerContext() {
-        return serverContext;
-    }
-  /**
      * Gets the application.
      *
      * @return the application.
@@ -218,5 +208,5 @@ public class SessionDetails extends Session implements ServerRequest {
      */
     public boolean isNewSession() {
         return newSession;
-    }         
+    }
 }
