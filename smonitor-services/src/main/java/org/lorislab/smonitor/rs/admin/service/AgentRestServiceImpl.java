@@ -94,11 +94,16 @@ public class AgentRestServiceImpl implements AgentRestService {
             if (data.getKey1() != null && data.getKey2() != null) {
                 AgentData tmp = service.findByBuid(data.getGuid());
                 if (tmp != null) {
-                    if (tmp.getKey().equals(data.getKey1())) {
+                    if (tmp.getKey() == null && data.getKey1() == null) {
                         tmp.setKey(data.getKey2());
                         service.save(tmp);
                     } else {
-                        // LOG
+                        if (tmp.getKey() != null && tmp.getKey().equals(data.getKey1())) {
+                            tmp.setKey(data.getKey1());
+                            service.save(tmp);
+                        } else {
+                            // LOG
+                        }
                     }
                 } else {
                     // LOG

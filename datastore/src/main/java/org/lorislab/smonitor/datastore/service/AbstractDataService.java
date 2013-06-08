@@ -108,7 +108,6 @@ public abstract class AbstractDataService<T extends PersistenceData> {
     public boolean deleteById(String guid) {
         int count = 0;
         try {
-            dao.queryForId(guid);
             count = dao.deleteById(guid);
         } catch (SQLException ex) {
             ex.printStackTrace();

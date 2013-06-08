@@ -53,9 +53,6 @@ public class AgentDialogBox extends EntityDialogBox<Agent> {
     TextBox txtServer;
     
     @UiField
-    TextBox txtKey;
-    
-    @UiField
     CheckBox chEnabled;
 
     public AgentDialogBox() {

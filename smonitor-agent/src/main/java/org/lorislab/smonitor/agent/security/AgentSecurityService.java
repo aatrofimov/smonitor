@@ -13,34 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.agent.rs.provider;
-
-import org.lorislab.smonitor.agent.security.AgentSecurity;
+package org.lorislab.smonitor.agent.security;
 
 /**
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SecurityService {
-        
-    private static String KEY = null;
+public class AgentSecurityService {
+ 
+    public static final String HEADER_KEY = "SMonitor-Agent-Key";
     
-    public static String getKey() {
-        if (KEY == null) {
-            String key = System.getProperty(SecurityService.class.getName());
-            if (key == null || key.isEmpty()) {
-                key = AgentSecurity.getDefaultKey();
-            }
-            KEY = key;
-        }
-        return KEY;
-    }
-       
     public static boolean checkKey(String key) {
-        String privateKey = getKey();
-        if (privateKey.equals(key)) {
-            return true;
+        String privateKey = System.getProperty(AgentSecurityService.class.getName(), null);
+        if (privateKey == null) {
+            return key == null;
         }
-        return false;
+        return privateKey.equals(key);       
     }
 }

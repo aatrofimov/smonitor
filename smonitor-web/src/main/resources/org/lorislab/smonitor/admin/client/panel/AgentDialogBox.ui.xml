@@ -26,15 +26,7 @@
                     <g:customCell>
                         <g:TextBox ui:field="txtServer" maxLength="30" width="100%"/>
                     </g:customCell>                                        
-                </g:row>
-                <g:row>
-                    <g:customCell>
-                        <g:Label text="Key:"/>
-                    </g:customCell>
-                    <g:customCell>
-                        <g:TextBox ui:field="txtKey" maxLength="30" width="100%"/>
-                    </g:customCell>                                        
-                </g:row>                
+                </g:row>              
                 <g:row>
                     <g:customCell>
                         <g:Label text="Enabled:"/>

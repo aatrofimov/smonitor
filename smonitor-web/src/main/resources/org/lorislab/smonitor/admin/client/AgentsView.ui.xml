@@ -14,6 +14,7 @@
                 <g:Button ui:field="btnAgentAdd" >Add</g:Button>
                 <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
                 <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
+                <g:Button ui:field="btnAgentPassword" >Password</g:Button>
             </g:HorizontalPanel>
         </g:south>
     </g:DockLayoutPanel>

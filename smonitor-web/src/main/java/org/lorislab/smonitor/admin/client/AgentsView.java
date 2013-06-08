@@ -20,8 +20,6 @@ import org.lorislab.smonitor.gwt.uc.dialogbox.EntityDialogBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -31,10 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.List;
 import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.enterprise.client.jaxrs.MarshallingWrapper;
-import org.jboss.errai.enterprise.client.jaxrs.api.ResponseException;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.errai.enterprise.client.jaxrs.api.RestErrorCallback;
 import org.lorislab.smonitor.gwt.uc.dialogbox.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
@@ -42,6 +37,7 @@ import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
 import org.lorislab.smonitor.rs.admin.model.Agent;
+import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerInfo;
@@ -63,24 +59,28 @@ public class AgentsView extends Composite {
     Button btnAgentEdit;
     @UiField
     Button btnAgentDelete;
-    private AgentDialogBox dialogBox = new AgentDialogBox();
-
-    private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
+    @UiField
+    Button btnAgentPassword;
     
+    private AgentDialogBox dialogBox = new AgentDialogBox();
+    private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
+    private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
+
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
 
         dialogBox.setCreateHandler(new DialogEventHandler<Agent>() {
             @Override
             public void event(Agent value) {
-                update(value);
+                agentService.call(agentUpdate).update(value.getGuid(), value);
+
             }
         });
 
         dialogBox.setUpdateHandler(new DialogEventHandler<Agent>() {
             @Override
             public void event(Agent value) {
-                update(value);
+                agentService.call(agentUpdate).update(value.getGuid(), value);
             }
         });
 
@@ -90,6 +90,7 @@ public class AgentsView extends Composite {
                 AgentWrapper w = agentPanel.getSelectedObject();
                 btnAgentDelete.setEnabled(w != null);
                 btnAgentEdit.setEnabled(w != null);
+                btnAgentPassword.setEnabled(w != null);                
             }
         });
 
@@ -103,7 +104,7 @@ public class AgentsView extends Composite {
         btnAgentAdd.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                create();
+                agentService.call(agentCreate).create();
             }
         });
 
@@ -122,80 +123,55 @@ public class AgentsView extends Composite {
         btnAgentDelete.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                delete();
+                AgentWrapper w = agentPanel.getSelectedObject();
+                if (w != null) {
+                    agentService.call(agentDelete).delete(w.agent.getGuid());
+                }
             }
         });
     }
 
     public void refresh() {
-        try {
-            RestClient.create(AgentRestService.class, agents).get();
-        } catch (Exception ex) {
-            Window.alert("Error: " + ex.getMessage());
-        }
+        agentService.call(agents).get();
     }
+    
     final RemoteCallback<List<Agent>> agents = new RemoteCallback<List<Agent>>() {
         @Override
         public void callback(List<Agent> value) {
             agentPanel.set(value);
             for (Agent agent : value) {
-                serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
+                if (agent.isEnabled()) {
+                    serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
+                } else {
+                    agentPanel.update(agent.getGuid(), null);
+                }
             }
         }
     };
-
     final RestServiceExceptionCallback serverInfoError = new RestServiceExceptionCallback() {
         @Override
         public void exception(RestServiceException exception) {
             agentPanel.update(exception.getRef(), exception.getMessage());
         }
     };
-   
     final RemoteCallback<ServerInfo> serverInfo = new RemoteCallback<ServerInfo>() {
         @Override
         public void callback(ServerInfo value) {
             agentPanel.update(value);
         }
     };
-
-    private void delete() {
-        try {
-            AgentWrapper w = agentPanel.getSelectedObject();
-            if (w != null) {
-                RestClient.create(AgentRestService.class, agentDelete).delete(w.agent.getGuid());
-            }
-        } catch (Exception ex) {
-            Window.alert("Error: " + ex.getMessage());
-        }
-    }
     final RemoteCallback<String> agentDelete = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
             agentPanel.remove(value);
         }
     };
-
-    private void create() {
-        try {
-            RestClient.create(AgentRestService.class, agentCreate).create();
-        } catch (Exception ex) {
-            Window.alert("Error: " + ex.getMessage());
-        }
-    }
     final RemoteCallback<Agent> agentCreate = new RemoteCallback<Agent>() {
         @Override
         public void callback(Agent value) {
             openDialog(value, EntityDialogBox.Mode.CREATE);
         }
     };
-
-    private void update(Agent agent) {
-        try {
-            RestClient.create(AgentRestService.class, agentUpdate).update(agent.getGuid(), agent);
-        } catch (Exception ex) {
-            Window.alert("Error: " + ex.getMessage());
-        }
-    }
     final RemoteCallback<Agent> agentUpdate = new RemoteCallback<Agent>() {
         @Override
         public void callback(Agent value) {
@@ -203,7 +179,7 @@ public class AgentsView extends Composite {
             dialogBox.close();
         }
     };
-
+       
     private void openDialog(Agent agent, EntityDialogBox.Mode mode) {
         dialogBox.center();
         dialogBox.open(agent, mode);

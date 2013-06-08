@@ -18,7 +18,7 @@ package org.lorislabr.smonitor.agent.rs.client.executor;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
-import org.lorislab.smonitor.agent.security.AgentSecurity;
+import org.lorislab.smonitor.agent.security.AgentSecurityService;
 
 /**
  *
@@ -48,7 +48,7 @@ public class AgentClientExecutor extends ApacheHttpClient4Executor {
     @Override
     public ClientResponse execute(ClientRequest request) throws Exception {
         if (key != null) {
-            request.header(AgentSecurity.HEADER_KEY, key);
+            request.header(AgentSecurityService.HEADER_KEY, key);
         }
         return super.execute(request);
     }    

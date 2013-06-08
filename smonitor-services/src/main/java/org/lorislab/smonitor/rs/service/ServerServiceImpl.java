@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.core.Response.Status;
+import org.apache.http.client.ClientProtocolException;
+import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ClientResponseFailure;
 import org.lorislab.smonitor.agent.rs.model.Application;
 import org.lorislab.smonitor.agent.rs.model.Host;
 import org.lorislab.smonitor.agent.rs.model.Server;
@@ -54,8 +58,18 @@ public class ServerServiceImpl implements ServerService {
             Server server = null;
             try {
                 server = serverService.getServer();
+            } catch (ClientResponseFailure e) {
+                ClientResponse response = e.getResponse();
+                if (response.getResponseStatus().equals(Status.FORBIDDEN)) {
+                    throw new ServiceException(guid, "Authentification failed", e);
+                }
+                throw new ServiceException(guid, "Error in the communication to the server " + response.getResponseStatus().getStatusCode(), e);
             } catch (Exception ex) {
-                throw new ServiceException(guid, "Could not connect to the server " + data.getServer(), ex);
+                String msg = ex.getMessage();
+                if (msg.startsWith(ClientProtocolException.class.getName())) {
+                    throw new ServiceException(guid, "The server is not valid address.", ex);
+                }
+                throw new ServiceException(guid, "Could not connect to the server", ex);
             }
             
             if (server != null) {

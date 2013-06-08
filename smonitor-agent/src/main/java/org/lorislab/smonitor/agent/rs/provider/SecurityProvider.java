@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.agent.rs.provider;
 
+import org.lorislab.smonitor.agent.security.AgentSecurityService;
 import java.util.List;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -26,7 +27,6 @@ import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
-import org.lorislab.smonitor.agent.security.AgentSecurity;
 
 /**
  *
@@ -40,10 +40,16 @@ public class SecurityProvider implements PreProcessInterceptor {
     @Override
     public ServerResponse preProcess(HttpRequest request, ResourceMethod method) throws Failure, WebApplicationException {        
         ServerResponse result = null;
-        List<String> keys = request.getHttpHeaders().getRequestHeader(AgentSecurity.HEADER_KEY);
-        if (keys == null || keys.size() != 1 || !SecurityService.checkKey(keys.get(0))) {
-            result = (ServerResponse) Response.status(Response.Status.FORBIDDEN).build();  
-        }        
+        List<String> keys = request.getHttpHeaders().getRequestHeader(AgentSecurityService.HEADER_KEY);
+        if (keys == null) {
+            if (!AgentSecurityService.checkKey(null)) {
+                result = (ServerResponse) Response.status(Response.Status.FORBIDDEN).build();
+            }
+        } else {
+            if (keys.size() != 1 || !AgentSecurityService.checkKey(keys.get(0))) {
+                result = (ServerResponse) Response.status(Response.Status.FORBIDDEN).build();  
+            }
+        }            
         return result;
     }
     
