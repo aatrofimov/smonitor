@@ -46,6 +46,10 @@ public final class ConstantValues {
      */
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
 
+    public static final String EVENT_MOUSEOVER = "mouseover";
+    
+    public static final String EVENT_MOUSEOUT = "mouseout";
+    
     /**
      * The private constructor.
      */

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.dialogbox;
+package org.lorislab.smonitor.admin.client.handler;
 
 /**
  *

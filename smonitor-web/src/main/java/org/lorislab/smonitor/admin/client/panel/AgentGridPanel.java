@@ -15,14 +15,21 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
+import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.RowHoverEvent;
+import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityBooleanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
@@ -40,17 +47,40 @@ public class AgentGridPanel extends Composite {
      */
     private EntityDataGrid<AgentWrapper> dataGrid;
     private SingleSelectionModel<AgentWrapper> selectionModel;
+    private TableRowHoverHandler tableRowHoverHandler;
 
     /**
      * The default constructor.
      */
     public AgentGridPanel() {
         dataGrid = new EntityDataGrid<AgentWrapper>();
+
+        dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
+            @Override
+            public void onRowHover(RowHoverEvent event) {
+                if (tableRowHoverHandler != null) {
+                    if (ConstantValues.EVENT_MOUSEOUT.equals((event.getBrowserEvent().getType()))) {
+                        if (HoveringScope.CELL_HOVER.equals(event.getHoveringScope())) {
+                            tableRowHoverHandler.onRowOut();
+                        }
+                    } else {
+                        if (HoveringScope.ROW_HOVER.equals(event.getHoveringScope())) {
+                            tableRowHoverHandler.onRowOver(event.getHoveringRow());
+                        }
+                    }
+                }
+            }
+        });
+
         dataGrid.setWidth100();
         selectionModel = new SingleSelectionModel<AgentWrapper>();
         dataGrid.setSelectionModel(selectionModel);
         initWidget(dataGrid);
         createColumns();
+    }
+
+    public void setTableRowHoverHandler(TableRowHoverHandler tableRowHoverHandler) {
+        this.tableRowHoverHandler = tableRowHoverHandler;
     }
 
     /**
@@ -92,9 +122,9 @@ public class AgentGridPanel extends Composite {
         if (item != null) {
             item.clear();
             item.connected = true;
-            item.server = server;            
+            item.server = server;
             dataGrid.update(item);
-        }        
+        }
     }
 
     public void update(final Agent data) {
@@ -156,6 +186,15 @@ public class AgentGridPanel extends Composite {
 
     private void createColumns() {
         EntityDataGrid<AgentWrapper> table = dataGrid;
+
+        Column colAction = table.addColumn("Action", true, new EntityTextColumn<AgentWrapper>() {
+            @Override
+            public String getObject(AgentWrapper object) {
+                return "x";
+            }
+        });
+        table.setColumnWidth(colAction, 20, Style.Unit.PX);
+
         Column colName = table.addColumn("Name", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {

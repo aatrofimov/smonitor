@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.gwt.uc.dialogbox;
 
+import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import com.google.gwt.user.client.ui.DialogBox;
 
 /**

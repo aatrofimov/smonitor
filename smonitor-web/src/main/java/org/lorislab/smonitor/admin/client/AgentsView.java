@@ -18,26 +18,27 @@ package org.lorislab.smonitor.admin.client;
 import org.lorislab.smonitor.admin.client.panel.AgentDialogBox;
 import org.lorislab.smonitor.gwt.uc.dialogbox.EntityDialogBox;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.List;
 import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.lorislab.smonitor.gwt.uc.dialogbox.DialogEventHandler;
+import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
+import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel2;
 import org.lorislab.smonitor.rs.admin.model.Agent;
-import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerInfo;
@@ -65,7 +66,8 @@ public class AgentsView extends Composite {
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
-
+    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
+    
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -129,6 +131,38 @@ public class AgentsView extends Composite {
                 }
             }
         });
+        
+        btnAgentPassword.setEnabled(false);
+        btnAgentPassword.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                ArrowPopupPanel2 p = new ArrowPopupPanel2();
+                p.center();
+                p.show();
+//                ArrowPopupPanel p = new ArrowPopupPanel();
+//                int xright = p.getAbsoluteLeft() + p.getOffsetWidth() - 5;
+//				int xleft = p.getAbsoluteLeft() + 5;
+//				int y = p.getAbsoluteTop() + p.getOffsetHeight() / 2;
+//				p.pointAt(300, 300, 400, 4 * 22, 5 * 22);
+            }
+        });
+        
+        
+        agentPanel.setTableRowHoverHandler(new TableRowHoverHandler() {
+
+            @Override
+            public void onRowOver(TableRowElement row) {
+                    TableCellElement cell = row.getCells().getItem(0);
+                    tableMenu.setPopupPosition(20, cell.getAbsoluteTop());
+                    tableMenu.show();
+            }
+           
+            @Override
+            public void onRowOut() {
+                tableMenu.hide();
+            }
+        });
+        
     }
 
     public void refresh() {

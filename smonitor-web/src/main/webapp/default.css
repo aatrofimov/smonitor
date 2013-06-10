@@ -1,3 +1,52 @@
+/** ARROW POPUP */
+
+.widget-event,
+.popup-panel-content,
+.logger-panel {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border: 1px solid black;
+}
+
+.widget-event,
+.popup-panel-content {        
+        background-size: 100% 100%;
+        -webkit-background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+}
+
+.popup-panel-content {
+        -moz-box-shadow: rgba(0,0,0,0.5) 3px 3px 5px;
+        -webkit-box-shadow: rgba(0,0,0,0.5) 3px 3px 5px;
+}
+
+.popup-panel-content {
+        background-color: red;
+        background-image: url("images/popup-bg.png");
+}
+
+.popup-panel-arrow-left, 
+.popup-panel-arrow-right {
+        width: 11px;
+        height: 23px;
+}
+
+.popup-panel-arrow-left {
+        background-image: url("images/popup-arrow-left.png");
+}
+
+.popup-panel-arrow-right {
+        background-image: url("images/popup-arrow-right.png");
+}
+
+.popup-panel-arrow-top {
+        background-image: url("images/popup-arrow-top.png");
+}
+
+.popup-panel-arrow-bottom {
+        background-image: url("images/popup-arrow-bottom.png");
+}
+
 .navigationButtonBar {
     background: none repeat scroll 0 0 #CCCCCC;  
 }

@@ -15,6 +15,8 @@
  */
 package org.lorislab.smonitor.admin.client;
 
+import com.google.gwt.event.dom.client.ContextMenuEvent;
+import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import javax.annotation.PostConstruct;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
@@ -29,13 +31,24 @@ import org.jboss.errai.ioc.client.api.EntryPoint;
 public class Admin {
 
     private MainLayout mainLayout;
-    
+
     @PostConstruct
     public void create() {
-        
-        RestClient.setJacksonMarshallingActive(true);        
+
+        // Rest client configuration
+        RestClient.setJacksonMarshallingActive(true);
         RestClient.setApplicationRoot("rs");
 
+        // Disable right click
+        RootLayoutPanel.get().addDomHandler(new ContextMenuHandler() {
+            @Override
+            public void onContextMenu(ContextMenuEvent event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }, ContextMenuEvent.getType());
+
+        // Create main content
         mainLayout = new MainLayout();
         RootLayoutPanel.get().add(mainLayout);
     }
