@@ -32,6 +32,7 @@ import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityBooleanColumn;
+import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.model.ServerInfo;
@@ -187,13 +188,23 @@ public class AgentGridPanel extends Composite {
     private void createColumns() {
         EntityDataGrid<AgentWrapper> table = dataGrid;
 
-        Column colAction = table.addColumn("Action", true, new EntityTextColumn<AgentWrapper>() {
+        Column colAction = table.addColumn(" ", true, new EntityImageColumn<AgentWrapper, Boolean>() {
             @Override
-            public String getObject(AgentWrapper object) {
-                return "x";
+            public Boolean getObject(AgentWrapper object) {
+                return object.agent.isEnabled();
             }
+
+            @Override
+            public String getValue(AgentWrapper object) {
+                boolean status = getObject(object);
+                if (status) {
+                    return "images/enabled.png";
+                }
+                return "images/disabled.png";
+            }                        
         });
-        table.setColumnWidth(colAction, 20, Style.Unit.PX);
+        
+        table.setColumnWidth(colAction, 25, Style.Unit.PX);
 
         Column colName = table.addColumn("Name", true, new EntityTextColumn<AgentWrapper>() {
             @Override
@@ -210,15 +221,7 @@ public class AgentGridPanel extends Composite {
             }
         });
         table.setColumnWidth(colServer, 200, Style.Unit.PX);
-
-        Column colEnabled = table.addColumn("Enabled", true, new EntityBooleanColumn<AgentWrapper>() {
-            @Override
-            public Boolean getObject(AgentWrapper object) {
-                return object.agent.isEnabled();
-            }
-        });
-        table.setColumnWidth(colEnabled, 50, Style.Unit.PX);
-
+      
         Column colStatus = table.addColumn("Status", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {

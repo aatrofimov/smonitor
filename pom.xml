@@ -35,11 +35,12 @@
         <module>objectprofiler</module>
         <module>config</module>
         <module>config-file</module>
-		<module>datastore</module>
+	<module>datastore</module>
         <module>connector</module>
         <module>connector-tomcat</module>  
         <module>smonitor-services</module>      
         <module>smonitor-agent</module>
+        <module>smonitor-agent-client</module>
         <module>smonitor-agent-web</module>
         <module>gwt-uc</module>
         <module>smonitor-web</module>

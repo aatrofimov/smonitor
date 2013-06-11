@@ -3,21 +3,65 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:s="urn:import:org.lorislab.smonitor.admin.client.panel">
     
-    <g:DockLayoutPanel unit="EM">
-        <g:center>
-            <s:AgentGridPanel ui:field="agentPanel" />
-        </g:center>
+    <ui:style>
+        .v-label-h1 {
+            font-size: 36px;
+            line-height: 1;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.05em;
+            color: #5a6066;
+            top: 10px;
+        }
+                
+        .layout-panel {
+            background: #fff;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+            -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+            width: 100%;
+            height: 100%;
+        }
+                
+        .v-caption {
+                font-weight: 600;
+                font-size: 13px;
+                color: #349aff;
+                text-transform: uppercase;
+                padding: 0 20px;
+                line-height: 38px;
+                border-bottom: 1px solid #eee;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+        }
+                
+        @external .v-label-h1;
+    </ui:style>
+            
+        <g:DockLayoutPanel unit="PX" width="100%" height="100%">
+            <g:north size="76">
+                <g:HTMLPanel styleName="{style.v-label-h1}">
+                    Agents
+                </g:HTMLPanel>
+            </g:north>        
+            <g:center>
+                <s:AgentGridPanel ui:field="agentPanel" styleName="{style.layout-panel}"/>
+            </g:center>
 
-        <g:south size="3">
-            <g:HorizontalPanel spacing="5">
-                <g:Button ui:field="btnAgentRefresh" >Refresh</g:Button>
-                <g:Button ui:field="btnAgentAdd" >Add</g:Button>
-                <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
-                <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
-                <g:Button ui:field="btnAgentPassword" >Password</g:Button>
-            </g:HorizontalPanel>
-        </g:south>
-    </g:DockLayoutPanel>
-    
+            <g:south size="50">
+                <g:HorizontalPanel spacing="5">
+                    <g:Button ui:field="btnAgentRefresh" >Refresh</g:Button>
+                    <g:Button ui:field="btnAgentAdd" >Add</g:Button>
+                    <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
+                    <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
+                    <g:Button ui:field="btnAgentPassword" >Password</g:Button>
+                </g:HorizontalPanel>
+            </g:south>
+        </g:DockLayoutPanel>
    
 </ui:UiBinder>

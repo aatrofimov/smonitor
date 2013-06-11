@@ -37,7 +37,7 @@ import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
-import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel2;
+import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
@@ -66,7 +66,7 @@ public class AgentsView extends Composite {
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
-    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
+    private ArrowPopupPanel tableMenu = new ArrowPopupPanel();
     
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -136,9 +136,7 @@ public class AgentsView extends Composite {
         btnAgentPassword.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                ArrowPopupPanel2 p = new ArrowPopupPanel2();
-                p.center();
-                p.show();
+               
 //                ArrowPopupPanel p = new ArrowPopupPanel();
 //                int xright = p.getAbsoluteLeft() + p.getOffsetWidth() - 5;
 //				int xleft = p.getAbsoluteLeft() + 5;
@@ -153,13 +151,12 @@ public class AgentsView extends Composite {
             @Override
             public void onRowOver(TableRowElement row) {
                     TableCellElement cell = row.getCells().getItem(0);
-                    tableMenu.setPopupPosition(20, cell.getAbsoluteTop());
-                    tableMenu.show();
+                    tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop());
             }
            
             @Override
             public void onRowOut() {
-                tableMenu.hide();
+                tableMenu.close();
             }
         });
         

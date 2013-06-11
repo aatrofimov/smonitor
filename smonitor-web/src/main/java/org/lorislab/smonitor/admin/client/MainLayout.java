@@ -16,17 +16,17 @@
 package org.lorislab.smonitor.admin.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
+import org.lorislab.smonitor.admin.client.handler.MenuPanelHandler;
 import org.lorislab.smonitor.rs.service.ConfigService;
 
 /**
@@ -36,42 +36,39 @@ import org.lorislab.smonitor.rs.service.ConfigService;
 public class MainLayout extends Composite {
 
     @UiField
-    SimpleLayoutPanel mainPanel;
+    SimplePanel mainPanel;
     @UiField
     SpanElement version;
     @UiField
-    MenuItem btnAgents;
-    @UiField
-    MenuItem btnSessions;
-    @UiField
-    MenuItem btnLogout;
+    MenuPanel menu;
+    
     private AgentsView agentsView;
     private SessionsView sessionsView;
+    private DashboardView dashboardView;
 
     public MainLayout() {
         initWidget(uiBinder.createAndBindUi(this));
 
         agentsView = new AgentsView();
         sessionsView = new SessionsView();
+        dashboardView = new DashboardView();
+                
+        mainPanel.setWidget(dashboardView);
 
-        mainPanel.setWidget(agentsView);
-
-        btnAgents.setScheduledCommand(new Scheduler.ScheduledCommand() {
+        menu.setHandler(new MenuPanelHandler() {
             @Override
-            public void execute() {
+            public void switchToAgent() {
                 mainPanel.setWidget(agentsView);
             }
-        });
-        btnSessions.setScheduledCommand(new Scheduler.ScheduledCommand() {
+
             @Override
-            public void execute() {
+            public void switchToSession() {
                 mainPanel.setWidget(sessionsView);
             }
-        });
-        btnLogout.setScheduledCommand(new Scheduler.ScheduledCommand() {
+
             @Override
-            public void execute() {
-                Window.alert("Logout!");
+            public void switchToDashboard() {
+                mainPanel.setWidget(dashboardView);
             }
         });
     }
