@@ -171,7 +171,7 @@ public class AgentsView extends Composite {
         public void callback(List<Agent> value) {
             agentPanel.set(value);
             for (Agent agent : value) {
-                if (agent.isEnabled()) {
+                if (agent.isEnabled()) {                    
                     serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
                 } else {
                     agentPanel.update(agent.getGuid(), null);

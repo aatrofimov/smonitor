@@ -21,6 +21,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
 import com.google.gwt.user.client.ui.Composite;
@@ -55,7 +56,7 @@ public class AgentGridPanel extends Composite {
      */
     public AgentGridPanel() {
         dataGrid = new EntityDataGrid<AgentWrapper>();
-
+        
         dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
             @Override
             public void onRowHover(RowHoverEvent event) {
@@ -74,6 +75,8 @@ public class AgentGridPanel extends Composite {
         });
 
         dataGrid.setWidth100();
+//        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
+
         selectionModel = new SingleSelectionModel<AgentWrapper>();
         dataGrid.setSelectionModel(selectionModel);
         initWidget(dataGrid);
@@ -97,6 +100,7 @@ public class AgentGridPanel extends Composite {
             for (Agent agent : value) {
                 AgentWrapper w = new AgentWrapper();
                 w.agent = agent;
+                w.request = true;
                 list.add(w);
             }
         }
@@ -114,6 +118,7 @@ public class AgentGridPanel extends Composite {
         if (item != null) {
             item.clear();
             item.error = error;
+            item.request = false;
             dataGrid.update(item);
         }
     }
@@ -123,6 +128,7 @@ public class AgentGridPanel extends Composite {
         if (item != null) {
             item.clear();
             item.connected = true;
+            item.request = false;
             item.server = server;
             dataGrid.update(item);
         }
@@ -196,11 +202,18 @@ public class AgentGridPanel extends Composite {
 
             @Override
             public String getValue(AgentWrapper object) {
-                boolean status = getObject(object);
-                if (status) {
-                    return "images/enabled.png";
+                if (object.request) {
+                    return "images/empty.png";
+                } else {
+                    boolean status = getObject(object);
+                    if (status) {
+                        if (object.error == null) {
+                            return "images/status_ok.png";
+                        }
+                        return "images/status_error.png";
+                    }                    
                 }
-                return "images/disabled.png";
+                return "images/status_disabled.png";
             }                        
         });
         
@@ -232,5 +245,22 @@ public class AgentGridPanel extends Composite {
             }
         });
         table.setColumnWidth(colStatus, 200, Style.Unit.PX);
+        
+        Column colRequest = table.addColumn("", false, new EntityImageColumn<AgentWrapper, Boolean>() {
+            @Override
+            public Boolean getObject(AgentWrapper object) {
+                return object.request;
+            }
+
+            @Override
+            public String getValue(AgentWrapper object) {
+                boolean status = getObject(object);
+                if (status) {
+                    return "images/status.gif";
+                }
+                return "images/empty.png";
+            }                        
+        });   
+        table.setColumnWidth(colRequest, 50, Style.Unit.PX);
     }
 }

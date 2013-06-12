@@ -32,6 +32,8 @@ public class AgentWrapper {
     
     public String error;
     
+    public boolean request;
+    
     public void clear() {
         server = null;
         connected = false;
