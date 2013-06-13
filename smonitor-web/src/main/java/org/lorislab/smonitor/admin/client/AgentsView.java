@@ -38,6 +38,7 @@ import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
 import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel;
+import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel2;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
@@ -56,17 +57,17 @@ public class AgentsView extends Composite {
     Button btnAgentRefresh;
     @UiField
     Button btnAgentAdd;
-    @UiField
-    Button btnAgentEdit;
-    @UiField
-    Button btnAgentDelete;
-    @UiField
-    Button btnAgentPassword;
+//    @UiField
+//    Button btnAgentEdit;
+//    @UiField
+//    Button btnAgentDelete;
+//    @UiField
+//    Button btnAgentPassword;
     
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
-    private ArrowPopupPanel tableMenu = new ArrowPopupPanel();
+    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
     
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -86,16 +87,6 @@ public class AgentsView extends Composite {
             }
         });
 
-        agentPanel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                AgentWrapper w = agentPanel.getSelectedObject();
-                btnAgentDelete.setEnabled(w != null);
-                btnAgentEdit.setEnabled(w != null);
-                btnAgentPassword.setEnabled(w != null);                
-            }
-        });
-
         btnAgentRefresh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -110,38 +101,34 @@ public class AgentsView extends Composite {
             }
         });
 
-        btnAgentEdit.setEnabled(false);
-        btnAgentEdit.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                AgentWrapper w = agentPanel.getSelectedObject();
-                if (w != null) {
-                    openDialog(w.agent, EntityDialogBox.Mode.UPDATE);
-                }
-            }
-        });
+        tableMenu.setHandler(new ArrowPopupPanel2.ClickButtonHandler() {
 
-        btnAgentDelete.setEnabled(false);
-        btnAgentDelete.addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent event) {
-                AgentWrapper w = agentPanel.getSelectedObject();
-                if (w != null) {
-                    agentService.call(agentDelete).delete(w.agent.getGuid());
+            public void edit(AgentWrapper data) {
+                if (data != null) {
+                    openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
                 }
+                tableMenu.close();
             }
-        });
-        
-        btnAgentPassword.setEnabled(false);
-        btnAgentPassword.addClickHandler(new ClickHandler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-               
-//                ArrowPopupPanel p = new ArrowPopupPanel();
-//                int xright = p.getAbsoluteLeft() + p.getOffsetWidth() - 5;
-//				int xleft = p.getAbsoluteLeft() + 5;
-//				int y = p.getAbsoluteTop() + p.getOffsetHeight() / 2;
-//				p.pointAt(300, 300, 400, 4 * 22, 5 * 22);
+            public void status(AgentWrapper data) {
+
+            }
+
+            @Override
+            public void password(AgentWrapper data) {
+
+            }
+
+            @Override
+            public void info(AgentWrapper data) {
+
+            }
+
+            @Override
+            public void delete(AgentWrapper data) {
+                
             }
         });
         
@@ -150,8 +137,12 @@ public class AgentsView extends Composite {
 
             @Override
             public void onRowOver(TableRowElement row) {
+                    int index = row.getRowIndex();
+                    GWT.log("I:" + index);
+                    AgentWrapper w = agentPanel.get(index);
+                    GWT.log(w.agent.getGuid());
                     TableCellElement cell = row.getCells().getItem(0);
-                    tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop());
+                    tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
             }
            
             @Override
@@ -162,6 +153,10 @@ public class AgentsView extends Composite {
         
     }
 
+    public void close() {
+        tableMenu.hide();
+    }
+    
     public void refresh() {
         agentService.call(agents).get();
     }

@@ -87,6 +87,10 @@ public class AgentGridPanel extends Composite {
         this.tableRowHoverHandler = tableRowHoverHandler;
     }
 
+    public AgentWrapper get(int index) {
+        return dataGrid.get(index);
+    }
+    
     /**
      * Sets the data.
      *
@@ -146,7 +150,7 @@ public class AgentGridPanel extends Composite {
             }
         }
     }
-
+      
     public AgentWrapper find(final String guid) {
         AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
             @Override

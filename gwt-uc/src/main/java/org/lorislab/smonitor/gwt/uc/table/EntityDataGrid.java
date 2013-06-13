@@ -97,6 +97,10 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         }
     }
     
+    public T get(int index) {
+        return dataProvider.getList().get(index);
+    }
+    
     public T find(FilterItem<T> filter) {
         T result = null;
         if (filter != null) {

@@ -51,7 +51,7 @@ public class MenuPanel extends Composite {
             @Override
             public void onClick(ClickEvent event) {
                 btnSession.setDown(false);
-                btnAgent.setDown(false);
+                btnAgent.setDown(false);                
                 if (handler != null) {                    
                     handler.switchToDashboard();
                 }

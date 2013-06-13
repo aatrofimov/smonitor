@@ -58,16 +58,19 @@ public class MainLayout extends Composite {
         menu.setHandler(new MenuPanelHandler() {
             @Override
             public void switchToAgent() {
+                agentsView.close();
                 mainPanel.setWidget(agentsView);
             }
 
             @Override
             public void switchToSession() {
+                agentsView.close();
                 mainPanel.setWidget(sessionsView);
             }
 
             @Override
             public void switchToDashboard() {
+                agentsView.close();
                 mainPanel.setWidget(dashboardView);
             }
         });

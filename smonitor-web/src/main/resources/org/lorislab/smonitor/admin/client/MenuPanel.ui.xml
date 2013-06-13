@@ -113,15 +113,15 @@
             
             <g:center>
                 <g:HTMLPanel>
-                    <g:ToggleButton ui:field="btnDashboard" styleName="{style.v-nativebutton}">
+                    <g:ToggleButton ui:field="btnDashboard" styleName="{style.v-nativebutton} icon-home">
                          Dashboard
                         <g:downFace styleName="{style.v-nativebutton-down}" />
                     </g:ToggleButton>                    
-                    <g:ToggleButton ui:field="btnAgent" styleName="{style.v-nativebutton}">
+                    <g:ToggleButton ui:field="btnAgent" styleName="{style.v-nativebutton} icon-monitor">
                             Agents 
                         <g:downFace styleName="{style.v-nativebutton-down}" />                                                                               
                     </g:ToggleButton>
-                    <g:ToggleButton ui:field="btnSession" styleName="{style.v-nativebutton}">
+                    <g:ToggleButton ui:field="btnSession" styleName="{style.v-nativebutton} icon-vcard">
                          Sessions
                         <g:downFace styleName="{style.v-nativebutton-down}" />
                     </g:ToggleButton>
