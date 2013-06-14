@@ -27,7 +27,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import java.util.List;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
@@ -37,7 +36,7 @@ import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
-import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel;
+import org.lorislab.smonitor.gwt.uc.page.ViewPage;
 import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel2;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
@@ -49,7 +48,7 @@ import org.lorislab.smonitor.rs.service.ServerService;
  *
  * @author Andrej Petras
  */
-public class AgentsView extends Composite {
+public class AgentsView extends ViewPage {
 
     @UiField
     AgentGridPanel agentPanel;
@@ -57,12 +56,6 @@ public class AgentsView extends Composite {
     Button btnAgentRefresh;
     @UiField
     Button btnAgentAdd;
-//    @UiField
-//    Button btnAgentEdit;
-//    @UiField
-//    Button btnAgentDelete;
-//    @UiField
-//    Button btnAgentPassword;
     
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
@@ -105,10 +98,7 @@ public class AgentsView extends Composite {
 
             @Override
             public void edit(AgentWrapper data) {
-                if (data != null) {
-                    openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
-                }
-                tableMenu.close();
+                openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
             }
 
             @Override
@@ -138,9 +128,7 @@ public class AgentsView extends Composite {
             @Override
             public void onRowOver(TableRowElement row) {
                     int index = row.getRowIndex();
-                    GWT.log("I:" + index);
                     AgentWrapper w = agentPanel.get(index);
-                    GWT.log(w.agent.getGuid());
                     TableCellElement cell = row.getCells().getItem(0);
                     tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
             }
@@ -151,10 +139,6 @@ public class AgentsView extends Composite {
             }
         });
         
-    }
-
-    public void close() {
-        tableMenu.hide();
     }
     
     public void refresh() {
@@ -209,6 +193,16 @@ public class AgentsView extends Composite {
     private void openDialog(Agent agent, EntityDialogBox.Mode mode) {
         dialogBox.center();
         dialogBox.open(agent, mode);
+    }
+
+    @Override
+    public void openPage() {
+        tableMenu.hide();
+    }
+
+    @Override
+    public void closePage() {
+        tableMenu.hide();
     }
 
     interface MyUiBinder extends UiBinder<Widget, AgentsView> {

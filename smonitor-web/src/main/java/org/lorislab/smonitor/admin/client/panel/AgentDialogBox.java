@@ -57,7 +57,8 @@ public class AgentDialogBox extends EntityDialogBox<Agent> {
 
     public AgentDialogBox() {
         setWidget(binder.createAndBindUi(this));
-
+        setStyleName("box-main");
+        
         btnCreate.setVisible(true);
         btnCancel.addClickHandler(new ClickHandler() {
             @Override

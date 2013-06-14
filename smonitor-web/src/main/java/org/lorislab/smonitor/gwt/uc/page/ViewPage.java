@@ -13,33 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.admin.client;
+package org.lorislab.smonitor.gwt.uc.page;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.gwt.uc.page.ViewPage;
+import com.google.gwt.user.client.ui.Composite;
 
 /**
  *
  * @author Andrej Petras
  */
-public class SessionsView extends ViewPage {
-
-    @Override
-    public void openPage() {
-        
-    }
-
-    @Override
-    public void closePage() {
-        
-    }
+public abstract class ViewPage extends Composite {
     
-    interface MyUiBinder extends UiBinder<Widget, SessionsView> { }
-    private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);
+    public abstract void openPage();
     
-    public SessionsView() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }    
+    public abstract void closePage();
 }

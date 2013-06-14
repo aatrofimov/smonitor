@@ -55,10 +55,10 @@ public class ArrowPopupPanel2 extends PopupPanel {
         btnEditAction.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (handler != null) {
-                    GWT.log("EDIT: " + data.agent.getGuid());
+                if (handler != null && data != null) {
                     handler.edit(data);
                 }
+                close();
             }
         });
     }

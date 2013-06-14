@@ -21,12 +21,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.lorislab.smonitor.admin.client.handler.MenuPanelHandler;
+import org.lorislab.smonitor.gwt.uc.page.ViewPage;
 import org.lorislab.smonitor.rs.service.ConfigService;
 
 /**
@@ -46,6 +46,8 @@ public class MainLayout extends Composite {
     private SessionsView sessionsView;
     private DashboardView dashboardView;
 
+    private ViewPage currentPage;
+    
     public MainLayout() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -53,29 +55,37 @@ public class MainLayout extends Composite {
         sessionsView = new SessionsView();
         dashboardView = new DashboardView();
                 
-        mainPanel.setWidget(dashboardView);
+        switchPage(dashboardView);
 
         menu.setHandler(new MenuPanelHandler() {
             @Override
             public void switchToAgent() {
-                agentsView.close();
-                mainPanel.setWidget(agentsView);
+                switchPage(agentsView);
             }
 
             @Override
             public void switchToSession() {
-                agentsView.close();
-                mainPanel.setWidget(sessionsView);
+                switchPage(sessionsView);
             }
 
             @Override
             public void switchToDashboard() {
-                agentsView.close();
-                mainPanel.setWidget(dashboardView);
+                switchPage(dashboardView);
             }
         });
     }
 
+    private void switchPage(ViewPage page) {       
+        if (page != null) {
+            page.openPage();
+        }
+        mainPanel.setWidget(page);        
+        if (currentPage != null) {
+            currentPage.closePage();
+        }   
+        currentPage = page;
+    }
+    
     public void init() {
         try {
             version.setInnerText("Loading ...");

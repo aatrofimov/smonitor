@@ -16,13 +16,13 @@
 package org.lorislab.smonitor.gwt.uc.dialogbox;
 
 import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
-import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
  *
  * @author Andrej Petras
  */
-public abstract class EntityDialogBox<T> extends DialogBox {
+public abstract class EntityDialogBox<T> extends PopupPanel {
     
     public enum Mode {
         
@@ -41,6 +41,11 @@ public abstract class EntityDialogBox<T> extends DialogBox {
     
     private DialogEventHandler<T> cancelHandler; 
 
+    public EntityDialogBox() {
+        super();
+        setGlassEnabled(true);
+    }
+    
     public void open(T data, Mode mode) {
         this.data = data;
         openView(mode);

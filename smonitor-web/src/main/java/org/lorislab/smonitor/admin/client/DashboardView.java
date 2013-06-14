@@ -19,12 +19,23 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.lorislab.smonitor.gwt.uc.page.ViewPage;
 
 /**
  *
  * @author Andrej Petras
  */
-public class DashboardView extends Composite {
+public class DashboardView extends ViewPage {
+
+    @Override
+    public void openPage() {
+        
+    }
+
+    @Override
+    public void closePage() {
+        
+    }
     
     interface MyUiBinder extends UiBinder<Widget, DashboardView> { }
     private static DashboardView.MyUiBinder uiBinder = GWT.create(DashboardView.MyUiBinder.class);

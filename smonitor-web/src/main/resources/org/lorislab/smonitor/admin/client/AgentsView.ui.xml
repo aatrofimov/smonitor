@@ -5,22 +5,22 @@
     
     <ui:style>                
         .layout-panel {
-            background: #fff;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            border-radius: 4px;
-            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-            -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-            width: 100%;
-            height: 100%;
+        background: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        width: 100%;
+        height: 100%;
         }
 
         @external .layout-panel;
     </ui:style>
-        <g:DockLayoutPanel unit="PX" width="100%" height="100%">
-            <g:north size="50">
-                <g:HorizontalPanel spacing="5">
+    <g:DockLayoutPanel unit="PX" width="100%" height="100%">
+        <g:north size="50">
+                <g:HorizontalPanel spacing="5" styleName="panel-box-10">
                     <g:cell horizontalAlignment="ALIGN_RIGHT" width="100%">
                         <g:Label></g:Label>
                     </g:cell>
@@ -31,18 +31,20 @@
                         <g:Button ui:field="btnAgentAdd" addStyleNames="button-action icon-plus"></g:Button>
                     </g:cell>
                 </g:HorizontalPanel>
-            </g:north>        
-            <g:center>
+        </g:north>        
+        <g:center>
+            <g:SimplePanel styleName="panel-box-10">
                 <s:AgentGridPanel ui:field="agentPanel" styleName="{style.layout-panel}"/>
-            </g:center>
+            </g:SimplePanel>
+        </g:center>
 
-<!--            <g:south size="50">
-                <g:HorizontalPanel spacing="5">
-                    <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
-                    <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
-                    <g:Button ui:field="btnAgentPassword" >Password</g:Button>
-                </g:HorizontalPanel>
-            </g:south>-->
-        </g:DockLayoutPanel>
+        <!--            <g:south size="50">
+            <g:HorizontalPanel spacing="5">
+                <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
+                <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
+                <g:Button ui:field="btnAgentPassword" >Password</g:Button>
+            </g:HorizontalPanel>
+        </g:south>-->
+    </g:DockLayoutPanel>
    
 </ui:UiBinder>
