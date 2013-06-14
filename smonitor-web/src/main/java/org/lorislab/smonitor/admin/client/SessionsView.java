@@ -35,6 +35,12 @@ public class SessionsView extends ViewPage {
     public void closePage() {
         
     }
+
+    @Override
+    public String getPageTitle() {
+        return "Sessions";
+    }
+    
     
     interface MyUiBinder extends UiBinder<Widget, SessionsView> { }
     private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);

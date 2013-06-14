@@ -25,7 +25,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -33,6 +32,7 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
+import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
@@ -61,6 +61,7 @@ public class AgentsView extends ViewPage {
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
     private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
+    private QuestionDialogBox<String> deleteQuestion = new QuestionDialogBox<String>();
     
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -94,16 +95,19 @@ public class AgentsView extends ViewPage {
             }
         });
 
+        deleteQuestion.setOkHandler(new DialogEventHandler<String>() {
+
+            @Override
+            public void event(String value) {
+                agentService.call(agentDelete).delete(value);
+            }
+        });
+        
         tableMenu.setHandler(new ArrowPopupPanel2.ClickButtonHandler() {
 
             @Override
             public void edit(AgentWrapper data) {
                 openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
-            }
-
-            @Override
-            public void status(AgentWrapper data) {
-
             }
 
             @Override
@@ -117,8 +121,13 @@ public class AgentsView extends ViewPage {
             }
 
             @Override
+            public void refresh(AgentWrapper data) {
+
+            }
+                 
+            @Override
             public void delete(AgentWrapper data) {
-                
+                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you want to really delete the agent " + data.agent.getName() + " ?");                
             }
         });
         
@@ -174,6 +183,7 @@ public class AgentsView extends ViewPage {
         @Override
         public void callback(String value) {
             agentPanel.remove(value);
+            deleteQuestion.hide();
         }
     };
     final RemoteCallback<Agent> agentCreate = new RemoteCallback<Agent>() {
@@ -198,13 +208,20 @@ public class AgentsView extends ViewPage {
     @Override
     public void openPage() {
         tableMenu.hide();
+        deleteQuestion.hide();
     }
 
     @Override
     public void closePage() {
         tableMenu.hide();
+        deleteQuestion.hide();
     }
 
+    @Override
+    public String getPageTitle() {
+        return "Agents";
+    }
+    
     interface MyUiBinder extends UiBinder<Widget, AgentsView> {
     }
     private static AgentsView.MyUiBinder uiBinder = GWT.create(AgentsView.MyUiBinder.class);

@@ -56,7 +56,7 @@ public class AgentGridPanel extends Composite {
      */
     public AgentGridPanel() {
         dataGrid = new EntityDataGrid<AgentWrapper>();
-        
+
         dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
             @Override
             public void onRowHover(RowHoverEvent event) {
@@ -90,7 +90,7 @@ public class AgentGridPanel extends Composite {
     public AgentWrapper get(int index) {
         return dataGrid.get(index);
     }
-    
+
     /**
      * Sets the data.
      *
@@ -150,7 +150,7 @@ public class AgentGridPanel extends Composite {
             }
         }
     }
-      
+
     public AgentWrapper find(final String guid) {
         AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
             @Override
@@ -206,21 +206,22 @@ public class AgentGridPanel extends Composite {
 
             @Override
             public String getValue(AgentWrapper object) {
-                if (object.request) {
-                    return "images/empty.png";
+                String result = "images/empty.png";
+                if (!object.agent.isEnabled()) {
+                    result = "images/status_disabled.png";
+                } else if (object.request) {
+                    result = "images/status.gif";
                 } else {
-                    boolean status = getObject(object);
-                    if (status) {
-                        if (object.error == null) {
-                            return "images/status_ok.png";
-                        }
-                        return "images/status_error.png";
-                    }                    
+                    if (object.connected) {
+                        result = "images/status_ok.png";
+                    } else if (object.error != null) {
+                        result = "images/status_error.png";
+                    }
                 }
-                return "images/status_disabled.png";
-            }                        
+                return result;
+            }
         });
-        
+
         table.setColumnWidth(colAction, 25, Style.Unit.PX);
 
         Column colName = table.addColumn("Name", true, new EntityTextColumn<AgentWrapper>() {
@@ -238,7 +239,7 @@ public class AgentGridPanel extends Composite {
             }
         });
         table.setColumnWidth(colServer, 200, Style.Unit.PX);
-      
+
         Column colStatus = table.addColumn("Status", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {
@@ -249,22 +250,6 @@ public class AgentGridPanel extends Composite {
             }
         });
         table.setColumnWidth(colStatus, 200, Style.Unit.PX);
-        
-        Column colRequest = table.addColumn("", false, new EntityImageColumn<AgentWrapper, Boolean>() {
-            @Override
-            public Boolean getObject(AgentWrapper object) {
-                return object.request;
-            }
-
-            @Override
-            public String getValue(AgentWrapper object) {
-                boolean status = getObject(object);
-                if (status) {
-                    return "images/status.gif";
-                }
-                return "images/empty.png";
-            }                        
-        });   
-        table.setColumnWidth(colRequest, 50, Style.Unit.PX);
+       
     }
 }

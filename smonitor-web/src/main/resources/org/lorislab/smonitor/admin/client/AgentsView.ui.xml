@@ -28,7 +28,7 @@
                         <g:Button ui:field="btnAgentRefresh" addStyleNames="button-action icon-retweet"></g:Button>                                                
                     </g:cell>
                     <g:cell horizontalAlignment="ALIGN_RIGHT">
-                        <g:Button ui:field="btnAgentAdd" addStyleNames="button-action icon-plus"></g:Button>
+                        <g:Button ui:field="btnAgentAdd" addStyleNames="button-action icon-list-add"></g:Button>
                     </g:cell>
                 </g:HorizontalPanel>
         </g:north>        

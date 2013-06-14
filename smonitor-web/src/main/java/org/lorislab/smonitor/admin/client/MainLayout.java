@@ -21,6 +21,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -41,6 +43,8 @@ public class MainLayout extends Composite {
     SpanElement version;
     @UiField
     MenuPanel menu;
+    @UiField
+    Label mainTitle;
     
     private AgentsView agentsView;
     private SessionsView sessionsView;
@@ -76,9 +80,13 @@ public class MainLayout extends Composite {
     }
 
     private void switchPage(ViewPage page) {       
+        String title = "";
         if (page != null) {
             page.openPage();
+            title = page.getPageTitle();
         }
+        
+        mainTitle.setText(title);        
         mainPanel.setWidget(page);        
         if (currentPage != null) {
             currentPage.closePage();

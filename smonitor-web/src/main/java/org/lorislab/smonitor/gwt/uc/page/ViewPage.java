@@ -23,6 +23,8 @@ import com.google.gwt.user.client.ui.Composite;
  */
 public abstract class ViewPage extends Composite {
     
+    public abstract String getPageTitle();
+    
     public abstract void openPage();
     
     public abstract void closePage();

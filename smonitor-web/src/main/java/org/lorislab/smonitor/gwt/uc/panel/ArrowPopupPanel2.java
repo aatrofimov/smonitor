@@ -38,10 +38,10 @@ public class ArrowPopupPanel2 extends PopupPanel {
     Button btnEditDelete;
     
     @UiField
-    Button btnEditStatus;
-    
-    @UiField
     Button btnEditInfo;
+
+    @UiField
+    Button btnEditRefresh;
     
     private AgentWrapper data;
     
@@ -51,7 +51,6 @@ public class ArrowPopupPanel2 extends PopupPanel {
         setWidget(uiBinder.createAndBindUi(this));
         setStyleName("arrow-popup-right");
         
-        btnEditAction.setEnabled(false);
         btnEditAction.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -61,6 +60,37 @@ public class ArrowPopupPanel2 extends PopupPanel {
                 close();
             }
         });
+        
+        btnEditDelete.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (handler != null && data != null) {
+                    handler.delete(data);
+                }
+                close();
+            }
+        });  
+     
+        btnEditRefresh.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (handler != null && data != null) {
+                    handler.refresh(data);
+                }
+                close();
+            }
+        });
+        
+        btnEditInfo.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (handler != null && data != null) {
+                    handler.info(data);
+                }
+                close();
+            }
+        });
+                      
     }
 
     public void setHandler(ClickButtonHandler handler) {
@@ -69,10 +99,18 @@ public class ArrowPopupPanel2 extends PopupPanel {
     
     public void open(int left, int top, AgentWrapper data) {
         this.data = data;
-        
-        btnEditAction.setEnabled(true);
-        
-        this.setPopupPosition(left-55, top-60);
+        int size = 2;
+        if (data.connected) {
+            size = size + 1;
+        }
+        if (data.agent.isEnabled()) {
+            size = size + 1;
+        }
+        size = size * 32;
+        btnEditInfo.setVisible(data.connected);
+        btnEditRefresh.setVisible(data.agent.isEnabled());
+        this.setHeight("" + size + "px");
+        this.setPopupPosition(left-55, top-(size/2)+10);
         this.show();
     }
 
@@ -84,14 +122,15 @@ public class ArrowPopupPanel2 extends PopupPanel {
     public interface ClickButtonHandler {
         
         public void edit(AgentWrapper data);
-        
-        public void status(AgentWrapper data);
-        
+
         public void password(AgentWrapper data);
         
         public void info(AgentWrapper data);
         
         public void delete(AgentWrapper data);
+        
+        public void refresh(AgentWrapper data);
+        
     }
     
     interface MyUiBinder extends UiBinder<Widget, ArrowPopupPanel2> {

@@ -7,7 +7,7 @@
         
         .arrow-popup, .arrow-popup-top, .arrow-popup-right, .arrow-popup-bottom, .arrow-popup-left {
         width: 50px;
-        height: 140px;
+<!--        height: 140px;-->
         color:#ffffff;
         cursor:normal;
         display:-moz-inline-stack;
@@ -104,12 +104,18 @@
         -webkit-transform:rotate(180deg);
         } 
 
+        .arrow-popup-content {
+            margin-top: 2px;
+        }
+                
         @external .arrow-popup,.arrow-popup-right;
     </ui:style>            
-    <g:VerticalPanel spacing="3">        
-        <g:Button ui:field="btnEditAction" addStyleNames="button-action icon-edit"></g:Button>
-        <g:Button ui:field="btnEditDelete" addStyleNames="button-action icon-trash"></g:Button>
-        <g:Button ui:field="btnEditStatus" addStyleNames="button-action icon-ok"></g:Button>
-        <g:Button ui:field="btnEditInfo" addStyleNames="button-action icon-info-circle"></g:Button>
-    </g:VerticalPanel>
+    
+        <g:FlowPanel>                    
+            <g:Button ui:field="btnEditAction" addStyleNames="button-action icon-pencil"></g:Button>
+            <g:Button ui:field="btnEditDelete" addStyleNames="button-action icon-trash {style.arrow-popup-content}"></g:Button>
+            <g:Button ui:field="btnEditRefresh" addStyleNames="button-action icon-arrows-ccw {style.arrow-popup-content}"></g:Button>
+            <g:Button ui:field="btnEditInfo" addStyleNames="button-action icon-info {style.arrow-popup-content}"></g:Button>
+        </g:FlowPanel>
+    
 </ui:UiBinder>

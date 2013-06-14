@@ -37,6 +37,11 @@ public class DashboardView extends ViewPage {
         
     }
     
+    @Override
+    public String getPageTitle() {
+        return "Dashboard";
+    }
+    
     interface MyUiBinder extends UiBinder<Widget, DashboardView> { }
     private static DashboardView.MyUiBinder uiBinder = GWT.create(DashboardView.MyUiBinder.class);
     
