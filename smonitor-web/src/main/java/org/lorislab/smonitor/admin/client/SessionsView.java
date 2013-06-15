@@ -16,9 +16,21 @@
 package org.lorislab.smonitor.admin.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
+import com.watopi.chosen.client.ChosenOptions;
+import com.watopi.chosen.client.gwt.ChosenListBox;
+import com.watopi.chosen.client.resources.ChozenCss;
+import com.watopi.chosen.client.resources.Resources;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.gwt.uc.page.ViewPage;
+import org.lorislab.smonitor.rs.model.ServerApplication;
 
 /**
  *
@@ -26,9 +38,56 @@ import org.lorislab.smonitor.gwt.uc.page.ViewPage;
  */
 public class SessionsView extends ViewPage {
 
+    @UiField(provided = true)
+    ChosenListBox agentsList;    
+
+    @UiField(provided = true)
+    ChosenListBox appList; 
+    
+    @UiField
+    SessionGridPanel sessionPanel;
+    
+    private AgentController agentController;
+    
+    public SessionsView(AgentController agentController) {
+        this.agentController = agentController;
+        ChosenOptions options = new ChosenOptions();
+        options.setResources(GWT.<MyResources>create(MyResources.class));        
+        agentsList = new ChosenListBox(true, options);
+        appList = new ChosenListBox(true, options);
+        
+        initWidget(uiBinder.createAndBindUi(this));
+        
+        appList.setPlaceholderText("Choose ...");
+        agentsList.setPlaceholderText("Choose ...");
+        
+    }
+    
     @Override
     public void openPage() {
+        agentsList.clear();
+        appList.clear();
         
+        List<AgentWrapper> data = agentController.getAgents();
+        if (data != null) {
+            Set<String> tmp = new HashSet<String>();
+            for (AgentWrapper w : data) {
+                if (w.server != null) {
+                    agentsList.addItem(w.agent.getName(), w.agent.getGuid());
+                    List<ServerApplication> apps = w.server.getApplications();
+                    if (apps != null) {
+                        for (ServerApplication a : apps) {
+                             if (!tmp.contains(a.getId())) {
+                                 appList.addItem(a.getName(), a.getId());
+                                 tmp.add(a.getId());
+                             }
+                        }
+                    }
+                }
+            }
+        }
+        
+
     }
 
     @Override
@@ -44,8 +103,11 @@ public class SessionsView extends ViewPage {
     
     interface MyUiBinder extends UiBinder<Widget, SessionsView> { }
     private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);
-    
-    public SessionsView() {
-        initWidget(uiBinder.createAndBindUi(this));
+ 
+    public interface MyResources extends Resources {
+         
+        @ClientBundle.Source("chozen.css")
+        @Override
+        ChozenCss css();
     }    
 }

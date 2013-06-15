@@ -34,6 +34,16 @@
         font-size: 20px;        
         }
         
+.gwt-CheckBox {
+  width: 19px;
+  height: 25px;
+  padding: 0 5px 0 0;
+  content: '\e80d';
+  display: block;
+  clear: left;
+  float: left;
+}
+                
         @external .box-main;
     </ui:style>
     <g:DockLayoutPanel width="400" height="200" unit="PX">
@@ -66,7 +76,7 @@
                             <g:Label text="Enabled:"/>
                         </g:customCell>
                         <g:customCell>
-                            <g:CheckBox ui:field="chEnabled"></g:CheckBox>
+                            <g:CheckBox ui:field="chEnabled" ></g:CheckBox>
                         </g:customCell>                                        
                     </g:row>                
                 </g:Grid>  

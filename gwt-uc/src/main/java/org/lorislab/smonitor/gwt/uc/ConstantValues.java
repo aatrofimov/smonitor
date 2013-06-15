@@ -26,10 +26,6 @@ import com.google.gwt.user.client.ui.UIObject;
 public final class ConstantValues {
 
     /**
-     * The 100% value.
-     */
-    public static final String PCT_100 = "100%";
-    /**
      * The target blank.
      */
     public static final String TARGET_BLANK = "_blank";
@@ -57,31 +53,4 @@ public final class ConstantValues {
         // empty constructor
     }
 
-    /**
-     * Sets the object width to 100%.
-     *
-     * @param object the object.
-     */
-    public static void setWidth100(UIObject object) {
-        object.setWidth(PCT_100);
-    }
-
-    /**
-     * Sets the object height to 100%.
-     *
-     * @param object the object.
-     */
-    public static void setHeight100(UIObject object) {
-        object.setHeight(PCT_100);
-    }
-
-    /**
-     * Sets the object width and height to 100%.
-     *
-     * @param object the object.
-     */
-    public static void set100(UIObject object) {
-        setWidth100(object);
-        setHeight100(object);
-    }
 }

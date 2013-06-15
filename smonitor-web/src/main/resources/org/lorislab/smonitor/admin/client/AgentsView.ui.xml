@@ -15,8 +15,6 @@
         width: 100%;
         height: 100%;
         }
-
-        @external .layout-panel;
     </ui:style>
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:north size="50">
@@ -38,13 +36,6 @@
             </g:SimplePanel>
         </g:center>
 
-        <!--            <g:south size="50">
-            <g:HorizontalPanel spacing="5">
-                <g:Button ui:field="btnAgentEdit" >Edit</g:Button>
-                <g:Button ui:field="btnAgentDelete" >Delete</g:Button>
-                <g:Button ui:field="btnAgentPassword" >Password</g:Button>
-            </g:HorizontalPanel>
-        </g:south>-->
     </g:DockLayoutPanel>
    
 </ui:UiBinder>

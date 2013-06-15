@@ -16,23 +16,17 @@
 package org.lorislab.smonitor.admin.client.panel;
 
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.TableCellElement;
-import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
-import org.lorislab.smonitor.gwt.uc.table.column.EntityBooleanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import org.lorislab.smonitor.rs.admin.model.Agent;
@@ -48,7 +42,7 @@ public class AgentGridPanel extends Composite {
      * The data grid.
      */
     private EntityDataGrid<AgentWrapper> dataGrid;
-    private SingleSelectionModel<AgentWrapper> selectionModel;
+
     private TableRowHoverHandler tableRowHoverHandler;
 
     /**
@@ -74,11 +68,8 @@ public class AgentGridPanel extends Composite {
             }
         });
 
-        dataGrid.setWidth100();
-//        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
+        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
 
-        selectionModel = new SingleSelectionModel<AgentWrapper>();
-        dataGrid.setSelectionModel(selectionModel);
         initWidget(dataGrid);
         createColumns();
     }
@@ -91,6 +82,10 @@ public class AgentGridPanel extends Composite {
         return dataGrid.get(index);
     }
 
+    public List<AgentWrapper> get() {
+        return dataGrid.get();
+    }
+    
     /**
      * Sets the data.
      *
@@ -111,13 +106,25 @@ public class AgentGridPanel extends Composite {
         dataGrid.addAll(list);
     }
 
+    public void set(Agent agent) {
+        AgentWrapper w = new AgentWrapper();
+        w.agent = agent;
+        w.request = true;
+        dataGrid.add(w);
+    }
+    
     public void add(Agent data) {
         AgentWrapper w = new AgentWrapper();
         w.agent = data;
         dataGrid.add(w);
     }
 
-    public void update(String guid, String error) {
+    public void request(AgentWrapper item) {
+        item.request = true;
+        dataGrid.update(item);
+    }
+    
+    public void error(String guid, String error) {
         AgentWrapper item = find(guid);
         if (item != null) {
             item.clear();
@@ -175,23 +182,13 @@ public class AgentGridPanel extends Composite {
                     return null;
                 }
             });
-            selectionModel.clear();
         }
-    }
-
-    public void addSelectionChangeHandler(SelectionChangeEvent.Handler handler) {
-        selectionModel.addSelectionChangeHandler(handler);
-    }
-
-    public AgentWrapper getSelectedObject() {
-        return selectionModel.getSelectedObject();
     }
 
     /**
      * Resets the panel.
      */
     public void reset() {
-        selectionModel.clear();
         dataGrid.reset();
     }
 

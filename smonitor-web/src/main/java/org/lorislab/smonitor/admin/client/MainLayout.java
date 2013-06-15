@@ -56,7 +56,7 @@ public class MainLayout extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         agentsView = new AgentsView();
-        sessionsView = new SessionsView();
+        sessionsView = new SessionsView(agentsView);
         dashboardView = new DashboardView();
                 
         switchPage(dashboardView);

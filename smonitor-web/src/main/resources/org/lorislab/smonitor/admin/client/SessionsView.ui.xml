@@ -1,7 +1,59 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:chzn="urn:import:com.watopi.chosen.client.gwt"
+             xmlns:s="urn:import:org.lorislab.smonitor.admin.client.panel"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    
-    <g:HTMLPanel>SESSIONS</g:HTMLPanel>
+    <ui:style>
+        .listBox-300 {
+        width: 300px;
+        }
+                   
+        .layout-panel {
+        background: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+        width: 100%;
+        height: 100%;
+        }
+    </ui:style>
+    <g:DockLayoutPanel unit="PX" width="100%" height="100%">
+        <g:north size="130">
+            <g:Grid width="100%" styleName="panel-box-10">
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Agents:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <chzn:ChosenListBox ui:field="agentsList" styleName="textfield-basic {style.listBox-300}"/>
+                    </g:customCell> 
+                </g:row>
+                <g:row>
+                    <g:customCell>
+                        <g:Label text="Aplications:"/>
+                    </g:customCell>
+                    <g:customCell>
+                        <chzn:ChosenListBox ui:field="appList" styleName="textfield-basic {style.listBox-300}"/>            
+                    </g:customCell>                                            
+                </g:row>
+                <g:row>
+                    <g:customCell>
+                        <g:Button ui:field="btnSessionReset" addStyleNames="button-action icon-erase"></g:Button>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:Button ui:field="btnSessionSearch" addStyleNames="button-action icon-search"></g:Button>
+                    </g:customCell>                    
+                </g:row>                
+            </g:Grid>                 
+        </g:north>
+        <g:center>
+            <g:SimplePanel styleName="panel-box-10">
+                <s:SessionGridPanel ui:field="sessionPanel" styleName="{style.layout-panel}"/>
+            </g:SimplePanel>
+        </g:center>                
+    </g:DockLayoutPanel>
         
 </ui:UiBinder>

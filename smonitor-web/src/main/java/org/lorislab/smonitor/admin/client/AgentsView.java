@@ -48,7 +48,7 @@ import org.lorislab.smonitor.rs.service.ServerService;
  *
  * @author Andrej Petras
  */
-public class AgentsView extends ViewPage {
+public class AgentsView extends ViewPage implements AgentController {
 
     @UiField
     AgentGridPanel agentPanel;
@@ -56,13 +56,12 @@ public class AgentsView extends ViewPage {
     Button btnAgentRefresh;
     @UiField
     Button btnAgentAdd;
-    
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
     private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
     private QuestionDialogBox<String> deleteQuestion = new QuestionDialogBox<String>();
-    
+
     public AgentsView() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -96,15 +95,13 @@ public class AgentsView extends ViewPage {
         });
 
         deleteQuestion.setOkHandler(new DialogEventHandler<String>() {
-
             @Override
             public void event(String value) {
                 agentService.call(agentDelete).delete(value);
             }
         });
-        
-        tableMenu.setHandler(new ArrowPopupPanel2.ClickButtonHandler() {
 
+        tableMenu.setHandler(new ArrowPopupPanel2.ClickButtonHandler() {
             @Override
             public void edit(AgentWrapper data) {
                 openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
@@ -112,65 +109,68 @@ public class AgentsView extends ViewPage {
 
             @Override
             public void password(AgentWrapper data) {
-
             }
 
             @Override
             public void info(AgentWrapper data) {
-
             }
 
             @Override
             public void refresh(AgentWrapper data) {
-
+                agentPanel.request(data);
+                refreshAgent(data.agent);
             }
-                 
+
             @Override
             public void delete(AgentWrapper data) {
-                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you want to really delete the agent " + data.agent.getName() + " ?");                
+                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you want to really delete the agent " + data.agent.getName() + " ?");
             }
         });
-        
-        
-        agentPanel.setTableRowHoverHandler(new TableRowHoverHandler() {
 
+
+        agentPanel.setTableRowHoverHandler(new TableRowHoverHandler() {
             @Override
             public void onRowOver(TableRowElement row) {
-                    int index = row.getRowIndex();
-                    AgentWrapper w = agentPanel.get(index);
-                    TableCellElement cell = row.getCells().getItem(0);
-                    tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
+                int index = row.getRowIndex();
+                AgentWrapper w = agentPanel.get(index);
+                TableCellElement cell = row.getCells().getItem(0);
+                tableMenu.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
             }
-           
+
             @Override
             public void onRowOut() {
                 tableMenu.close();
             }
         });
-        
+
     }
-    
+
     public void refresh() {
         agentService.call(agents).get();
     }
-    
     final RemoteCallback<List<Agent>> agents = new RemoteCallback<List<Agent>>() {
         @Override
         public void callback(List<Agent> value) {
-            agentPanel.set(value);
+            agentPanel.reset();
             for (Agent agent : value) {
-                if (agent.isEnabled()) {                    
-                    serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
-                } else {
-                    agentPanel.update(agent.getGuid(), null);
-                }
+                agentPanel.set(agent);
+                refreshAgent(agent);                
             }
         }
     };
+    
+    private void refreshAgent(Agent agent) {        
+        if (agent.isEnabled()) {
+            serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
+        } else {
+            agentPanel.error(agent.getGuid(), null);
+        }        
+    }
+    
     final RestServiceExceptionCallback serverInfoError = new RestServiceExceptionCallback() {
         @Override
         public void exception(RestServiceException exception) {
-            agentPanel.update(exception.getRef(), exception.getMessage());
+            agentPanel.error(exception.getRef(), exception.getMessage());
         }
     };
     final RemoteCallback<ServerInfo> serverInfo = new RemoteCallback<ServerInfo>() {
@@ -199,7 +199,7 @@ public class AgentsView extends ViewPage {
             dialogBox.close();
         }
     };
-       
+
     private void openDialog(Agent agent, EntityDialogBox.Mode mode) {
         dialogBox.center();
         dialogBox.open(agent, mode);
@@ -220,6 +220,11 @@ public class AgentsView extends ViewPage {
     @Override
     public String getPageTitle() {
         return "Agents";
+    }
+
+    @Override
+    public List<AgentWrapper> getAgents() {
+        return agentPanel.get();
     }
     
     interface MyUiBinder extends UiBinder<Widget, AgentsView> {

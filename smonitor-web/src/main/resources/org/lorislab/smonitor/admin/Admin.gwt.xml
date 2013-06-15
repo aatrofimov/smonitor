@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to="private.Admin">  
+  <inherits name="com.watopi.chosen.Chosen" />  
   <inherits name="com.google.gwt.user.User"/>
   <inherits name="org.lorislab.smonitor.gwt.Uc"/>
   

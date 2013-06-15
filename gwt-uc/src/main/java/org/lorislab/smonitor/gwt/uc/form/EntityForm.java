@@ -73,7 +73,6 @@ public class EntityForm<T> extends EntityComposite<T> {
         firstRow = 0;
         this.column = column;
         layout = new FlexTable();
-        ConstantValues.setWidth100(layout);
         initWidget(layout);
     }
 

@@ -42,23 +42,6 @@ public class EntityTable<T> extends CellTable<T> {
         setAutoFooterRefreshDisabled(true);
     }
 
-    public void set100() {
-        setWidth100();
-        setHeight100();
-    }
-
-    public void setWidth100() {
-        setWidth(ConstantValues.PCT_100);
-    }
-
-    public void setWidth100(boolean isFixedLayout) {
-        setWidth(ConstantValues.PCT_100, isFixedLayout);
-    }
-
-    public void setHeight100() {
-        setHeight(ConstantValues.PCT_100);
-    }
-
     public void reset() {
         dataProvider.getList().clear();
     }

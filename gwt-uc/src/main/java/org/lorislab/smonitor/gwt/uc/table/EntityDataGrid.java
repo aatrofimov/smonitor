@@ -42,19 +42,6 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         setAutoFooterRefreshDisabled(true);
     }
 
-    public void set100() {
-        setWidth100();
-        setHeight100();
-    }
-
-    public void setWidth100() {
-        setWidth(ConstantValues.PCT_100);
-    }
-
-    public void setHeight100() {
-        setHeight(ConstantValues.PCT_100);
-    }
-
     public void reset() {
         dataProvider.getList().clear();
     }
@@ -99,6 +86,10 @@ public class EntityDataGrid<T> extends DataGrid<T> {
     
     public T get(int index) {
         return dataProvider.getList().get(index);
+    }
+    
+    public List<T> get() {
+        return dataProvider.getList();
     }
     
     public T find(FilterItem<T> filter) {

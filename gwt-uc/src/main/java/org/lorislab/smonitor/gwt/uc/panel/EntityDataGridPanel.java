@@ -47,7 +47,6 @@ public class EntityDataGridPanel<E, T> extends EntityComposite<E> {
      */
     public EntityDataGridPanel() {
         dataGrid = new EntityDataGrid<T>();
-        dataGrid.setWidth100();
         selectionModel = new SingleSelectionModel<T>();
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override

@@ -42,8 +42,7 @@ public class EntityTablePanel<E, T> extends EntityComposite<E> {
      * The default constructor.
      */
     public EntityTablePanel() {
-        table = new EntityTable<T>();
-        table.setWidth100(true);
+        table = new EntityTable<T>();       
         table.setPageSize(10);
         
         final SingleSelectionModel<T> ssm = new SingleSelectionModel<T>();
