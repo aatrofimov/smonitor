@@ -16,27 +16,56 @@
 package org.lorislab.smonitor.agent.rs.service;
 
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
-import org.lorislab.smonitor.agent.rs.model.Application;
-import org.lorislab.smonitor.agent.rs.model.ApplicationDetails;
-import org.lorislab.smonitor.agent.rs.model.AttributeDetails;
-import org.lorislab.smonitor.agent.rs.model.SessionDetails;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.smonitor.connector.model.SessionCriteria;
+import org.lorislab.smonitor.connector.model.Application;
+import org.lorislab.smonitor.connector.model.ApplicationDetails;
+import org.lorislab.smonitor.connector.model.AttributeDetails;
+import org.lorislab.smonitor.connector.model.Session;
+import org.lorislab.smonitor.connector.model.SessionDetails;
 
 /**
  * The application rest-service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-@Path("application")
+@Path("service")
 public interface ApplicationService {
+
+    /**
+     * Finds the sessions by criteria.
+     *
+     * @param criteria the session search criteria.
+     * @return the list of session corresponding to the search criteria.
+     * @throws AgentException if the method fails.
+     */
+    @POST
+    @Path("session/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Session> findSessionByCriteria(SessionCriteria criteria) throws AgentException;
+
+    /**
+     * Gets the session.
+     *
+     * @param host the host.
+     * @param application the application.
+     * @param id the session id.
+     * @return the session.
+     * @throws AgentException if the method fails.
+     */
+    @POST
+    @Path("session/get/{host}/{application}/{session}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Session getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;
 
     /**
      * Gets the list of applications.
@@ -45,6 +74,7 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @GET
+    @Path("application/all")
     @Produces(MediaType.APPLICATION_JSON)
     List<Application> getApplications() throws AgentException;
 
@@ -56,7 +86,7 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @GET
-    @Path("{host}")
+    @Path("application/get/{host}")
     @Produces(MediaType.APPLICATION_JSON)
     List<Application> getApplications(@PathParam("host") String host) throws AgentException;
 
@@ -69,7 +99,7 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @GET
-    @Path("{host}/{application}")
+    @Path("application/details/{host}/{application}")
     @Produces(MediaType.APPLICATION_JSON)
     ApplicationDetails getApplication(@PathParam("host") String host, @PathParam("application") String name) throws AgentException;
 
@@ -83,9 +113,9 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @GET
-    @Path("{host}/{application}/{session}")
+    @Path("session/details/{host}/{application}/{session}")
     @Produces(MediaType.APPLICATION_JSON)
-    SessionDetails getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;
+    SessionDetails getSessionDetails(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;
 
     /**
      * Gets the attribute details.
@@ -93,12 +123,12 @@ public interface ApplicationService {
      * @param host the host.
      * @param application the application.
      * @param session the session.
-     * @param name the name.     
+     * @param name the name.
      * @return the attribute details.
      * @throws AgentException if the method fails.
      */
     @GET
-    @Path("{host}/{application}/{session}/{attribute}")
+    @Path("attribute/details/{host}/{application}/{session}/{attribute}")
     @Produces(MediaType.APPLICATION_JSON)
     AttributeDetails getAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name) throws AgentException;
 
@@ -114,10 +144,10 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @PUT
-    @Path("{host}/{application}/{session}/{attribute}")
+    @Path("attribute/details/{host}/{application}/{session}/{attribute}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    AttributeDetails updateAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, AttributeDetails attribute ) throws AgentException;
+    AttributeDetails updateAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name, AttributeDetails attribute) throws AgentException;
 
     /**
      * Deletes the attribute.
@@ -129,6 +159,6 @@ public interface ApplicationService {
      * @throws AgentException if the method fails.
      */
     @DELETE
-    @Path("{host}/{application}/{session}/{attribute}")
+    @Path("attribute/details/{host}/{application}/{session}/{attribute}")
     void deleteAttribute(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String session, @PathParam("attribute") String name) throws AgentException;
 }

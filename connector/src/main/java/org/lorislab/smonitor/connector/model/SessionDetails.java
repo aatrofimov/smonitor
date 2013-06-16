@@ -23,16 +23,12 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetails extends Session {
+public class SessionDetails {
 
     /**
-     * The host.
+     * The session.
      */
-    private String host;
-    /**
-     * The application.
-     */
-    private String application;
+    private Session session;
     /**
      * The info.
      */
@@ -67,39 +63,21 @@ public class SessionDetails extends Session {
     }
 
     /**
-     * Gets the application.
+     * Gets the session.
      *
-     * @return the application.
+     * @return the session.
      */
-    public String getApplication() {
-        return application;
+    public Session getSession() {
+        return session;
     }
 
     /**
-     * Sets the application.
+     * Sets the session.
      *
-     * @param application the application.
+     * @param session the session.
      */
-    public void setApplication(String application) {
-        this.application = application;
-    }
-
-    /**
-     * Gets the host.
-     *
-     * @return the host.
-     */
-    public String getHost() {
-        return host;
-    }
-
-    /**
-     * Sets the host.
-     *
-     * @param host the host.
-     */
-    public void setHost(String host) {
-        this.host = host;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     /**

@@ -15,13 +15,15 @@
  */
 package org.lorislabr.smonitor.agent.rs.client.service;
 
-import org.lorislab.smonitor.agent.rs.model.Application;
-import org.lorislab.smonitor.agent.rs.model.ApplicationDetails;
-import org.lorislab.smonitor.agent.rs.model.AttributeDetails;
-import org.lorislab.smonitor.agent.rs.model.SessionDetails;
 import org.lorislab.smonitor.agent.rs.service.ApplicationService;
 import java.util.List;
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
+import org.lorislab.smonitor.connector.model.Application;
+import org.lorislab.smonitor.connector.model.ApplicationDetails;
+import org.lorislab.smonitor.connector.model.AttributeDetails;
+import org.lorislab.smonitor.connector.model.Session;
+import org.lorislab.smonitor.connector.model.SessionDetails;
+import org.lorislab.smonitor.connector.model.SessionCriteria;
 import org.lorislabr.smonitor.agent.rs.client.AbstractClientService;
 
 /**
@@ -61,11 +63,20 @@ public class ApplicationClientService extends AbstractClientService<ApplicationS
      * {@inheritDoc}
      */
     @Override
-    public SessionDetails getSession(String host, String application, String id) throws AgentException {
-        SessionDetails result = getService().getSession(host, application, id);
+    public SessionDetails getSessionDetails(String host, String application, String id) throws AgentException {
+        SessionDetails result = getService().getSessionDetails(host, application, id);
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Session getSession(String host, String application, String id) throws AgentException {
+        Session result = getService().getSession(host, application, id);
+        return result;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -98,5 +109,13 @@ public class ApplicationClientService extends AbstractClientService<ApplicationS
     @Override
     public List<Application> getApplications(String host) throws AgentException {
         return getService().getApplications(host);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Session> findSessionByCriteria(SessionCriteria criteria) throws AgentException {
+        return getService().findSessionByCriteria(criteria);
     }
 }

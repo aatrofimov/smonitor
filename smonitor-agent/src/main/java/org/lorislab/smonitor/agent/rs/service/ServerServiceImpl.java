@@ -17,10 +17,9 @@ package org.lorislab.smonitor.agent.rs.service;
 
 import org.lorislab.smonitor.connector.service.ConnectorService;
 import org.lorislab.smonitor.connector.factory.ConnectorServiceFactory;
-import org.lorislab.smonitor.agent.mapper.ObjectMapper;
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
-import org.lorislab.smonitor.agent.rs.model.HostDetails;
-import org.lorislab.smonitor.agent.rs.model.Server;
+import org.lorislab.smonitor.connector.model.HostDetails;
+import org.lorislab.smonitor.connector.model.Server;
 
 /**
  * The server rest-service implementation.
@@ -36,7 +35,7 @@ public class ServerServiceImpl implements ServerService {
     public Server getServer() throws AgentException {
         Server result;
         ConnectorService service = ConnectorServiceFactory.getService();
-        result = ObjectMapper.getInstance().map(service.getServer(), Server.class);
+        result = service.getServer();
         return result;
     }
 

@@ -19,19 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.core.Response.Status;
-import org.apache.http.client.ClientProtocolException;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
-import org.lorislab.smonitor.agent.rs.model.Application;
-import org.lorislab.smonitor.agent.rs.model.Host;
-import org.lorislab.smonitor.agent.rs.model.Server;
+import org.lorislab.smonitor.connector.model.Application;
+import org.lorislab.smonitor.connector.model.Host;
+import org.lorislab.smonitor.connector.model.Server;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
-import org.lorislab.smonitor.rs.exception.ServiceException;
 import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.ServerInfo;
 import org.lorislab.smonitor.service.ServiceFactory;
+import org.lorislab.smonitor.util.RSClientUtil;
 import org.lorislabr.smonitor.agent.rs.client.service.ServerClientService;
 
 /**
@@ -58,18 +54,8 @@ public class ServerServiceImpl implements ServerService {
             Server server = null;
             try {
                 server = serverService.getServer();
-            } catch (ClientResponseFailure e) {
-                ClientResponse response = e.getResponse();
-                if (response.getResponseStatus().equals(Status.FORBIDDEN)) {
-                    throw new ServiceException(guid, "Authentification failed", e);
-                }
-                throw new ServiceException(guid, "Error in the communication to the server " + response.getResponseStatus().getStatusCode(), e);
             } catch (Exception ex) {
-                String msg = ex.getMessage();
-                if (msg.startsWith(ClientProtocolException.class.getName())) {
-                    throw new ServiceException(guid, "The server is not valid address.", ex);
-                }
-                throw new ServiceException(guid, "Could not connect to the server", ex);
+                RSClientUtil.handleException(guid, ex);
             }
             
             if (server != null) {

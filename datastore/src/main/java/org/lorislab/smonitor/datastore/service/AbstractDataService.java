@@ -17,8 +17,6 @@ package org.lorislab.smonitor.datastore.service;
 
 import com.j256.ormlite.dao.CloseableWrappedIterable;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.table.TableUtils;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
@@ -33,7 +31,7 @@ import org.lorislab.smonitor.datastore.model.PersistenceData;
  */
 public abstract class AbstractDataService<T extends PersistenceData> {
 
-    private Dao<T, String> dao;
+    protected Dao<T, String> dao;
 
     public AbstractDataService() {
         // get the class

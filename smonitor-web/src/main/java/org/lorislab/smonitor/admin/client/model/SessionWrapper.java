@@ -15,10 +15,14 @@
  */
 package org.lorislab.smonitor.admin.client.model;
 
+import org.lorislab.smonitor.rs.model.SessionInfo;
+
 /**
  *
  * @author Andrej Petras
  */
 public class SessionWrapper {
+    
+    SessionInfo session;
     
 }

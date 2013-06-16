@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.connector.tomcat.service;
 
+import java.util.HashSet;
 import org.lorislab.smonitor.connector.model.Application;
 import org.lorislab.smonitor.connector.model.ApplicationDetails;
 import org.lorislab.smonitor.connector.model.AttributeDetails;
@@ -26,6 +27,8 @@ import org.lorislab.smonitor.connector.service.ConnectorService;
 import org.lorislab.smonitor.connector.tomcat.util.TomcatUtil;
 import org.lorislab.smonitor.connector.tomcat.server.TomcatServer;
 import java.util.List;
+import java.util.Set;
+import org.lorislab.smonitor.connector.model.SessionCriteria;
 
 /**
  * The tomcat connector service.
@@ -85,7 +88,7 @@ public class TomcatConnectorService implements ConnectorService {
         List<Application> result = TomcatUtil.getApplications(server.getContexts());
         return result;
     }
-
+     
     /**
      * {@inheritDoc}
      */
@@ -114,10 +117,29 @@ public class TomcatConnectorService implements ConnectorService {
     public List<Session> getSessions(String host, String application) {
         TomcatServer server = TomcatServer.getInstance();
         String id = TomcatUtil.createTomcatApplicationId(application);
-        List<Session> result = TomcatUtil.getSessions(server.getSessions(host, id));
+        List<Session> result = TomcatUtil.getSessions(host, application, server.getSessions(host, id));
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */    
+    @Override
+    public List<Session> findSessionByCriteria(SessionCriteria criteria) {
+        List<Session> result = null;
+        TomcatServer server = TomcatServer.getInstance();
+        if (criteria != null) {
+            if (criteria.getApplications() != null) {
+                Set<String> apps = new HashSet<String>();
+                for (String aa : criteria.getApplications()) {
+                    apps.add(TomcatUtil.createTomcatApplicationId(aa));
+                }                
+                result = TomcatUtil.createSearchResult(server.getSessions(apps));
+            }
+        }                
+        return result;
+    }
+ 
     /**
      * {@inheritDoc}
      */
@@ -129,6 +151,17 @@ public class TomcatConnectorService implements ConnectorService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Session getSession(String host, String application, String session) {
+        TomcatServer server = TomcatServer.getInstance();
+        String id = TomcatUtil.createTomcatApplicationId(application);
+        Session result = TomcatUtil.createSession(host, application, server.getSession(host, id, session));
+        return result;
+    }
+    
     /**
      * {@inheritDoc}
      */

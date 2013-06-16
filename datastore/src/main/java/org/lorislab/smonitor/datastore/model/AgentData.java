@@ -25,6 +25,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "SM_AGENT")
 public class AgentData extends PersistenceData {
     
+    public static final String FIELD_ENABLED = "enabled";
+    
     @DatabaseField(canBeNull = false, unique = true)
     private String name;
     

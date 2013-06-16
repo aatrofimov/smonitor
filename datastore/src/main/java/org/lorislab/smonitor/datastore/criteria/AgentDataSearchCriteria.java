@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ * Copyright 2013 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.agent.rs.model;
+package org.lorislab.smonitor.datastore.criteria;
+
+import java.util.Set;
 
 /**
- * The attribute details.
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ *
+ * @author Andrej Petras
  */
-public class AttributeDetails extends Attribute {
-   
+public class AgentDataSearchCriteria {
+    
+    private Set<String> guids;
+    
+    private Boolean enabled;
+
+    public Set<String> getGuids() {
+        return guids;
+    }
+
+    public void setGuids(Set<String> guids) {
+        this.guids = guids;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+        
 }

@@ -16,13 +16,13 @@
 package org.lorislab.smonitor.agent.rs.service;
 
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
-import org.lorislab.smonitor.agent.rs.model.HostDetails;
-import org.lorislab.smonitor.agent.rs.model.Server;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.lorislab.smonitor.connector.model.HostDetails;
+import org.lorislab.smonitor.connector.model.Server;
 
 /**
  * The server rest-service.

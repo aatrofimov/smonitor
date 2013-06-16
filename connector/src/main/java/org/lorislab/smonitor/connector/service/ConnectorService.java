@@ -23,6 +23,7 @@ import org.lorislab.smonitor.connector.model.Server;
 import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionDetails;
 import java.util.List;
+import org.lorislab.smonitor.connector.model.SessionCriteria;
 
 /**
  * The connector service.
@@ -101,6 +102,14 @@ public interface ConnectorService {
     List<Session> getSessions(String host, String application);
 
     /**
+     * Finds the session by search criteria.
+     *
+     * @param criteria the search criteria.
+     * @return the list of session corresponding to the criteria.
+     */
+    List<Session> findSessionByCriteria(SessionCriteria criteria);
+
+    /**
      * Gest the session details.
      *
      * @param host the host.
@@ -110,6 +119,16 @@ public interface ConnectorService {
      */
     SessionDetails getSessionDetails(String host, String application, String session);
 
+    /**
+     * Gest the session.
+     *
+     * @param host the host.
+     * @param application the application.
+     * @param session the session.
+     * @return the session details.
+     */
+    Session getSession(String host, String application, String session);
+    
     /**
      * Gets the attribute details.
      *

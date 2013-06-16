@@ -20,7 +20,10 @@ import org.lorislab.smonitor.connector.tomcat.lookup.JBossTomcatServiceLookup;
 import org.lorislab.smonitor.connector.tomcat.lookup.TomcatServiceLookup;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.management.MBeanServer;
@@ -31,6 +34,7 @@ import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
+import org.apache.catalina.Session;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.session.StandardSession;
@@ -271,9 +275,54 @@ public class TomcatServer {
      * @param webApp the application.
      * @return the list of sessions.
      */
-    public org.apache.catalina.Session[] getSessions(String host, String webApp) {
+    public Session[] getSessions(String host, String webApp) {
         org.apache.catalina.Session[] result = null;
         StandardContext context = getContext(host, webApp);
+        result = getSessions(context);
+        return result;
+    }
+
+    /**
+     * Gets all sessions for the web-application.
+     *
+     * @param webApps the web application name.
+     * @return the result of host and sessions.
+     */
+    public Map<String, Map<String, Session[]>> getSessions(Set<String> webApps) {
+        Map<String, Map<String, Session[]>> result = new HashMap<String, Map<String, Session[]>>();
+        if (webApps != null) {
+            Container[] hosts = getHosts();
+            if (hosts != null) {
+                for (Container host : hosts) {
+                    
+                    // search web application and sessions in the current host
+                    Map<String, Session[]> tmp = new HashMap<String, Session[]>();                                        
+                    for (String webApp : webApps) {
+                        Container container = host.findChild(webApp);
+                        if (container != null) {
+                            StandardContext context = (StandardContext) container;
+                            tmp.put(webApp, getSessions(context));
+                        }
+                    }
+                    
+                    // put to the host result
+                    if (!tmp.isEmpty()) {
+                        result.put(host.getName(), tmp);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Gets all session for the context.
+     *
+     * @param context the application context.
+     * @return the list of sessions.
+     */
+    private Session[] getSessions(StandardContext context) {
+        org.apache.catalina.Session[] result = null;
         if (context != null) {
             Manager manager = context.getManager();
             if (manager != null) {
@@ -283,10 +332,10 @@ public class TomcatServer {
                     LOGGER.log(Level.SEVERE, "Error by reading the list of sessions", ex);
                 }
             } else {
-                LOGGER.log(Level.SEVERE, "No mananager found for web application {0}, host {1}", new Object[]{webApp, host});
+                LOGGER.log(Level.SEVERE, "No mananager found for web application");
             }
         } else {
-            LOGGER.log(Level.SEVERE, "No context found for web application {0}, host {1}", new Object[]{webApp, host});
+            LOGGER.log(Level.SEVERE, "No context found for web application");
         }
         return result;
     }

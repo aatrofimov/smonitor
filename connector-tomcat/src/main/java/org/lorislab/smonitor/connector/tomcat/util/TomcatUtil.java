@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.catalina.Container;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Manager;
@@ -73,26 +75,18 @@ public final class TomcatUtil {
      * @param session the session.
      * @return the session details.
      */
-    public static SessionDetails createSessionDetails(String host, String application, StandardSession session) {
+    public static SessionDetails createSessionDetails(String host, String application, org.apache.catalina.Session session) {
         SessionDetails result = null;
 
         if (session != null) {
             result = new SessionDetails();
-            result.setHost(host);
-            result.setApplication(application);
 
             // session info
             result.setInfo(session.getInfo());
 
             // create session basic information
-            Session tmp = createSession(session);
-            result.setCreationTime(tmp.getCreationTime());
-            result.setId(tmp.getId());
-            result.setLastAccessedTime(tmp.getLastAccessedTime());
-            result.setLastAccessedTimeInternal(tmp.getLastAccessedTimeInternal());
-            result.setMaxInactiveInterval(tmp.getMaxInactiveInterval());
-            result.setUser(tmp.getUser());
-            result.setValid(tmp.isValid());
+            Session tmp = createSession(host, application, session);
+            result.setSession(tmp);
 
             // load user roles
             GenericPrincipal principal = (GenericPrincipal) session.getPrincipal();
@@ -103,26 +97,31 @@ public final class TomcatUtil {
                 }
             }
 
-            // is new session flag
-            result.setNewSession(session.isNew());
+            if (session instanceof StandardSession) {
 
-            double size = 0;
-            double sizeSerializable = 0;
+                StandardSession standardSession = (StandardSession) session;
 
-            List<Attribute> attributes = new ArrayList<Attribute>();
+                // is new session flag
+                result.setNewSession(standardSession.isNew());
 
-            Enumeration enumerator = session.getAttributeNames();
-            while (enumerator.hasMoreElements()) {
-                String name = (String) enumerator.nextElement();
-                Attribute attr = createAttribute(name, session.getAttribute(name));
-                attributes.add(attr);
-                size = size + attr.getSize();
-                sizeSerializable = sizeSerializable + attr.getSerializableSize();
+                double size = 0;
+                double sizeSerializable = 0;
+
+                List<Attribute> attributes = new ArrayList<Attribute>();
+
+                Enumeration enumerator = standardSession.getAttributeNames();
+                while (enumerator.hasMoreElements()) {
+                    String name = (String) enumerator.nextElement();
+                    Attribute attr = createAttribute(name, standardSession.getAttribute(name));
+                    attributes.add(attr);
+                    size = size + attr.getSize();
+                    sizeSerializable = sizeSerializable + attr.getSerializableSize();
+                }
+
+                result.setSize(size);
+                result.setSizeSerializable(sizeSerializable);
+                result.setAttributes(attributes);
             }
-
-            result.setSize(size);
-            result.setSizeSerializable(sizeSerializable);
-            result.setAttributes(attributes);
 
         }
         return result;
@@ -190,7 +189,7 @@ public final class TomcatUtil {
                 result.setActiveSessions(manager.getActiveSessions());
 
                 // load sessions
-                List<Session> tmp = getSessions(manager.findSessions());
+                List<Session> tmp = getSessions(app.getHost(), app.getName(), manager.findSessions());
                 result.setSessions(tmp);
             }
         }
@@ -203,10 +202,13 @@ public final class TomcatUtil {
      * @param session the session.
      * @return the session.
      */
-    private static Session createSession(org.apache.catalina.Session session) {
+    public static Session createSession(String host, String application, org.apache.catalina.Session session) {
         Session result = null;
         if (session != null) {
             result = new Session();
+            result.setHost(host);
+            result.setApplication(application);
+
             //Return the session identifier for this session.
             result.setId(session.getId());
             //Return the creation time for this session.
@@ -293,14 +295,15 @@ public final class TomcatUtil {
 
     /**
      * Gets the list of sessions.
+     *
      * @param sessions the tomcat list of session.
      * @return the list of sessions.
      */
-    public static List<Session> getSessions(org.apache.catalina.Session[] sessions) {
+    public static List<Session> getSessions(String host, String application, org.apache.catalina.Session[] sessions) {
         List<Session> result = new ArrayList<Session>();
         if (sessions != null) {
             for (org.apache.catalina.Session session : sessions) {
-                Session item = createSession(session);
+                Session item = createSession(host, application, session);
                 if (item != null) {
                     result.add(item);
                 }
@@ -374,6 +377,34 @@ public final class TomcatUtil {
             if (name != null && !name.isEmpty()) {
                 if (!name.startsWith(APP_PREFIX)) {
                     result = APP_PREFIX + name;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Creates list of session for the search result.
+     *
+     * @param search the search result.
+     * @return the list of sessions.
+     */
+    public static List<Session> createSearchResult(Map<String, Map<String, org.apache.catalina.Session[]>> search) {
+        List<Session> result = new ArrayList<Session>();
+        if (search != null) {
+            if (!search.isEmpty()) {
+                Set<String> hosts = search.keySet();
+                for (String host : hosts) {
+                    Map<String, org.apache.catalina.Session[]> tmp = search.get(host);
+                    if (!tmp.isEmpty()) {
+                        Set<String> apps = tmp.keySet();
+                        for (String app : apps) {
+                            List<Session> sessions = getSessions(host, app, tmp.get(app));
+                            if (sessions != null && !sessions.isEmpty()) {
+                                result.addAll(sessions);
+                            }
+                        }
+                    }
                 }
             }
         }

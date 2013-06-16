@@ -24,6 +24,8 @@ import java.util.UUID;
  */
 public class PersistenceData {
     
+    public static final String FIELD_GUID = "guid";
+    
     @DatabaseField(canBeNull = false, id = true, unique = true)
     private String guid = UUID.randomUUID().toString();
     

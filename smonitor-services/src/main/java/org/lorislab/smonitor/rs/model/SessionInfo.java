@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
+ * Copyright 2013 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.agent.rs.model;
+package org.lorislab.smonitor.rs.model;
 
 import java.util.Date;
 
 /**
- * The session.
- * 
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ *
+ * @author Andrej Petras
  */
-public class Session {
+public class SessionInfo {
+    
+    private String guid;
     
   /**
+     * The host.
+     */
+    private String host;
+    /**
+     * The application.
+     */
+    private String application;
+    
+    /**
      * The id.
      */
     private String id;
@@ -53,6 +63,50 @@ public class Session {
      */
     private int maxInactiveInterval;
 
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+    
+   /**
+     * Gets the application.
+     *
+     * @return the application.
+     */
+    public String getApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the application.
+     *
+     * @param application the application.
+     */
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
+    /**
+     * Gets the host.
+     *
+     * @return the host.
+     */
+    public String getHost() {
+        return host;
+    }
+
+    /**
+     * Sets the host.
+     *
+     * @param host the host.
+     */
+    public void setHost(String host) {
+        this.host = host;
+    }
+    
     /**
      * Gets last accessed time interval.
      *
@@ -177,6 +231,5 @@ public class Session {
      */
     public String getUser() {
         return user;
-    }
-        
+    }    
 }

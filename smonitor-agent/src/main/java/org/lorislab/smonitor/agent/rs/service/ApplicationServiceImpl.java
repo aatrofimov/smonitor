@@ -15,17 +15,17 @@
  */
 package org.lorislab.smonitor.agent.rs.service;
 
-import org.lorislab.smonitor.agent.mapper.ObjectMapper;
 import org.lorislab.smonitor.connector.factory.ConnectorServiceFactory;
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
-import org.lorislab.smonitor.agent.rs.model.Application;
-import org.lorislab.smonitor.agent.rs.model.ApplicationDetails;
-import org.lorislab.smonitor.agent.rs.model.AttributeDetails;
-import org.lorislab.smonitor.agent.rs.model.SessionDetails;
 import org.lorislab.smonitor.connector.service.ConnectorService;
-import java.lang.reflect.Type;
 import java.util.List;
-import org.modelmapper.TypeToken;
+import javax.ws.rs.PathParam;
+import org.lorislab.smonitor.connector.model.SessionCriteria;
+import org.lorislab.smonitor.connector.model.Application;
+import org.lorislab.smonitor.connector.model.ApplicationDetails;
+import org.lorislab.smonitor.connector.model.AttributeDetails;
+import org.lorislab.smonitor.connector.model.Session;
+import org.lorislab.smonitor.connector.model.SessionDetails;
 
 /**
  * The implementation of application service.
@@ -36,14 +36,34 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     /**
      * {@inheritDoc}
+     */    
+    @Override
+    public List<Session> findSessionByCriteria(SessionCriteria criteria) throws AgentException {
+        List<Session> result;
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = service.findSessionByCriteria(criteria);
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */     
+    @Override
+    public Session getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException {
+        Session result;
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = service.getSession(host, application, id);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<Application> getApplications(String host) throws AgentException {
         List<Application> result;
         ConnectorService service = ConnectorServiceFactory.getService();
-        Type listType = new TypeToken<List<Application>>() {
-        }.getType();
-        result = ObjectMapper.getInstance().map(service.getApplications(host), listType);
+        result = service.getApplications(host);
         return result;
     }
 
@@ -54,9 +74,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> getApplications() throws AgentException {
         List<Application> result;
         ConnectorService service = ConnectorServiceFactory.getService();
-        Type listType = new TypeToken<List<Application>>() {
-        }.getType();
-        result = ObjectMapper.getInstance().map(service.getApplications(), listType);
+        result = service.getApplications();
         return result;
     }
 
@@ -67,7 +85,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationDetails getApplication(String host, String name) throws AgentException {
         ApplicationDetails result;
         ConnectorService service = ConnectorServiceFactory.getService();
-        result = ObjectMapper.getInstance().map(service.getApplicationDetails(host, name), ApplicationDetails.class);
+        result = service.getApplicationDetails(host, name);
         return result;
     }
 
@@ -75,10 +93,10 @@ public class ApplicationServiceImpl implements ApplicationService {
      * {@inheritDoc}
      */
     @Override
-    public SessionDetails getSession(String host, String application, String id) throws AgentException {
+    public SessionDetails getSessionDetails(String host, String application, String id) throws AgentException {
         SessionDetails result;
         ConnectorService service = ConnectorServiceFactory.getService();
-        result = ObjectMapper.getInstance().map(service.getSessionDetails(host, application, id), SessionDetails.class);
+        result = service.getSessionDetails(host, application, id);
         return result;
     }
 

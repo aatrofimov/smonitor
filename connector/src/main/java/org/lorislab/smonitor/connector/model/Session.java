@@ -25,6 +25,15 @@ import java.util.Date;
 public class Session {
 
     /**
+     * The host.
+     */
+    private String host;
+    /**
+     * The application.
+     */
+    private String application;
+    
+    /**
      * The id.
      */
     private String id;
@@ -53,6 +62,42 @@ public class Session {
      */
     private int maxInactiveInterval;
 
+   /**
+     * Gets the application.
+     *
+     * @return the application.
+     */
+    public String getApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the application.
+     *
+     * @param application the application.
+     */
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
+    /**
+     * Gets the host.
+     *
+     * @return the host.
+     */
+    public String getHost() {
+        return host;
+    }
+
+    /**
+     * Sets the host.
+     *
+     * @param host the host.
+     */
+    public void setHost(String host) {
+        this.host = host;
+    }
+    
     /**
      * Gets last accessed time interval.
      *

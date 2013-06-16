@@ -17,7 +17,6 @@ package org.lorislabr.smonitor.agent.rs.client;
 
 import org.lorislabr.smonitor.agent.rs.client.executor.AgentClientExecutor;
 import org.jboss.resteasy.client.ProxyFactory;
-import org.lorislab.smonitor.agent.rs.exception.AgentException;
 
 /**
  * The abstract client service.
