@@ -16,13 +16,7 @@
             <artifactId>connector</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- MAPPER -->
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <scope>compile</scope>
-        </dependency>        
+        </dependency>      
         <!-- RESTEASY -->                   
         <dependency>
             <groupId>org.jboss.resteasy</groupId>

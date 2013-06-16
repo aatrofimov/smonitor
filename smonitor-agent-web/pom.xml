@@ -27,13 +27,7 @@
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>config-file</artifactId>
             <version>${project.version}</version>
-        </dependency>        -->
-        <!-- MAPPER -->
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <scope>compile</scope>
-        </dependency>                    
+        </dependency>        -->                   
     </dependencies>
 
 
