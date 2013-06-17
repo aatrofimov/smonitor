@@ -37,6 +37,7 @@ public class RSActivator extends Application {
         RESOURCES.add(ConfigServiceImpl.class);
         RESOURCES.add(AgentRestServiceImpl.class);        
         RESOURCES.add(ServerServiceImpl.class);
+        RESOURCES.add(ApplicationServiceImpl.class);
         
         SINGLETONS.add(new RestServiceExceptionMapper());
     }

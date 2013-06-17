@@ -25,6 +25,8 @@ public class SessionInfo {
     
     private String guid;
     
+    private String agent;
+    
   /**
      * The host.
      */
@@ -63,6 +65,14 @@ public class SessionInfo {
      */
     private int maxInactiveInterval;
 
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
+    }
+    
     public void setGuid(String guid) {
         this.guid = guid;
     }

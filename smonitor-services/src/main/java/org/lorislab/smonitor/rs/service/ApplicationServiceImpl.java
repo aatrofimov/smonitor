@@ -17,12 +17,14 @@ package org.lorislab.smonitor.rs.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionCriteria;
 import org.lorislab.smonitor.datastore.criteria.AgentDataSearchCriteria;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
+import org.lorislab.smonitor.rs.exception.ServiceException;
 import org.lorislab.smonitor.rs.model.SessionInfo;
 import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 import org.lorislab.smonitor.service.ServiceFactory;
@@ -52,7 +54,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ApplicationClientService appService = new ApplicationClientService(data.getServer(), data.getKey());
                 try {
                     Session session = appService.getSession(host, application, id);
-                    result = create(guid, session);
+                    result = create(data, session);
                 } catch (Exception ex) {
                     RSClientUtil.handleException(guid, ex);
                 }
@@ -65,12 +67,12 @@ public class ApplicationServiceImpl implements ApplicationService {
         return result;
     }
 
-    private static List<SessionInfo> create(String guid, List<Session> sessions) {
+    private static List<SessionInfo> create(AgentData agent, List<Session> sessions) {
         List<SessionInfo> result = null;
         if (sessions != null) {
             result = new ArrayList<SessionInfo>();
             for (Session session : sessions) {
-                SessionInfo info = create(guid, session);
+                SessionInfo info = create(agent, session);
                 if (info != null) {
                     result.add(info);
                 }
@@ -78,12 +80,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         return result;
     }
-    
-    private static SessionInfo create(String guid, Session session) {
+
+    private static SessionInfo create(AgentData agent, Session session) {
         SessionInfo result = null;
         if (session != null) {
             result = new SessionInfo();
-            result.setGuid(guid);
+            result.setGuid(agent.getGuid());
+            result.setAgent(agent.getName());
             result.setApplication(session.getApplication());
             result.setCreationTime(session.getCreationTime());
             result.setHost(session.getHost());
@@ -109,25 +112,26 @@ public class ApplicationServiceImpl implements ApplicationService {
             if (agents != null) {
                 for (AgentData agent : agents) {
 
-                    String guid = agent.getGuid();
-                    ApplicationClientService appService = new ApplicationClientService(agent.getServer(), agent.getKey());
                     try {
-                        SessionCriteria sessionCriteria = new SessionCriteria();
-                        sessionCriteria.setApplications(criteria.getApplications());
+                        ApplicationClientService appService = new ApplicationClientService(agent.getServer(), agent.getKey());
+                        try {
+                            SessionCriteria sessionCriteria = new SessionCriteria();
+                            sessionCriteria.setApplications(criteria.getApplications());
 
-                        List<Session> sessions = appService.findSessionByCriteria(sessionCriteria);
-                        List<SessionInfo> infos = create(guid, sessions);
-                        if (infos != null) {
-                            result.addAll(infos);
+                            List<Session> sessions = appService.findSessionByCriteria(sessionCriteria);
+                            List<SessionInfo> infos = create(agent, sessions);
+                            if (infos != null) {
+                                result.addAll(infos);
+                            }
+                        } catch (Exception ex) {
+                            RSClientUtil.handleException(agent.getGuid(), ex);
                         }
-                    } catch (Exception ex) {
-                        RSClientUtil.handleException(guid, ex);
+                    } catch (ServiceException ex) {
+                        LOGGER.log(Level.SEVERE, "Error search session in the agent " + agent.getName(), ex);
                     }
-
                 }
             }
         }
         return result;
     }
-    
 }

@@ -51,6 +51,7 @@ public interface ApplicationService {
     @POST
     @Path("session/search")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     List<Session> findSessionByCriteria(SessionCriteria criteria) throws AgentException;
 
     /**

@@ -23,6 +23,6 @@ import org.lorislab.smonitor.rs.model.SessionInfo;
  */
 public class SessionWrapper {
     
-    SessionInfo session;
+    public SessionInfo session;
     
 }

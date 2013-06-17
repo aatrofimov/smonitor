@@ -16,21 +16,39 @@
 package org.lorislab.smonitor.admin.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.watopi.chosen.client.ChosenOptions;
 import com.watopi.chosen.client.gwt.ChosenListBox;
 import com.watopi.chosen.client.resources.ChozenCss;
 import com.watopi.chosen.client.resources.Resources;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.jboss.errai.common.client.api.RemoteCallback;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
+import org.lorislab.smonitor.admin.client.service.Client;
+import org.lorislab.smonitor.admin.client.service.ClientFactory;
+import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.gwt.uc.page.ViewPage;
+import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerApplication;
+import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
+import org.lorislab.smonitor.rs.service.ApplicationService;
 
 /**
  *
@@ -38,36 +56,93 @@ import org.lorislab.smonitor.rs.model.ServerApplication;
  */
 public class SessionsView extends ViewPage {
 
-    @UiField(provided = true)
-    ChosenListBox agentsList;    
-
-    @UiField(provided = true)
-    ChosenListBox appList; 
+    @UiField
+    DockLayoutPanel searchCriteria;
     
     @UiField
+    FlowPanel searchCriteriaItems;
+    
+    @UiField(provided = true)
+    ChosenListBox agentsList;
+    @UiField(provided = true)
+    ChosenListBox appList;
+    @UiField
     SessionGridPanel sessionPanel;
-    
+    @UiField
+    Button btnSessionReset;
+    @UiField
+    Button btnSessionSearch;
+    private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
     private AgentController agentController;
-    
+
     public SessionsView(AgentController agentController) {
         this.agentController = agentController;
         ChosenOptions options = new ChosenOptions();
-        options.setResources(GWT.<MyResources>create(MyResources.class));        
+        options.setResources(GWT.<MyResources>create(MyResources.class));
         agentsList = new ChosenListBox(true, options);
         appList = new ChosenListBox(true, options);
-        
+
         initWidget(uiBinder.createAndBindUi(this));
+
         
-        appList.setPlaceholderText("Choose ...");
-        agentsList.setPlaceholderText("Choose ...");
+        searchCriteria.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
+        searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
         
+//        appList.setPlaceholderTextMultiple("Choose ...");
+//        agentsList.setPlaceholderTextMultiple("Choose2 ...");
+
+        btnSessionReset.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+            }
+        });
+
+        btnSessionSearch.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                SessionSearchCriteria criteria = new SessionSearchCriteria();
+                criteria.setAgents(getValues(agentsList));
+                criteria.setApplications(getValues(appList));
+                
+                sessionPanel.reset();
+                appService.call(sessionSearch, sessionSearchError).findSessions(criteria);
+            }
+        });
+        
+        Window.addResizeHandler(new ResizeHandler() {
+            @Override
+            public void onResize(ResizeEvent event) {
+                agentsList.forceRedraw();
+                appList.forceRedraw();
+            }
+        });        
     }
-    
+
+    private static Set<String> getValues(ChosenListBox list) {
+        Set<String> result = new HashSet<String>();
+        if (list != null) {
+            String[] values = list.getValues();
+            if (values != null && values.length > 0) {
+                result.addAll(Arrays.asList(values));                
+            } else {
+                int size = list.getItemCount();
+                String item;
+                for (int i = 0; i < size; i++) {
+                    item = list.getValue(i);
+                    if (item != null) {
+                        result.add(item);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     @Override
     public void openPage() {
         agentsList.clear();
         appList.clear();
-        
+
         List<AgentWrapper> data = agentController.getAgents();
         if (data != null) {
             Set<String> tmp = new HashSet<String>();
@@ -77,37 +152,47 @@ public class SessionsView extends ViewPage {
                     List<ServerApplication> apps = w.server.getApplications();
                     if (apps != null) {
                         for (ServerApplication a : apps) {
-                             if (!tmp.contains(a.getId())) {
-                                 appList.addItem(a.getName(), a.getId());
-                                 tmp.add(a.getId());
-                             }
+                            if (!tmp.contains(a.getId())) {
+                                appList.addItem(a.getName(), a.getId());
+                                tmp.add(a.getId());
+                            }
                         }
                     }
                 }
             }
         }
-        
+
 
     }
 
     @Override
     public void closePage() {
-        
     }
 
     @Override
     public String getPageTitle() {
         return "Sessions";
     }
-    
-    
-    interface MyUiBinder extends UiBinder<Widget, SessionsView> { }
+    final RemoteCallback<List<SessionInfo>> sessionSearch = new RemoteCallback<List<SessionInfo>>() {
+        @Override
+        public void callback(List<SessionInfo> value) {
+            sessionPanel.set(value);
+        }
+    };
+    final RestServiceExceptionCallback sessionSearchError = new RestServiceExceptionCallback() {
+        @Override
+        public void exception(RestServiceException exception) {
+        }
+    };
+
+    interface MyUiBinder extends UiBinder<Widget, SessionsView> {
+    }
     private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);
- 
+
     public interface MyResources extends Resources {
-         
+
         @ClientBundle.Source("chozen.css")
         @Override
         ChozenCss css();
-    }    
+    }
 }

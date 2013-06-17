@@ -22,10 +22,16 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
 import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
 import com.google.gwt.user.client.ui.Composite;
+import java.util.Date;
+import java.util.List;
+import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
+import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
+import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
+import org.lorislab.smonitor.rs.model.SessionInfo;
 
 /**
  *
@@ -36,15 +42,14 @@ public class SessionGridPanel extends Composite {
     /**
      * The data grid.
      */
-    private EntityDataGrid<SessionWrapper> dataGrid;
-
+    private EntityDataGrid<SessionInfo> dataGrid;
     private TableRowHoverHandler tableRowHoverHandler;
 
     /**
      * The default constructor.
      */
     public SessionGridPanel() {
-        dataGrid = new EntityDataGrid<SessionWrapper>();
+        dataGrid = new EntityDataGrid<SessionInfo>();
 
         dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
             @Override
@@ -79,18 +84,79 @@ public class SessionGridPanel extends Composite {
         dataGrid.reset();
     }
 
+    public void set(List<SessionInfo> sessions) {
+        if (sessions != null) {
+            dataGrid.addAll(sessions);
+        }
+    }
+
     private void createColumns() {
-        EntityDataGrid<SessionWrapper> table = dataGrid;
+        EntityDataGrid<SessionInfo> table = dataGrid;
 
 
-        Column colName = table.addColumn("Id", true, new EntityTextColumn<SessionWrapper>() {
+        Column colAction = table.addColumn(" ", true, new EntityImageColumn<SessionInfo, Boolean>() {
             @Override
-            public String getObject(SessionWrapper object) {
-                return "ID";
+            public Boolean getObject(SessionInfo object) {
+                return object.isValid();
+            }
+
+            @Override
+            public String getValue(SessionInfo object) {
+                String result = "images/status_error.png";
+                if (object.isValid()) {
+                    result = "images/status_ok.png";
+                }
+                return result;
             }
         });
-        table.setColumnWidth(colName, 200, Style.Unit.PX);
+        table.setColumnWidth(colAction, 25, Style.Unit.PX);
+        
+        Column colAgent = table.addColumn("Agent", true, new EntityTextColumn<SessionInfo>() {
+            @Override
+            public String getObject(SessionInfo object) {
+                return object.getAgent();
+            }
+        });
+        table.setColumnWidth(colAgent, 100, Style.Unit.PX);
+        
+        Column colApp = table.addColumn("Application", true, new EntityTextColumn<SessionInfo>() {
+            @Override
+            public String getObject(SessionInfo object) {
+                return object.getApplication();
+            }
+        });
+        table.setColumnWidth(colApp, 100, Style.Unit.PX);
+        
+        Column colId = table.addColumn("Id", true, new EntityTextColumn<SessionInfo>() {
+            @Override
+            public String getObject(SessionInfo object) {
+                return object.getId();
+            }
+        });
+        table.setColumnWidth(colId, 150, Style.Unit.PX);
 
-       
+        Column colUser = table.addColumn("User", true, new EntityTextColumn<SessionInfo>() {
+            @Override
+            public String getObject(SessionInfo object) {
+                return object.getUser();
+            }
+        });
+        table.setColumnWidth(colUser, 100, Style.Unit.PX);
+
+        Column colCreate = table.addColumn("Create", true, new EntityDateColumn<SessionInfo>() {
+            @Override
+            public Date getObject(SessionInfo object) {
+                return object.getCreationTime();
+            }
+        });
+        table.setColumnWidth(colCreate, 90, Style.Unit.PX);
+
+        Column colUpdate = table.addColumn("Update", true, new EntityDateColumn<SessionInfo>() {
+            @Override
+            public Date getObject(SessionInfo object) {
+                return object.getLastAccessedTime();
+            }
+        });
+        table.setColumnWidth(colUpdate, 90, Style.Unit.PX);
     }
 }

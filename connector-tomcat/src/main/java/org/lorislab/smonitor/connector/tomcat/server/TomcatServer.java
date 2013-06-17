@@ -290,13 +290,14 @@ public class TomcatServer {
      */
     public Map<String, Map<String, Session[]>> getSessions(Set<String> webApps) {
         Map<String, Map<String, Session[]>> result = new HashMap<String, Map<String, Session[]>>();
-        if (webApps != null) {
-            Container[] hosts = getHosts();
-            if (hosts != null) {
-                for (Container host : hosts) {
-                    
-                    // search web application and sessions in the current host
-                    Map<String, Session[]> tmp = new HashMap<String, Session[]>();                                        
+
+        Container[] hosts = getHosts();
+        if (hosts != null) {
+            for (Container host : hosts) {
+
+                // search web application and sessions in the current host
+                Map<String, Session[]> tmp = new HashMap<String, Session[]>();
+                if (webApps != null && !webApps.isEmpty()) {
                     for (String webApp : webApps) {
                         Container container = host.findChild(webApp);
                         if (container != null) {
@@ -304,11 +305,19 @@ public class TomcatServer {
                             tmp.put(webApp, getSessions(context));
                         }
                     }
-                    
-                    // put to the host result
-                    if (!tmp.isEmpty()) {
-                        result.put(host.getName(), tmp);
+                } else {
+                    Container[] containers = host.findChildren();
+                    if (containers != null) {
+                        for (Container container : containers) {
+                            StandardContext context = (StandardContext) container;
+                            tmp.put(container.getName(), getSessions(context));
+                        }
                     }
+                }
+
+                // put to the host result
+                if (!tmp.isEmpty()) {
+                    result.put(host.getName(), tmp);
                 }
             }
         }

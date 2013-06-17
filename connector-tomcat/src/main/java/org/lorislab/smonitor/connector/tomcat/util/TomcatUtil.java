@@ -207,7 +207,7 @@ public final class TomcatUtil {
         if (session != null) {
             result = new Session();
             result.setHost(host);
-            result.setApplication(application);
+            result.setApplication(getApplicationName(application));
 
             //Return the session identifier for this session.
             result.setId(session.getId());
