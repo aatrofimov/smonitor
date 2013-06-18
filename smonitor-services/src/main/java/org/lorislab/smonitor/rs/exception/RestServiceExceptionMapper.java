@@ -37,6 +37,7 @@ public class RestServiceExceptionMapper implements ExceptionMapper<ServiceExcept
         RestServiceException entity = new RestServiceException();
         entity.setMessage(exception.getMessage());
         entity.setRef(exception.getRef());
+        entity.setParams(exception.getParams());        
         if (exception.getCause() != null) {
             entity.setDetails(exception.getCause().getMessage());
         }

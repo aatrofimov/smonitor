@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+
+    <g:FlowPanel>                    
+        <g:Button ui:field="btnRefresh" addStyleNames="button-action icon-arrows-ccw arrow-popup-content"></g:Button>
+        <g:Button ui:field="btnInfo" addStyleNames="button-action icon-info arrow-popup-content"></g:Button>           
+        <g:Button ui:field="btnDelete" addStyleNames="button-action icon-trash arrow-popup-content"></g:Button>
+    </g:FlowPanel>
+    
+</ui:UiBinder>

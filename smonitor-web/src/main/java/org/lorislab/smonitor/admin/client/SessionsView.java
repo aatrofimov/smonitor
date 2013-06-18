@@ -17,6 +17,8 @@ package org.lorislab.smonitor.admin.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.TableCellElement;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -38,12 +40,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.gwt.uc.page.ViewPage;
+import org.lorislab.smonitor.gwt.uc.panel.SessionToolbarPanel;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.SessionInfo;
@@ -72,6 +76,8 @@ public class SessionsView extends ViewPage {
     Button btnSessionReset;
     @UiField
     Button btnSessionSearch;
+    
+    private SessionToolbarPanel sessionToolbar = new SessionToolbarPanel();
     private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
     private AgentController agentController;
 
@@ -88,9 +94,6 @@ public class SessionsView extends ViewPage {
         searchCriteria.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
         searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
         
-//        appList.setPlaceholderTextMultiple("Choose ...");
-//        agentsList.setPlaceholderTextMultiple("Choose2 ...");
-
         btnSessionReset.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -106,6 +109,40 @@ public class SessionsView extends ViewPage {
                 
                 sessionPanel.reset();
                 appService.call(sessionSearch, sessionSearchError).findSessions(criteria);
+            }
+        });
+        
+        sessionPanel.setTableRowHoverHandler(new TableRowHoverHandler() {
+            @Override
+            public void onRowOver(TableRowElement row) {
+                int index = row.getRowIndex();
+                SessionInfo w = sessionPanel.get(index);
+                TableCellElement cell = row.getCells().getItem(0);
+                sessionToolbar.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
+            }
+
+            @Override
+            public void onRowOut() {
+                sessionToolbar.close();
+            }
+        });
+        
+        
+        sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
+
+            @Override
+            public void info(SessionInfo data) {
+
+            }
+
+            @Override
+            public void delete(SessionInfo data) {
+                
+            }
+
+            @Override
+            public void refresh(SessionInfo data) {
+                appService.call(sessionRefresh).getSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
             }
         });
         
@@ -142,7 +179,8 @@ public class SessionsView extends ViewPage {
     public void openPage() {
         agentsList.clear();
         appList.clear();
-
+        sessionToolbar.close();
+        
         List<AgentWrapper> data = agentController.getAgents();
         if (data != null) {
             Set<String> tmp = new HashSet<String>();
@@ -167,18 +205,28 @@ public class SessionsView extends ViewPage {
 
     @Override
     public void closePage() {
+        sessionToolbar.close();
     }
 
     @Override
     public String getPageTitle() {
         return "Sessions";
     }
+    
     final RemoteCallback<List<SessionInfo>> sessionSearch = new RemoteCallback<List<SessionInfo>>() {
         @Override
         public void callback(List<SessionInfo> value) {
             sessionPanel.set(value);
         }
     };
+    
+    final RemoteCallback<SessionInfo> sessionRefresh = new RemoteCallback<SessionInfo>() {
+        @Override
+        public void callback(SessionInfo value) {
+            sessionPanel.update(value);
+        }
+    };
+    
     final RestServiceExceptionCallback sessionSearchError = new RestServiceExceptionCallback() {
         @Override
         public void exception(RestServiceException exception) {

@@ -59,7 +59,7 @@ public class AgentsView extends ViewPage implements AgentController {
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
-    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();
+    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();    
     private QuestionDialogBox<String> deleteQuestion = new QuestionDialogBox<String>();
 
     public AgentsView() {
@@ -207,13 +207,13 @@ public class AgentsView extends ViewPage implements AgentController {
 
     @Override
     public void openPage() {
-        tableMenu.hide();
+        tableMenu.close();
         deleteQuestion.hide();
     }
 
     @Override
     public void closePage() {
-        tableMenu.hide();
+        tableMenu.close();
         deleteQuestion.hide();
     }
 

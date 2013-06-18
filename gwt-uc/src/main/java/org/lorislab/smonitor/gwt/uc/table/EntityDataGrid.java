@@ -60,6 +60,16 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         dataProvider.refresh();
     }
     
+    public void replace(T data, T newData) {
+        if (data != null && newData != null) {
+            int index = dataProvider.getList().indexOf(data);
+            if (index != -1) {
+                dataProvider.getList().set(index, newData);
+                dataProvider.flush();
+            }
+        }        
+    }
+    
     public void update(T data) {
         if (data != null) {
             int index = dataProvider.getList().indexOf(data);

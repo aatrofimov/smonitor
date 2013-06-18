@@ -15,6 +15,8 @@
  */
 package org.lorislab.smonitor.rs.exception;
 
+import java.util.Map;
+
 /**
  *
  * @author Andrej Petras
@@ -27,6 +29,16 @@ public class RestServiceException {
 
     private String details;
 
+    private Map<String, Object> params;
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
+    }
+        
     public String getDetails() {
         return details;
     }

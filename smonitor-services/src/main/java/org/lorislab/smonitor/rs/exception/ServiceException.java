@@ -15,6 +15,8 @@
  */
 package org.lorislab.smonitor.rs.exception;
 
+import java.util.Map;
+
 /**
  *
  * @author Andrej Petras
@@ -25,24 +27,36 @@ public class ServiceException  extends RuntimeException {
     
     private String ref;
     
+    private Map<String, Object> params;
     
     public ServiceException(String ref, String msg) {        
-        super(msg);
-        this.ref = ref;
+        this(ref, msg, null, null);
     }
     
-    public ServiceException(String ref, Throwable ex) {
-        super(ex);
-        this.ref = ref;
+    public ServiceException(String ref, String msg, Map<String, Object> params) {        
+        this(ref, msg, null, params);
+    }
+    
+    public ServiceException(String ref, Throwable ex, Map<String, Object> params) {
+        this(ref, null, ex, params);
     }
 
-    public ServiceException(String ref, String msg, Throwable ex) {
+    public ServiceException(String ref, String msg, Throwable ex, Map<String, Object> params) {
         super(msg, ex);
         this.ref = ref;
+        this.params = params;
     }    
 
+    public ServiceException(String ref, String msg, Throwable ex) {
+        this(ref, msg, ex, null);
+    } 
+    
     public String getRef() {
         return ref;
     }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }      
         
 }

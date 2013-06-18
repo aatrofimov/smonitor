@@ -84,6 +84,32 @@ public class SessionGridPanel extends Composite {
         dataGrid.reset();
     }
 
+    public SessionInfo get(int index) {
+        return dataGrid.get(index);
+    }
+    
+    public SessionInfo find(final String id) {
+        SessionInfo item = dataGrid.find(new EntityDataGrid.FilterItem<SessionInfo>() {
+            @Override
+            public SessionInfo isItem(SessionInfo item) {
+                if (item.getId().equals(id)) {
+                    return item;
+                }
+                return null;
+            }
+        });
+        return item;
+    }
+     
+    public void update(SessionInfo data) {
+        if (data != null) {
+            SessionInfo item = find(data.getId());
+            if (item != null) {
+                dataGrid.replace(item, data);
+            }            
+        }        
+    }
+    
     public void set(List<SessionInfo> sessions) {
         if (sessions != null) {
             dataGrid.addAll(sessions);
