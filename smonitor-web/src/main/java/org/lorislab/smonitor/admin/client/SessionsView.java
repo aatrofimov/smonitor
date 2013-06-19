@@ -41,9 +41,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
+import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
@@ -85,6 +87,8 @@ public class SessionsView extends ViewPage {
     private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
     private AgentController agentController;
 
+    private QuestionDialogBox<SessionInfo> deleteQuestion = new QuestionDialogBox<SessionInfo>();
+    
     public SessionsView(AgentController agentController) {
         this.agentController = agentController;
         ChosenOptions options = new ChosenOptions();
@@ -151,12 +155,19 @@ public class SessionsView extends ViewPage {
 
             @Override
             public void delete(SessionInfo data) {                
-                appService.call(sessionDelete).deleteSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
+                deleteQuestion.open(data, "Delete Session", "Do you want to really delete the session " + data.getId() + " ?");
             }
 
             @Override
             public void refresh(SessionInfo data) {
                 appService.call(sessionRefresh).getSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
+            }
+        });
+        
+        deleteQuestion.setOkHandler(new DialogEventHandler<SessionInfo>() {
+            @Override
+            public void event(SessionInfo data) {
+                appService.call(sessionDelete).deleteSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
             }
         });
         
@@ -194,6 +205,7 @@ public class SessionsView extends ViewPage {
         agentsList.clear();
         appList.clear();
         sessionToolbar.close();
+        deleteQuestion.close();
         
         List<AgentWrapper> data = agentController.getAgents();
         if (data != null) {
@@ -220,6 +232,7 @@ public class SessionsView extends ViewPage {
     @Override
     public void closePage() {
         sessionToolbar.close();
+        deleteQuestion.close();
     }
 
     @Override
@@ -254,6 +267,7 @@ public class SessionsView extends ViewPage {
         @Override
         public void callback(String value) {
             sessionPanel.removeById(value);
+            deleteQuestion.close();
         }
     };
     

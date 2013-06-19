@@ -79,6 +79,11 @@ public class QuestionDialogBox<T> extends PopupPanel {
         });        
     }
 
+    public void close() {
+        data = null;
+        hide();
+    }
+    
     public void setOkHandler(DialogEventHandler<T> okHandler) {
         this.okHandler = okHandler;
     }

@@ -199,7 +199,7 @@ public class AgentsView extends ViewPage implements AgentController {
         @Override
         public void callback(String value) {
             agentPanel.removeById(value);
-            deleteQuestion.hide();
+            deleteQuestion.close();
         }
     };
     final RemoteCallback<Agent> agentCreate = new RemoteCallback<Agent>() {
@@ -225,13 +225,13 @@ public class AgentsView extends ViewPage implements AgentController {
     @Override
     public void openPage() {
         tableMenu.close();
-        deleteQuestion.hide();
+        deleteQuestion.close();
     }
 
     @Override
     public void closePage() {
         tableMenu.close();
-        deleteQuestion.hide();
+        deleteQuestion.close();
     }
 
     @Override
