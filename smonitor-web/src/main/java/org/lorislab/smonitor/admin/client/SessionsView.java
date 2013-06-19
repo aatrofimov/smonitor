@@ -30,6 +30,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.watopi.chosen.client.ChosenOptions;
 import com.watopi.chosen.client.gwt.ChosenListBox;
@@ -42,6 +43,7 @@ import java.util.Set;
 import org.jboss.errai.common.client.api.RemoteCallback;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
@@ -76,6 +78,8 @@ public class SessionsView extends ViewPage {
     Button btnSessionReset;
     @UiField
     Button btnSessionSearch;
+    @UiField
+    Label resultCount;
     
     private SessionToolbarPanel sessionToolbar = new SessionToolbarPanel();
     private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
@@ -110,6 +114,8 @@ public class SessionsView extends ViewPage {
                 criteria.setApplications(getValues(appList));
                 
                 sessionPanel.reset();
+                resultCount.setText("" + sessionPanel.size());
+                
                 appService.call(sessionSearch, sessionSearchError).findSessions(criteria);
             }
         });
@@ -129,6 +135,12 @@ public class SessionsView extends ViewPage {
             }
         });
         
+        sessionPanel.setChangeSizeHandler(new AbstractGridPanel.ChangeSizeHandler() {
+            @Override
+            public void changeSize(int size) {
+                resultCount.setText("" + sessionPanel.size());
+            }
+        });
         
         sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
 
@@ -218,14 +230,17 @@ public class SessionsView extends ViewPage {
     final RemoteCallback<List<SessionInfo>> sessionSearch = new RemoteCallback<List<SessionInfo>>() {
         @Override
         public void callback(List<SessionInfo> value) {
-            sessionPanel.set(value);
+            sessionPanel.reset();
+            sessionPanel.addAll(value);            
         }
     };
     
     final RemoteCallback<SessionInfo> sessionRefresh = new RemoteCallback<SessionInfo>() {
         @Override
         public void callback(SessionInfo value) {
-            sessionPanel.update(value);
+            if (value != null) {
+                sessionPanel.replaceById(value.getId(), value);
+            }
         }
     };
     
@@ -238,7 +253,7 @@ public class SessionsView extends ViewPage {
     final RemoteCallback<String> sessionDelete = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
-            sessionPanel.remove(value);
+            sessionPanel.removeById(value);
         }
     };
     

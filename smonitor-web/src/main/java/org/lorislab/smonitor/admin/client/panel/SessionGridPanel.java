@@ -15,18 +15,9 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.RowHoverEvent;
-import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
-import com.google.gwt.user.client.ui.Composite;
 import java.util.Date;
-import java.util.List;
-import org.lorislab.smonitor.admin.client.model.AgentWrapper;
-import org.lorislab.smonitor.admin.client.model.SessionWrapper;
-import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
@@ -37,58 +28,10 @@ import org.lorislab.smonitor.rs.model.SessionInfo;
  *
  * @author Andrej Petras
  */
-public class SessionGridPanel extends Composite {
-
-    /**
-     * The data grid.
-     */
-    private EntityDataGrid<SessionInfo> dataGrid;
-    private TableRowHoverHandler tableRowHoverHandler;
-
-    /**
-     * The default constructor.
-     */
-    public SessionGridPanel() {
-        dataGrid = new EntityDataGrid<SessionInfo>();
-
-        dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
-            @Override
-            public void onRowHover(RowHoverEvent event) {
-                if (tableRowHoverHandler != null) {
-                    if (ConstantValues.EVENT_MOUSEOUT.equals((event.getBrowserEvent().getType()))) {
-                        if (HoveringScope.CELL_HOVER.equals(event.getHoveringScope())) {
-                            tableRowHoverHandler.onRowOut();
-                        }
-                    } else {
-                        if (HoveringScope.ROW_HOVER.equals(event.getHoveringScope())) {
-                            tableRowHoverHandler.onRowOver(event.getHoveringRow());
-                        }
-                    }
-                }
-            }
-        });
-
-        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-        initWidget(dataGrid);
-        createColumns();
-    }
-
-    public void setTableRowHoverHandler(TableRowHoverHandler tableRowHoverHandler) {
-        this.tableRowHoverHandler = tableRowHoverHandler;
-    }
-
-    /**
-     * Resets the panel.
-     */
-    public void reset() {
-        dataGrid.reset();
-    }
-
-    public SessionInfo get(int index) {
-        return dataGrid.get(index);
-    }
+public class SessionGridPanel extends AbstractGridPanel<SessionInfo> {
     
-    public SessionInfo find(final String id) {
+    @Override
+    public SessionInfo findById(final Object id) {
         SessionInfo item = dataGrid.find(new EntityDataGrid.FilterItem<SessionInfo>() {
             @Override
             public SessionInfo isItem(SessionInfo item) {
@@ -100,32 +43,9 @@ public class SessionGridPanel extends Composite {
         });
         return item;
     }
-     
-    public void update(SessionInfo data) {
-        if (data != null) {
-            SessionInfo item = find(data.getId());
-            if (item != null) {
-                dataGrid.replace(item, data);
-            }            
-        }        
-    }
-    
-    public void remove(final String id) {
-        if (id != null) {
-            SessionInfo item = find(id);
-            if (item != null) {
-                dataGrid.remove(item);
-            }
-        }
-    }
-    
-    public void set(List<SessionInfo> sessions) {
-        if (sessions != null) {
-            dataGrid.addAll(sessions);
-        }
-    }
-
-    private void createColumns() {
+              
+    @Override
+    protected void createColumns() {
         EntityDataGrid<SessionInfo> table = dataGrid;
 
 

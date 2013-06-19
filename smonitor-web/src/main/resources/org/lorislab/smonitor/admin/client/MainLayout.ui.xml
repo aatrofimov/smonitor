@@ -106,72 +106,72 @@
         }
             
         .button-view {
-            margin-left: 5px;
+        margin-left: 5px;
         }
           
         .button-basic {
-            color: #5a6066;
-            padding: 0.3em 1.4em;
-            line-height: 1;
-            letter-spacing: -0.03em;
-            text-shadow: 0 0.1em 0 rgba(255, 255, 255, 0.75);
-            -webkit-border-radius: 0.25em;
-            -moz-border-radius: 0.25em;
-            border-radius: 0.25em;
-            border: 0.1em solid #b3b4b5;
-            border-top-color: #d4d4d6;
-            border-bottom-color: #989b9c;
-            -webkit-box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
-            -moz-box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
-            box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
-            background: #f2f2f3;
-            background: -moz-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(5%, #fafafa), color-stop(94%, #eaebec), color-stop(100%, #e2e3e4));
-            background: -webkit-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
-            background: -o-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
-            background: -ms-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);  
-            margin-left: 8px;
+        color: #5a6066;
+        padding: 0.3em 1.4em;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        text-shadow: 0 0.1em 0 rgba(255, 255, 255, 0.75);
+        -webkit-border-radius: 0.25em;
+        -moz-border-radius: 0.25em;
+        border-radius: 0.25em;
+        border: 0.1em solid #b3b4b5;
+        border-top-color: #d4d4d6;
+        border-bottom-color: #989b9c;
+        -webkit-box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
+        -moz-box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
+        box-shadow: 0 0 0 2px rgba(49, 50, 51, 0.07);
+        background: #f2f2f3;
+        background: -moz-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(5%, #fafafa), color-stop(94%, #eaebec), color-stop(100%, #e2e3e4));
+        background: -webkit-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
+        background: -o-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
+        background: -ms-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);  
+        margin-left: 8px;
         }
                 
         .button-basic-default {
-            color: #fff;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-            font-weight: bold;
-            -webkit-font-smoothing: antialiased;
-            border-color: #216ec6;
-            border-top-color: #2875ce;
-            border-bottom-color: #37679d;
-            background: #499bea;
-            background: -moz-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4fa8f7), color-stop(6%, #499bea), color-stop(100%, #207ce5));
-            background: -webkit-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
-            background: -o-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
-            background: -ms-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
+        color: #fff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        font-weight: bold;
+        -webkit-font-smoothing: antialiased;
+        border-color: #216ec6;
+        border-top-color: #2875ce;
+        border-bottom-color: #37679d;
+        background: #499bea;
+        background: -moz-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4fa8f7), color-stop(6%, #499bea), color-stop(100%, #207ce5));
+        background: -webkit-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
+        background: -o-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
+        background: -ms-linear-gradient(top, #4fa8f7 0%, #499bea 6%, #207ce5 100%);
         }
 
                 
         .panel-box-10 {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            padding: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
         }
                
         .textfield-basic {
-                -webkit-border-radius: 3px;
-                -moz-border-radius: 3px;
-                border-radius: 3px;
-                border: 1px solid #c9c8c7;
-                border-top-color: #d8d7d6;
-                background: #fff;
-                box-shadow: 0 0 0 2px rgba(51, 50, 49, 0.07);
-                font: inherit;
-                color: inherit;
-                line-height: 1;
-                margin: 0;
-                padding-bottom: 0.3em;
-                padding: 0.25em 0.3em;
-                text-align: left;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        border: 1px solid #c9c8c7;
+        border-top-color: #d8d7d6;
+        background: #fff;
+        box-shadow: 0 0 0 2px rgba(51, 50, 49, 0.07);
+        font: inherit;
+        color: inherit;
+        line-height: 1;
+        margin: 0;
+        padding-bottom: 0.3em;
+        padding: 0.25em 0.3em;
+        text-align: left;
         }
                  
         @external .v-label-h1, .content-body, .content-center, .button-action, .panel-box-10, .button-basic, .button-basic-default, .textfield-basic;
@@ -189,7 +189,7 @@
         position:relative;
         text-align:center;
         text-shadow:0 -1px 1px #111111;
-          -webkit-border-top-left-radius:4px ;
+        -webkit-border-top-left-radius:4px ;
         -webkit-border-top-right-radius:4px ;
         -webkit-border-bottom-right-radius:4px ;
         -webkit-border-bottom-left-radius:4px ;
@@ -276,43 +276,53 @@
         } 
 
         .arrow-popup-content {
-            margin-top: 2px;
+        margin-top: 2px;
         }
                 
         @external .arrow-popup,.arrow-popup-right, .arrow-popup-content;     
         
         <!-- CHECKBOX -->
-.checkbox-basic input {
-    display: none;
-}
+        .checkbox-basic input {
+        display: none;
+        }
 
-.checkbox-basic label {
-    background-color: #FAFAFA;
-    border: 1px solid #CACECE;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 -15px 10px -12px rgba(0, 0, 0, 0.05) inset;
-    display: inline-block;
-    padding: 9px;
-    position: relative;
-}
+        .checkbox-basic label {
+        background-color: #FAFAFA;
+        border: 1px solid #CACECE;
+        border-radius: 3px 3px 3px 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 -15px 10px -12px rgba(0, 0, 0, 0.05) inset;
+        display: inline-block;
+        padding: 9px;
+        position: relative;
+        }
 
 
-.checkbox-basic input:checked + label:after {
-    color: #99A1A7;
-    content: '\e80d';
-    font-size: 15px;
-    left: 4px;
-    position: absolute;
-    top: 0;
-    font-family: "entypo";
-}
-.checkbox-basic input:checked + label {
-    background-color: #E9ECEE;
-    border: 1px solid #ADB8C0;
-    color: #99A1A7;
-}
+        .checkbox-basic input:checked + label:after {
+        color: #99A1A7;
+        content: '\e80d';
+        font-size: 15px;
+        left: 4px;
+        position: absolute;
+        top: 0;
+        font-family: "entypo";
+        }
+        .checkbox-basic input:checked + label {
+        background-color: #E9ECEE;
+        border: 1px solid #ADB8C0;
+        color: #99A1A7;
+        }
         
-        @external .checkbox-basic;                            
+        @external .checkbox-basic;      
+        
+        .result-items {
+        margin-top: 16px;
+        position: absolute;
+        text-align: left; 
+        font-family: Arial Unicode MS,Arial,sans-serif;
+        font-size: 14px;     
+        }            
+        
+        @external .result-items;          
     </ui:style>
     
     <g:SimplePanel styleName="{style.content-body}" width="100%" height="100%">   

@@ -15,7 +15,6 @@
  */
 package org.lorislab.smonitor.gwt.uc.table;
 
-import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.column.AbstractEntityColumn;
 import org.lorislab.smonitor.gwt.uc.table.handler.ColumnSortHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -116,6 +115,10 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         return result;
     }
 
+    public int size() {
+        return dataProvider.getList().size();
+    }
+    
     public Column<T, ?> addColumn(String name, AbstractEntityColumn<T, ?, ?> column) {
         return addColumn(name, false, column);
     }

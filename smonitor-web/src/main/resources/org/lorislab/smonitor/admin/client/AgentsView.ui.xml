@@ -16,17 +16,22 @@
         height: 100%;
         }
         
-         .criteria-actions {
-            text-align: right;
+        .criteria-actions {
+        text-align: right;
         }
         
     </ui:style>
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:north size="43">
-                <g:FlowPanel styleName="{style.criteria-actions} panel-box-10">
-                        <g:Button ui:field="btnAgentRefresh" addStyleNames="button-action button-view icon-retweet"></g:Button>                                                
-                        <g:Button ui:field="btnAgentAdd" addStyleNames="button-action button-view icon-list-add"></g:Button>
+            <g:FlowPanel>
+                <g:FlowPanel styleName="result-items panel-box-10">
+                    <g:Label ui:field="resultCount" addStyleNames="icon-list" title="Agent counts">0</g:Label>
                 </g:FlowPanel>
+                <g:FlowPanel styleName="{style.criteria-actions} panel-box-10">
+                    <g:Button ui:field="btnAgentRefresh" addStyleNames="button-action button-view icon-retweet"></g:Button>                                                
+                    <g:Button ui:field="btnAgentAdd" addStyleNames="button-action button-view icon-list-add"></g:Button>
+                </g:FlowPanel>
+            </g:FlowPanel>
         </g:north>        
         <g:center>
             <g:SimplePanel styleName="panel-box-10">

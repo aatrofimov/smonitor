@@ -15,17 +15,11 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.RowHoverEvent;
-import com.google.gwt.user.cellview.client.RowHoverEvent.HoveringScope;
-import com.google.gwt.user.client.ui.Composite;
 import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
-import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
@@ -36,56 +30,8 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  *
  * @author Andrej Petras
  */
-public class AgentGridPanel extends Composite {
+public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
 
-    /**
-     * The data grid.
-     */
-    private EntityDataGrid<AgentWrapper> dataGrid;
-
-    private TableRowHoverHandler tableRowHoverHandler;
-
-    /**
-     * The default constructor.
-     */
-    public AgentGridPanel() {
-        dataGrid = new EntityDataGrid<AgentWrapper>();
-
-        dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
-            @Override
-            public void onRowHover(RowHoverEvent event) {
-                if (tableRowHoverHandler != null) {
-                    if (ConstantValues.EVENT_MOUSEOUT.equals((event.getBrowserEvent().getType()))) {
-                        if (HoveringScope.CELL_HOVER.equals(event.getHoveringScope())) {
-                            tableRowHoverHandler.onRowOut();
-                        }
-                    } else {
-                        if (HoveringScope.ROW_HOVER.equals(event.getHoveringScope())) {
-                            tableRowHoverHandler.onRowOver(event.getHoveringRow());
-                        }
-                    }
-                }
-            }
-        });
-
-        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-
-        initWidget(dataGrid);
-        createColumns();
-    }
-
-    public void setTableRowHoverHandler(TableRowHoverHandler tableRowHoverHandler) {
-        this.tableRowHoverHandler = tableRowHoverHandler;
-    }
-
-    public AgentWrapper get(int index) {
-        return dataGrid.get(index);
-    }
-
-    public List<AgentWrapper> get() {
-        return dataGrid.get();
-    }
-    
     /**
      * Sets the data.
      *
@@ -106,54 +52,48 @@ public class AgentGridPanel extends Composite {
         dataGrid.addAll(list);
     }
 
-    public void set(Agent agent) {
-        AgentWrapper w = new AgentWrapper();
-        w.agent = agent;
-        w.request = true;
-        dataGrid.add(w);
-    }
-    
     public AgentWrapper add(Agent data) {
         AgentWrapper result = new AgentWrapper();
         result.agent = data;
-        dataGrid.add(result);
-        return result;
+        return add(result);
     }
 
     public void request(AgentWrapper item) {
         item.request = true;
-        dataGrid.update(item);
+        update(item);
     }
-    
+
     public void error(String guid, String error) {
-        AgentWrapper item = find(guid);
+        AgentWrapper item = findById(guid);
         if (item != null) {
             item.clear();
             item.error = error;
             item.request = false;
-            dataGrid.update(item);
+            update(item);
         }
     }
 
     public void update(ServerInfo server) {
-        AgentWrapper item = find(server.getGuid());
-        if (item != null) {
-            item.clear();
-            item.connected = true;
-            item.request = false;
-            item.server = server;
-            dataGrid.update(item);
+        if (server != null) {
+            AgentWrapper item = findById(server.getGuid());
+            if (item != null) {
+                item.clear();
+                item.connected = true;
+                item.request = false;
+                item.server = server;
+                update(item);
+            }
         }
     }
 
     public AgentWrapper update(final Agent data) {
         AgentWrapper result = null;
         if (data != null) {
-            result = find(data.getGuid());
+            result = findById(data.getGuid());
             if (result != null) {
                 result.clear();
                 result.agent = data;
-                dataGrid.update(result);
+                update(result);
             } else {
                 result = add(data);
             }
@@ -161,7 +101,8 @@ public class AgentGridPanel extends Composite {
         return result;
     }
 
-    public AgentWrapper find(final String guid) {
+    @Override
+    public AgentWrapper findById(final Object guid) {
         AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
             @Override
             public AgentWrapper isItem(AgentWrapper item) {
@@ -174,28 +115,8 @@ public class AgentGridPanel extends Composite {
         return item;
     }
 
-    public void remove(final String guid) {
-        if (guid != null) {
-            dataGrid.remove(new EntityDataGrid.FilterItem<AgentWrapper>() {
-                @Override
-                public AgentWrapper isItem(AgentWrapper item) {
-                    if (item.agent.getGuid().equals(guid)) {
-                        return item;
-                    }
-                    return null;
-                }
-            });
-        }
-    }
-
-    /**
-     * Resets the panel.
-     */
-    public void reset() {
-        dataGrid.reset();
-    }
-
-    private void createColumns() {
+    @Override
+    protected void createColumns() {
         EntityDataGrid<AgentWrapper> table = dataGrid;
 
         Column colAction = table.addColumn(" ", true, new EntityImageColumn<AgentWrapper, Boolean>() {
@@ -250,6 +171,6 @@ public class AgentGridPanel extends Composite {
             }
         });
         table.setColumnWidth(colStatus, 200, Style.Unit.PX);
-       
+
     }
 }

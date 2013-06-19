@@ -25,6 +25,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
 import org.jboss.errai.common.client.api.RemoteCallback;
@@ -32,6 +33,7 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
+import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
 import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
@@ -56,6 +58,10 @@ public class AgentsView extends ViewPage implements AgentController {
     Button btnAgentRefresh;
     @UiField
     Button btnAgentAdd;
+    
+    @UiField
+    Label resultCount;
+    
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
@@ -117,8 +123,7 @@ public class AgentsView extends ViewPage implements AgentController {
 
             @Override
             public void refresh(AgentWrapper data) {
-                agentPanel.request(data);
-                refreshAgent(data.agent);
+                refreshAgent(data);
             }
 
             @Override
@@ -143,6 +148,12 @@ public class AgentsView extends ViewPage implements AgentController {
             }
         });
 
+        agentPanel.setChangeSizeHandler(new AbstractGridPanel.ChangeSizeHandler() {
+            @Override
+            public void changeSize(int size) {
+                resultCount.setText("" + size);
+            }
+        });
     }
 
     public void refresh() {
@@ -152,19 +163,24 @@ public class AgentsView extends ViewPage implements AgentController {
         @Override
         public void callback(List<Agent> value) {
             agentPanel.reset();
-            for (Agent agent : value) {
-                agentPanel.set(agent);
-                refreshAgent(agent);                
+            if (value != null) {                
+                for (Agent agent : value) {
+                    AgentWrapper w = agentPanel.add(agent);
+                    refreshAgent(w);     
+                }
             }
         }
     };
     
-    private void refreshAgent(Agent agent) {        
-        if (agent.isEnabled()) {
-            serverService.call(serverInfo, serverInfoError).getServer(agent.getGuid());
-        } else {
-            agentPanel.error(agent.getGuid(), null);
-        }        
+    private void refreshAgent(AgentWrapper data) {      
+        if (data != null) {
+            if (data.agent.isEnabled()) {
+                agentPanel.request(data);
+                serverService.call(serverInfo, serverInfoError).getServer(data.agent.getGuid());
+            } else {
+                agentPanel.error(data.agent.getGuid(), null);
+            }        
+        }
     }
     
     final RestServiceExceptionCallback serverInfoError = new RestServiceExceptionCallback() {
@@ -182,7 +198,7 @@ public class AgentsView extends ViewPage implements AgentController {
     final RemoteCallback<String> agentDelete = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
-            agentPanel.remove(value);
+            agentPanel.removeById(value);
             deleteQuestion.hide();
         }
     };
@@ -196,9 +212,8 @@ public class AgentsView extends ViewPage implements AgentController {
         @Override
         public void callback(Agent value) {
             AgentWrapper w = agentPanel.update(value);
-            agentPanel.request(w);
-            dialogBox.close();            
-            refreshAgent(w.agent);
+            dialogBox.close();
+            refreshAgent(w);                                    
         }
     };
 
