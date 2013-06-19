@@ -211,20 +211,23 @@ public final class TomcatUtil {
 
             //Return the session identifier for this session.
             result.setId(session.getId());
-            //Return the creation time for this session.
-            result.setCreationTime(new Date(session.getCreationTime()));
-            //Return the last time the client sent a request associated with this session, as the number of milliseconds since midnight, January 1, 1970 GMT.
-            result.setLastAccessedTime(new Date(session.getLastAccessedTime()));
-            //Return the last client access time without invalidation check
-            result.setLastAccessedTimeInternal(session.getLastAccessedTimeInternal());
-            //Return the maximum time interval, in seconds, between client requests before the servlet container will invalidate the session.
-            result.setMaxInactiveInterval(session.getMaxInactiveInterval());
             //Return the isValid flag for this session.
             result.setValid(session.isValid());
-            // Get user principal
-            Principal principal = (Principal) session.getPrincipal();
-            if (principal != null) {
-                result.setUser(principal.getName());
+
+            if (session.isValid()) {
+                //Return the creation time for this session.
+                result.setCreationTime(new Date(session.getCreationTime()));
+                //Return the last time the client sent a request associated with this session, as the number of milliseconds since midnight, January 1, 1970 GMT.
+                result.setLastAccessedTime(new Date(session.getLastAccessedTime()));
+                //Return the last client access time without invalidation check
+                result.setLastAccessedTimeInternal(session.getLastAccessedTimeInternal());
+                //Return the maximum time interval, in seconds, between client requests before the servlet container will invalidate the session.
+                result.setMaxInactiveInterval(session.getMaxInactiveInterval());
+                // Get user principal
+                Principal principal = (Principal) session.getPrincipal();
+                if (principal != null) {
+                    result.setUser(principal.getName());
+                }
             }
         }
         return result;

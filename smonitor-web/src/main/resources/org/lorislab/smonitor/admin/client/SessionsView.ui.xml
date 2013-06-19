@@ -25,7 +25,7 @@
         }
         
         .criteria-actions {
-            text-align: right;
+            text-align: right;            
         }        
     </ui:style>
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
@@ -54,8 +54,8 @@
                 
                 <g:south size="43">
                     <g:FlowPanel styleName="{style.criteria-actions} panel-box-10">
-                        <g:Button ui:field="btnSessionReset" addStyleNames="button-action icon-erase"></g:Button>
-                        <g:Button ui:field="btnSessionSearch" addStyleNames="button-action icon-search"></g:Button>
+                        <g:Button ui:field="btnSessionReset" addStyleNames="button-action button-view icon-erase"></g:Button>
+                        <g:Button ui:field="btnSessionSearch" addStyleNames="button-action button-view icon-search"></g:Button>
                     </g:FlowPanel>
                 </g:south>
             </g:DockLayoutPanel>                            

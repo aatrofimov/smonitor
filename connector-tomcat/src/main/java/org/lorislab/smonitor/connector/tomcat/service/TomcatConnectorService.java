@@ -166,6 +166,17 @@ public class TomcatConnectorService implements ConnectorService {
      * {@inheritDoc}
      */
     @Override
+    public Session deleteSession(String host, String application, String session) {
+        TomcatServer server = TomcatServer.getInstance();
+        String id = TomcatUtil.createTomcatApplicationId(application);
+        Session result = TomcatUtil.createSession(host, application, server.deleteSession(host, id, session));
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AttributeDetails getAttributeDetails(String host, String application, String session, String attribute) {
         TomcatServer server = TomcatServer.getInstance();
         String id = TomcatUtil.createTomcatApplicationId(application);

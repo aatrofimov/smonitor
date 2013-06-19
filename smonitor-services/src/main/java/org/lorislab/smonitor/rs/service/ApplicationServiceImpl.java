@@ -67,6 +67,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         return result;
     }
 
+    @Override
+    public String deleteSesssion(String guid, String host, String application, String id) {
+        String result = null;
+
+        AgentData data = service.findByBuid(guid);
+        if (data != null) {
+            if (data.isEnabled()) {
+                ApplicationClientService appService = new ApplicationClientService(data.getServer(), data.getKey());
+                try {
+                    Session session = appService.deleteSession(host, application, id);
+                    result = session.getId();
+                } catch (Exception ex) {
+                    RSClientUtil.handleException(guid, ex);
+                }
+            } else {
+                // disabled
+            }
+        } else {
+            // not found
+        }
+        return result;
+    }
+    
     private static List<SessionInfo> create(AgentData agent, List<Session> sessions) {
         List<SessionInfo> result = null;
         if (sessions != null) {

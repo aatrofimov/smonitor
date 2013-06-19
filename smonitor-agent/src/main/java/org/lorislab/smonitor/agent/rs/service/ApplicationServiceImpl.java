@@ -58,6 +58,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     /**
      * {@inheritDoc}
+     */     
+    @Override
+    public Session deleteSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException {
+        Session result;
+        ConnectorService service = ConnectorServiceFactory.getService();
+        result = service.deleteSession(host, application, id);
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<Application> getApplications(String host) throws AgentException {

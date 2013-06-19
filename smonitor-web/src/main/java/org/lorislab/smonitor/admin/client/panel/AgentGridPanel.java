@@ -113,10 +113,11 @@ public class AgentGridPanel extends Composite {
         dataGrid.add(w);
     }
     
-    public void add(Agent data) {
-        AgentWrapper w = new AgentWrapper();
-        w.agent = data;
-        dataGrid.add(w);
+    public AgentWrapper add(Agent data) {
+        AgentWrapper result = new AgentWrapper();
+        result.agent = data;
+        dataGrid.add(result);
+        return result;
     }
 
     public void request(AgentWrapper item) {
@@ -145,17 +146,19 @@ public class AgentGridPanel extends Composite {
         }
     }
 
-    public void update(final Agent data) {
+    public AgentWrapper update(final Agent data) {
+        AgentWrapper result = null;
         if (data != null) {
-            AgentWrapper item = find(data.getGuid());
-            if (item != null) {
-                item.clear();
-                item.agent = data;
-                dataGrid.update(item);
+            result = find(data.getGuid());
+            if (result != null) {
+                result.clear();
+                result.agent = data;
+                dataGrid.update(result);
             } else {
-                add(data);
+                result = add(data);
             }
         }
+        return result;
     }
 
     public AgentWrapper find(final String guid) {

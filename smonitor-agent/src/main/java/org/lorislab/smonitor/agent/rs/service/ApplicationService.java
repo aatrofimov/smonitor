@@ -69,6 +69,20 @@ public interface ApplicationService {
     Session getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;
 
     /**
+     * Deletes the session.
+     *
+     * @param host the host.
+     * @param application the application.
+     * @param id the session id.
+     * @return the session.
+     * @throws AgentException if the method fails.
+     */
+    @DELETE
+    @Path("session/get/{host}/{application}/{session}")
+    @Produces(MediaType.APPLICATION_JSON)
+    Session deleteSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;
+    
+    /**
      * Gets the list of applications.
      *
      * @return the list of applications.

@@ -17,6 +17,7 @@ package org.lorislab.smonitor.rs.service;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,10 +35,16 @@ import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 public interface ApplicationService {
     
     @GET
-    @Path("session/get/{guid}/{host}/{application}/{session}")     
+    @Path("session/m/{guid}/{host}/{application}/{session}")     
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)     
     public SessionInfo getSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
+
+    @DELETE
+    @Path("session/m/{guid}/{host}/{application}/{session}")     
+    @Produces(MediaType.APPLICATION_JSON)    
+    @Consumes(MediaType.APPLICATION_JSON)     
+    public String deleteSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
     
     @POST
     @Path("session/search")

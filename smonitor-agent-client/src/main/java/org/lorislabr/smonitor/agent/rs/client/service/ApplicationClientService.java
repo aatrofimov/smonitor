@@ -81,6 +81,15 @@ public class ApplicationClientService extends AbstractClientService<ApplicationS
      * {@inheritDoc}
      */
     @Override
+    public Session deleteSession(String host, String application, String id) throws AgentException {
+        Session result = getService().deleteSession(host, application, id);
+        return result;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AttributeDetails getAttribute(String host, String application, String session, String name) throws AgentException {
         AttributeDetails result = getService().getAttribute(host, application, session, name);
         return result;

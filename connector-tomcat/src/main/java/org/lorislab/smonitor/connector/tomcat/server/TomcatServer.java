@@ -269,6 +269,25 @@ public class TomcatServer {
     }
 
     /**
+     * Deletes the session for host, application and session id.
+     *
+     * @param host the host.
+     * @param webApp the application.
+     * @param sessionId the session id.
+     * @return the deleted session to the host, application and session id.
+     */
+    public StandardSession deleteSession(String host, String webApp, String sessionId) {
+        StandardSession result = getSession(host, webApp, sessionId);
+        if (result != null) {
+            result.invalidate();
+            LOGGER.log(Level.INFO, "The session id {0}, application {1} and host {2} was deleted", new Object[]{sessionId, webApp, host});
+        } else {
+            LOGGER.log(Level.FINEST, "No session found for id {0}, application {0} and host {1}", new Object[]{sessionId, webApp, host});
+        }
+        return result;        
+    }
+    
+    /**
      * Gets the list of sessions for the host and application.
      *
      * @param host the host.

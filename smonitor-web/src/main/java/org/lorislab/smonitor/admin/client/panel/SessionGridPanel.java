@@ -110,6 +110,15 @@ public class SessionGridPanel extends Composite {
         }        
     }
     
+    public void remove(final String id) {
+        if (id != null) {
+            SessionInfo item = find(id);
+            if (item != null) {
+                dataGrid.remove(item);
+            }
+        }
+    }
+    
     public void set(List<SessionInfo> sessions) {
         if (sessions != null) {
             dataGrid.addAll(sessions);

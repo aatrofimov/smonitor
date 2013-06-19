@@ -97,6 +97,8 @@ public class SessionsView extends ViewPage {
         btnSessionReset.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                agentsList.clear();
+                appList.clear();
             }
         });
 
@@ -136,8 +138,8 @@ public class SessionsView extends ViewPage {
             }
 
             @Override
-            public void delete(SessionInfo data) {
-                
+            public void delete(SessionInfo data) {                
+                appService.call(sessionDelete).deleteSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
             }
 
             @Override
@@ -233,6 +235,13 @@ public class SessionsView extends ViewPage {
         }
     };
 
+    final RemoteCallback<String> sessionDelete = new RemoteCallback<String>() {
+        @Override
+        public void callback(String value) {
+            sessionPanel.remove(value);
+        }
+    };
+    
     interface MyUiBinder extends UiBinder<Widget, SessionsView> {
     }
     private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);

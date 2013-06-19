@@ -76,7 +76,7 @@
                             <g:Label text="Enabled:"/>
                         </g:customCell>
                         <g:customCell>
-                            <g:CheckBox ui:field="chEnabled" ></g:CheckBox>
+                            <g:CheckBox ui:field="chEnabled" styleName="checkbox-basic" ></g:CheckBox>
                         </g:customCell>                                        
                     </g:row>                
                 </g:Grid>  

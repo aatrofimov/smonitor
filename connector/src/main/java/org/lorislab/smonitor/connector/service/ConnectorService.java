@@ -120,7 +120,7 @@ public interface ConnectorService {
     SessionDetails getSessionDetails(String host, String application, String session);
 
     /**
-     * Gest the session.
+     * Gets the session.
      *
      * @param host the host.
      * @param application the application.
@@ -128,7 +128,17 @@ public interface ConnectorService {
      * @return the session details.
      */
     Session getSession(String host, String application, String session);
-    
+
+    /**
+     * Deletes the session.
+     *
+     * @param host the host.
+     * @param application the application.
+     * @param session the session.
+     * @return the session deleted session.
+     */
+    Session deleteSession(String host, String webApp, String sessionId);
+
     /**
      * Gets the attribute details.
      *

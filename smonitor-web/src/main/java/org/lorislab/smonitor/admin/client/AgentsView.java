@@ -195,8 +195,10 @@ public class AgentsView extends ViewPage implements AgentController {
     final RemoteCallback<Agent> agentUpdate = new RemoteCallback<Agent>() {
         @Override
         public void callback(Agent value) {
-            agentPanel.update(value);
-            dialogBox.close();
+            AgentWrapper w = agentPanel.update(value);
+            agentPanel.request(w);
+            dialogBox.close();            
+            refreshAgent(w.agent);
         }
     };
 
