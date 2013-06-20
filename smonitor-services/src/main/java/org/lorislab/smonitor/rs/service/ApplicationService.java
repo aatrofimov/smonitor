@@ -25,6 +25,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 
 /**
@@ -39,6 +40,12 @@ public interface ApplicationService {
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)     
     public SessionInfo getSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
+                
+    @GET
+    @Path("session/d/{guid}/{host}/{application}/{session}")     
+    @Produces(MediaType.APPLICATION_JSON)    
+    @Consumes(MediaType.APPLICATION_JSON)     
+    public SessionInfoDetails getSesssionDetails(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
 
     @DELETE
     @Path("session/m/{guid}/{host}/{application}/{session}")     

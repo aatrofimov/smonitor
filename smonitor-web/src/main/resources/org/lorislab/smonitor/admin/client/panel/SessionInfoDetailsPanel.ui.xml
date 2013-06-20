@@ -1,0 +1,77 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:s="urn:import:org.lorislab.smonitor.admin.client.panel"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+    <ui:style>
+        .entity-panel-footer {
+            background: #eee;
+            border-top: 1px solid #e0e0e0;
+            text-align: right;
+            padding: 8px;
+        }
+        
+        .entity-panel-main {
+            padding: 0px;
+            border: 0px;
+            background: none repeat scroll 0 0 #FFFFFF;
+
+            -webkit-animation: fade-in 160ms ease-out;
+            -moz-animation: fade-in 160ms ease-out;
+            -ms-animation: fade-in 160ms ease-out;
+            -o-animation: fade-in 160ms ease-out;
+            animation: fade-in 160ms ease-out;
+            opacity: 1;
+            -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .entity-panel-title {
+            padding: 0.5em 20px;
+            height: 1.7em;
+            font-weight: 300;
+            font-size: 20px;        
+        }
+        
+        @external .entity-panel-main;
+        
+        .attributes-panel-list {
+        height: 250px;
+        }
+        
+        .session-details-form {
+            width: 100%;
+        }
+    </ui:style>
+    <g:DockLayoutPanel ui:field="panel" width="1200" height="600" unit="PX">
+        
+        <g:north size="50">  
+            <g:Label ui:field="title" styleName="{style.entity-panel-title}" text="Session details"/>        
+        </g:north>
+    
+        <g:center>
+            <g:DockLayoutPanel>
+                <g:center>
+                    <g:SimplePanel styleName="panel-box-10">
+                        <s:SessionInfoDetailsForm ui:field="sessionForm" styleName="{style.session-details-form}"/>
+                    </g:SimplePanel> 
+                </g:center>
+                <g:south size="300">
+                    <g:SimplePanel styleName="panel-box-10">
+                        <s:AttributeGridPanel ui:field="attributePanel" styleName="table-basic layout-panel "/>
+                    </g:SimplePanel>                    
+                </g:south>
+            </g:DockLayoutPanel>            
+        </g:center>
+
+        <g:south size="43">
+            <g:FlowPanel styleName="{style.entity-panel-footer}">
+                <g:Button ui:field="btnReload" addStyleNames="button-basic">Reload</g:Button>
+                <g:Button ui:field="btnClose" addStyleNames="button-basic">Close</g:Button>
+            </g:FlowPanel >
+        </g:south>
+        
+    </g:DockLayoutPanel>
+</ui:UiBinder>

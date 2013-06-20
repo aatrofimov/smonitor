@@ -45,9 +45,10 @@ public class EntityDataGrid<T> extends DataGrid<T> {
         dataProvider.getList().clear();
     }
 
-    public void add(T data) {
+    public T add(T data) {
         dataProvider.getList().add(data);
         dataProvider.flush();
+        return data;
     }
 
     public void addAll(List<T> data) {

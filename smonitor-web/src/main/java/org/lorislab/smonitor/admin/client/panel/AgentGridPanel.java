@@ -31,27 +31,7 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  * @author Andrej Petras
  */
 public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
-
-    /**
-     * Sets the data.
-     *
-     * @param model the model.
-     * @param data the list of items.
-     */
-    public void set(List<Agent> value) {
-        reset();
-        List<AgentWrapper> list = new ArrayList<AgentWrapper>();
-        if (value != null) {
-            for (Agent agent : value) {
-                AgentWrapper w = new AgentWrapper();
-                w.agent = agent;
-                w.request = true;
-                list.add(w);
-            }
-        }
-        dataGrid.addAll(list);
-    }
-
+  
     public AgentWrapper add(Agent data) {
         AgentWrapper result = new AgentWrapper();
         result.agent = data;
@@ -103,7 +83,7 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
 
     @Override
     public AgentWrapper findById(final Object guid) {
-        AgentWrapper item = dataGrid.find(new EntityDataGrid.FilterItem<AgentWrapper>() {
+        AgentWrapper item = find(new EntityDataGrid.FilterItem<AgentWrapper>() {
             @Override
             public AgentWrapper isItem(AgentWrapper item) {
                 if (item.agent.getGuid().equals(guid)) {

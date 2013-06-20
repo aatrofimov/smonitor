@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
+import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 
 /*
  * Copyright 2013 lorislab.org.
@@ -26,82 +26,65 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  *
  * @author Andrej Petras
  */
-public class QuestionDialogBox<T> extends PopupPanel {
+public class SessionInfoDetailsPanel extends PopupPanel {
     
     @UiField
-    Label title;
+    Button btnClose;
     
     @UiField
-    Label question;
+    Button btnReload;
     
     @UiField
-    Button btnOk;
+    SessionInfoDetailsForm sessionForm;
     
     @UiField
-    Button btnCancel;
+    AttributeGridPanel attributePanel;
     
-    private T data;
-    
-    private DialogEventHandler<T> okHandler;
-    
-    private DialogEventHandler<T> cancelHandler;
-    
-    public QuestionDialogBox() {
+    private SessionInfoDetails data;
+
+    public SessionInfoDetailsPanel() {
         setWidget(binder.createAndBindUi(this));
-        setStyleName("question-box-main");
+        setStyleName("entity-panel-main");
         setGlassEnabled(true);
-        
-        btnCancel.addClickHandler(new ClickHandler() {
+
+        btnClose.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (cancelHandler != null) {
-                    cancelHandler.event(data);
-                } else {
-                    close();
-                }
+                close();
+            }
+        });  
+           
+        btnReload.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                attributePanel.addAll(data.getAttributes());
             }
         }); 
-        
-        btnOk.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (okHandler != null) {
-                    okHandler.event(data);
-                } else {
-                    close();
-                }
-            }
-        });        
+                
     }
 
     public void close() {
-        data = null;
         hide();
-    }
-    
-    public void setOkHandler(DialogEventHandler<T> okHandler) {
-        this.okHandler = okHandler;
+        data = null;
+        attributePanel.reset();
+        sessionForm.reset();        
     }
 
-    public void setCancelHandler(DialogEventHandler<T> cancelHandler) {
-        this.cancelHandler = cancelHandler;
-    }
-        
-    public void open(T data, String title, String question) {
+    public void open(SessionInfoDetails data) {
         this.data = data;
-        this.question.setText(question);
-        this.title.setText(title);        
+        attributePanel.reset();
+        attributePanel.addAll(data.getAttributes());        
+        sessionForm.open(data);
         this.center();
-        this.show();
-    }
+        this.show();        
         
-    private static final QuestionDialogBox.Binder binder = GWT.create(QuestionDialogBox.Binder.class);
+    }
+    private static final SessionInfoDetailsPanel.Binder binder = GWT.create(SessionInfoDetailsPanel.Binder.class);
 
-    interface Binder extends UiBinder<Widget, QuestionDialogBox> {
-    }    
+    interface Binder extends UiBinder<Widget, SessionInfoDetailsPanel> {
+    }
 }

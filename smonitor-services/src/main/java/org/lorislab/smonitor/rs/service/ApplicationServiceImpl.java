@@ -21,13 +21,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionCriteria;
+import org.lorislab.smonitor.connector.model.SessionDetails;
 import org.lorislab.smonitor.datastore.criteria.AgentDataSearchCriteria;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
 import org.lorislab.smonitor.rs.exception.ServiceException;
 import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 import org.lorislab.smonitor.service.ServiceFactory;
+import org.lorislab.smonitor.util.MapperUtil;
 import org.lorislab.smonitor.util.RSClientUtil;
 import org.lorislabr.smonitor.agent.rs.client.service.ApplicationClientService;
 
@@ -54,7 +57,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ApplicationClientService appService = new ApplicationClientService(data.getServer(), data.getKey());
                 try {
                     Session session = appService.getSession(host, application, id);
-                    result = create(data, session);
+                    result = MapperUtil.create(data, session);
                 } catch (Exception ex) {
                     RSClientUtil.handleException(guid, ex);
                 }
@@ -67,6 +70,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         return result;
     }
 
+    @Override
+    public SessionInfoDetails getSesssionDetails(String guid, String host, String application, String id) {
+        SessionInfoDetails result = null;
+
+        AgentData data = service.findByBuid(guid);
+        if (data != null) {
+            if (data.isEnabled()) {
+                ApplicationClientService appService = new ApplicationClientService(data.getServer(), data.getKey());
+                try {
+                    SessionDetails session = appService.getSessionDetails(host, application, id);
+                    result = MapperUtil.create(data, session);
+                } catch (Exception ex) {
+                    RSClientUtil.handleException(guid, ex);
+                }
+            } else {
+                // disabled
+            }
+        } else {
+            // not found
+        }
+        return result;
+    }
+    
     @Override
     public String deleteSesssion(String guid, String host, String application, String id) {
         String result = null;
@@ -90,38 +116,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         return result;
     }
     
-    private static List<SessionInfo> create(AgentData agent, List<Session> sessions) {
-        List<SessionInfo> result = null;
-        if (sessions != null) {
-            result = new ArrayList<SessionInfo>();
-            for (Session session : sessions) {
-                SessionInfo info = create(agent, session);
-                if (info != null) {
-                    result.add(info);
-                }
-            }
-        }
-        return result;
-    }
-
-    private static SessionInfo create(AgentData agent, Session session) {
-        SessionInfo result = null;
-        if (session != null) {
-            result = new SessionInfo();
-            result.setGuid(agent.getGuid());
-            result.setAgent(agent.getName());
-            result.setApplication(session.getApplication());
-            result.setCreationTime(session.getCreationTime());
-            result.setHost(session.getHost());
-            result.setId(session.getId());
-            result.setLastAccessedTime(session.getLastAccessedTime());
-            result.setLastAccessedTimeInternal(session.getLastAccessedTimeInternal());
-            result.setMaxInactiveInterval(session.getMaxInactiveInterval());
-            result.setUser(session.getUser());
-            result.setValid(session.isValid());
-        }
-        return result;
-    }
 
     @Override
     public List<SessionInfo> findSessions(SessionSearchCriteria criteria) {
@@ -142,7 +136,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                             sessionCriteria.setApplications(criteria.getApplications());
 
                             List<Session> sessions = appService.findSessionByCriteria(sessionCriteria);
-                            List<SessionInfo> infos = create(agent, sessions);
+                            List<SessionInfo> infos = MapperUtil.create(agent, sessions);
                             if (infos != null) {
                                 result.addAll(infos);
                             }

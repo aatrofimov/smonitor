@@ -34,15 +34,6 @@
         font-size: 20px;        
         }
         
-.gwt-CheckBox {
-  width: 19px;
-  height: 25px;
-  padding: 0 5px 0 0;
-  content: '\e80d';
-  display: block;
-  clear: left;
-  float: left;
-}
                 
         @external .box-main;
     </ui:style>

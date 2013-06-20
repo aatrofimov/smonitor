@@ -87,13 +87,12 @@ public class SessionToolbarPanel extends PopupPanel {
     
     public void open(int left, int top, SessionInfo data) {
         this.data = data;
-        int size = 3;
-//        if (data.connected) {
-//            size = size + 1;
-//        }
-//        if (data.agent.isEnabled()) {
-//            size = size + 1;
-//        }
+        int size = 1;
+        btnInfo.setVisible(data.isValid());
+        btnDelete.setVisible(data.isValid());        
+        if (data.isValid()) {
+            size = size + 2;
+        }
         size = size * 32;
         this.setHeight("" + size + "px");
         this.setPopupPosition(left-55, top-(size/2)+10);

@@ -3,31 +3,14 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:s="urn:import:org.lorislab.smonitor.admin.client.panel">
     
-    <ui:style>                
-        .layout-panel {
-        background: #fff;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-        -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
-        width: 100%;
-        height: 100%;
-        }
-        
-        .criteria-actions {
-        text-align: right;
-        }
-        
-    </ui:style>
+
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:north size="43">
             <g:FlowPanel>
                 <g:FlowPanel styleName="result-items panel-box-10">
                     <g:Label ui:field="resultCount" addStyleNames="icon-list" title="Agent counts">0</g:Label>
                 </g:FlowPanel>
-                <g:FlowPanel styleName="{style.criteria-actions} panel-box-10">
+                <g:FlowPanel styleName="criteria-actions panel-box-10">
                     <g:Button ui:field="btnAgentRefresh" addStyleNames="button-action button-view icon-retweet"></g:Button>                                                
                     <g:Button ui:field="btnAgentAdd" addStyleNames="button-action button-view icon-list-add"></g:Button>
                 </g:FlowPanel>
@@ -35,7 +18,7 @@
         </g:north>        
         <g:center>
             <g:SimplePanel styleName="panel-box-10">
-                <s:AgentGridPanel ui:field="agentPanel" styleName="{style.layout-panel}"/>
+                <s:AgentGridPanel ui:field="agentPanel" styleName="layout-panel"/>
             </g:SimplePanel>
         </g:center>
 

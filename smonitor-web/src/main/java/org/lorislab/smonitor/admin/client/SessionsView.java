@@ -47,6 +47,7 @@ import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
 import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
+import org.lorislab.smonitor.admin.client.panel.SessionInfoDetailsPanel;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
@@ -55,6 +56,7 @@ import org.lorislab.smonitor.gwt.uc.panel.SessionToolbarPanel;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 import org.lorislab.smonitor.rs.service.ApplicationService;
 
@@ -88,6 +90,7 @@ public class SessionsView extends ViewPage {
     private AgentController agentController;
 
     private QuestionDialogBox<SessionInfo> deleteQuestion = new QuestionDialogBox<SessionInfo>();
+    private SessionInfoDetailsPanel detailsPanel = new SessionInfoDetailsPanel();
     
     public SessionsView(AgentController agentController) {
         this.agentController = agentController;
@@ -150,7 +153,7 @@ public class SessionsView extends ViewPage {
 
             @Override
             public void info(SessionInfo data) {
-
+                appService.call(sessionDetails).getSesssionDetails(data.getGuid(), data.getHost(), data.getApplication(), data.getId());                        
             }
 
             @Override
@@ -253,6 +256,15 @@ public class SessionsView extends ViewPage {
         public void callback(SessionInfo value) {
             if (value != null) {
                 sessionPanel.replaceById(value.getId(), value);
+            }
+        }
+    };
+    
+    final RemoteCallback<SessionInfoDetails> sessionDetails = new RemoteCallback<SessionInfoDetails>() {
+        @Override
+        public void callback(SessionInfoDetails value) {
+            if (value != null) {
+                detailsPanel.open(value);
             }
         }
     };

@@ -16,27 +16,19 @@
 package org.lorislab.smonitor.admin.client.panel;
 
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
-import com.google.gwt.user.cellview.client.LoadingStateChangeEvent.LoadingState;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
-import com.google.gwt.user.client.ui.Composite;
 import java.util.List;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
-import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid.FilterItem;
 
 /**
  * The abstract grid panel.
  *
  * @author Andrej Petras
  */
-public abstract class AbstractGridPanel<T> extends Composite {
+public abstract class AbstractGridPanel2<T> extends EntityDataGrid<T> {
 
-    /**
-     * The data grid.
-     */
-    protected EntityDataGrid<T> dataGrid;
     /**
      * The table row handler table row hover handler.
      */
@@ -49,11 +41,10 @@ public abstract class AbstractGridPanel<T> extends Composite {
     /**
      * The default constructor.
      */
-    public AbstractGridPanel() {
-        // create entity data grid
-        dataGrid = new EntityDataGrid<T>();
+    public AbstractGridPanel2() {
+
         // add row hover handler
-        dataGrid.addRowHoverHandler(new RowHoverEvent.Handler() {
+        this.addRowHoverHandler(new RowHoverEvent.Handler() {
             @Override
             public void onRowHover(RowHoverEvent event) {
                 if (tableRowHoverHandler != null) {
@@ -70,9 +61,7 @@ public abstract class AbstractGridPanel<T> extends Composite {
             }
         });
         // disable selection mode
-        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-        // set-up the data grid
-        initWidget(dataGrid);
+        this.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);        
         // create columns
         createColumns();
     }
@@ -95,49 +84,14 @@ public abstract class AbstractGridPanel<T> extends Composite {
         this.tableRowHoverHandler = tableRowHoverHandler;
     }
 
-    /**
-     * Finds the item by the filter.
-     *
-     * @param filter the filter.
-     * @return the item or null.
-     */
-    public T find(FilterItem filter) {
-        return dataGrid.find(filter);
-    }
-
-    /**
-     * Gets the model on the index.
-     *
-     * @param index the index.
-     * @return the model.
-     */
-    public T get(int index) {
-        return dataGrid.get(index);
-    }
-
-    /**
-     * Gets the list of all items.
-     *
-     * @return the list of all items.
-     */
-    public List<T> get() {
-        return dataGrid.get();
-    }
-
-    /**
-     * Gets the size of the table.
-     *
-     * @return the size of the table.
-     */
-    public int size() {
-        return dataGrid.size();
-    }
+ 
 
     /**
      * Resets the panel.
      */
+    @Override
     public void reset() {
-        dataGrid.reset();
+        super.reset();
         changeSize();
     }
 
@@ -147,9 +101,10 @@ public abstract class AbstractGridPanel<T> extends Composite {
      * @param data the model.
      * @return the model.
      */
+    @Override
     public T add(T data) {
         if (data != null) {
-            dataGrid.add(data);
+            super.add(data);
             changeSize();
         }
         return data;
@@ -160,9 +115,10 @@ public abstract class AbstractGridPanel<T> extends Composite {
      *
      * @param data the list of data.
      */
+    @Override
     public void addAll(List<T> data) {
         if (data != null) {
-            dataGrid.addAll(data);
+            super.addAll(data);
             changeSize();                                  
         }
     }
@@ -172,9 +128,10 @@ public abstract class AbstractGridPanel<T> extends Composite {
      *
      * @param data the model to remove.
      */
+    @Override
     public void remove(T data) {
         if (data != null) {
-            dataGrid.remove(data);
+            super.remove(data);
             changeSize();
         }
     }
@@ -190,19 +147,7 @@ public abstract class AbstractGridPanel<T> extends Composite {
             remove(item);
         }
     }
-
-    /**
-     * Replace the model in the table.
-     *
-     * @param data the model.
-     * @param newData the new model.
-     */
-    public void replace(T data, T newData) {
-        if (data != null && newData != null) {
-            dataGrid.replace(data, newData);
-        }
-    }
-
+   
     /**
      * Replace the model by id in the table.
      *
@@ -217,20 +162,11 @@ public abstract class AbstractGridPanel<T> extends Composite {
     }
 
     /**
-     * Updates the data in the table.
-     *
-     * @param data the data
-     */
-    public void update(T data) {
-        dataGrid.update(data);
-    }
-
-    /**
      * This method is call after the methods add, remove or deleted are call.
      */
     private void changeSize() {
         if (changeSizeHandler != null) {
-            changeSizeHandler.changeSize(dataGrid.size());
+            changeSizeHandler.changeSize(size());
         }
     }
 

@@ -15,7 +15,6 @@
  */
 package org.lorislab.smonitor.gwt.uc.form;
 
-import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.common.EntityComposite;
 import org.lorislab.smonitor.gwt.uc.form.item.AbstractFormItem;
 import com.google.gwt.cell.client.Cell;

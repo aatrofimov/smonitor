@@ -32,7 +32,7 @@ public class SessionGridPanel extends AbstractGridPanel<SessionInfo> {
     
     @Override
     public SessionInfo findById(final Object id) {
-        SessionInfo item = dataGrid.find(new EntityDataGrid.FilterItem<SessionInfo>() {
+        SessionInfo item = find(new EntityDataGrid.FilterItem<SessionInfo>() {
             @Override
             public SessionInfo isItem(SessionInfo item) {
                 if (item.getId().equals(id)) {
