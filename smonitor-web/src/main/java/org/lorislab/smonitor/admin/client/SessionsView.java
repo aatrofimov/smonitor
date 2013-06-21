@@ -21,12 +21,9 @@ import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -97,14 +94,17 @@ public class SessionsView extends ViewPage {
         ChosenOptions options = new ChosenOptions();
         options.setResources(GWT.<MyResources>create(MyResources.class));
         agentsList = new ChosenListBox(true, options);
+        
+        options = new ChosenOptions();
+        options.setResources(GWT.<MyResources>create(MyResources.class));        
         appList = new ChosenListBox(true, options);
 
         initWidget(uiBinder.createAndBindUi(this));
 
         
         searchCriteria.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
-        searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
-        
+        searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);        
+
         btnSessionReset.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -120,9 +120,7 @@ public class SessionsView extends ViewPage {
                 criteria.setAgents(getValues(agentsList));
                 criteria.setApplications(getValues(appList));
                 
-                sessionPanel.reset();
-                resultCount.setText("" + sessionPanel.size());
-                
+                sessionPanel.reset();                
                 appService.call(sessionSearch, sessionSearchError).findSessions(criteria);
             }
         });
@@ -173,14 +171,7 @@ public class SessionsView extends ViewPage {
                 appService.call(sessionDelete).deleteSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
             }
         });
-        
-        Window.addResizeHandler(new ResizeHandler() {
-            @Override
-            public void onResize(ResizeEvent event) {
-                agentsList.forceRedraw();
-                appList.forceRedraw();
-            }
-        });        
+          
     }
 
     private static Set<String> getValues(ChosenListBox list) {
