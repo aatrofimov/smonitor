@@ -33,8 +33,7 @@
                             <chzn:ChosenListBox ui:field="agentsList" styleName="textfield-basic {style.listBox-300}" placeholderTextMultiple="Agents..." />
                         </g:FlowPanel>
                         <g:FlowPanel styleName="{style.criteria-items}">
-                            <!--<g:Label text="Aplications:"/>-->
-                            <chzn:ChosenListBox ui:field="appList" styleName="textfield-basic {style.listBox-300}" placeholderTextMultiple="Appications..." />
+                            <chzn:ChosenListBox ui:field="appList" styleName="textfield-basic {style.listBox-300}" placeholderTextMultiple="Applications..." />
                         </g:FlowPanel>
                     </g:FlowPanel>
                 </g:center>

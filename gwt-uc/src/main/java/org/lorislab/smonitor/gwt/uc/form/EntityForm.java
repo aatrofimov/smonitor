@@ -22,6 +22,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +56,17 @@ public class EntityForm<T> extends EntityComposite<T> {
      */
     private HeaderForm header;
 
+    private String labelStyleName;
+    
+    private String valueStyleName;
+    
     /**
      * The default constructor.
      */
     public EntityForm() {
         this(1);
     }
-
+    
     /**
      * The default constructor.
      *
@@ -75,6 +80,22 @@ public class EntityForm<T> extends EntityComposite<T> {
         initWidget(layout);
     }
 
+    public void setLabelStyleName(String labelStyleName) {
+        this.labelStyleName = labelStyleName;
+    }
+
+    public String getLabelStyleName() {
+        return labelStyleName;
+    }
+
+    public void setValueStyleName(String valueStyleName) {
+        this.valueStyleName = valueStyleName;
+    }
+
+    public String getValueStyleName() {
+        return valueStyleName;
+    }
+            
     /**
      * Gets the header.
      *
@@ -151,6 +172,18 @@ public class EntityForm<T> extends EntityComposite<T> {
      * @param item the form item.
      */
     public void addCell(String label, AbstractFormItem<T, ?, ?> item) {
+        addCell(label, item, -1, -1);
+    }   
+    
+    /**
+     * Adds the cell.
+     *
+     * @param label the label.
+     * @param item the form item.
+     * @param rowSpan the row span.
+     * @param colSpan the col span.
+     */
+    public void addCell(String label, AbstractFormItem<T, ?, ?> item, int rowSpan, int colSpan) {
         items.add(item);
 
         int row = layout.getRowCount();
@@ -165,10 +198,28 @@ public class EntityForm<T> extends EntityComposite<T> {
             col = 0;
             row++;
         }
-        layout.setHTML(row, col, label);
-        layout.getFlexCellFormatter().setHorizontalAlignment(row, col, HasHorizontalAlignment.ALIGN_RIGHT);
+        int colLabel = col;
+        Label title = new Label(label);
+        if (labelStyleName != null) {
+            title.setStyleName(labelStyleName);
+        }        
+        layout.setWidget(row, col, title);
+        
         col++;
         layout.setHTML(row, col, render(row, col, data));
+        
+        FlexTable.FlexCellFormatter cf = layout.getFlexCellFormatter();
+        if (valueStyleName != null) {
+            cf.setStyleName(row, col, valueStyleName);
+        }
+        if (rowSpan != -1) {
+            cf.setRowSpan(row, col, rowSpan);
+            cf.setRowSpan(row, colLabel, rowSpan);            
+        }
+        if (colSpan != -1) {
+           cf.setColSpan(row, col, colSpan);
+           cf.setColSpan(row, colLabel, colSpan);
+        }
     }
 
     /**

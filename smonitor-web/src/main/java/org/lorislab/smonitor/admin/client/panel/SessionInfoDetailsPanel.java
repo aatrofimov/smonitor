@@ -6,9 +6,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.lorislab.smonitor.gwt.uc.form.ModelForm;
+import org.lorislab.smonitor.rs.model.SessionInfo;
 import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 
 /*
@@ -31,58 +36,42 @@ import org.lorislab.smonitor.rs.model.SessionInfoDetails;
  * @author Andrej Petras
  */
 public class SessionInfoDetailsPanel extends PopupPanel {
-    
+
     @UiField
     Button btnClose;
-    
     @UiField
-    Button btnReload;
-    
+    AttributeGridPanel attributePanel;  
     @UiField
-    SessionInfoDetailsForm sessionForm;
+    SessionInfoDetailsModelForm sessionForm;
     
-    @UiField
-    AttributeGridPanel attributePanel;
-    
-    private SessionInfoDetails data;
-
     public SessionInfoDetailsPanel() {
         setWidget(binder.createAndBindUi(this));
         setStyleName("entity-panel-main");
         setGlassEnabled(true);
 
+        sessionForm.init();
+        
         btnClose.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 close();
             }
-        });  
-           
-        btnReload.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                attributePanel.addAll(data.getAttributes());
-            }
-        }); 
-                
+        });       
     }
 
     public void close() {
         hide();
-        data = null;
         attributePanel.reset();
-        sessionForm.reset();        
     }
 
     public void open(SessionInfoDetails data) {
-        this.data = data;
         attributePanel.reset();
-        attributePanel.addAll(data.getAttributes());        
+        attributePanel.addAll(data.getAttributes());
         sessionForm.open(data);
         this.center();
-        this.show();        
-        
+        this.show();
     }
+    
     private static final SessionInfoDetailsPanel.Binder binder = GWT.create(SessionInfoDetailsPanel.Binder.class);
 
     interface Binder extends UiBinder<Widget, SessionInfoDetailsPanel> {
