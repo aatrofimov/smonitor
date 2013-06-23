@@ -156,7 +156,7 @@ public class SessionsView extends ViewPage {
 
             @Override
             public void delete(SessionInfo data) {                
-                deleteQuestion.open(data, "Delete Session", "Do you want to really delete the session " + data.getId() + " ?");
+                deleteQuestion.open(data, "Delete Session", "Do you really want to delete selected session " + data.getId() + " ?");
             }
 
             @Override

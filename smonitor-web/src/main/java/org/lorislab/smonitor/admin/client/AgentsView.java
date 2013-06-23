@@ -128,7 +128,7 @@ public class AgentsView extends ViewPage implements AgentController {
 
             @Override
             public void delete(AgentWrapper data) {
-                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you want to really delete the agent " + data.agent.getName() + " ?");
+                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you really want to delete selected agent " + data.agent.getName() + " ?");
             }
         });
 
