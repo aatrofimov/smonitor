@@ -15,10 +15,8 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.Column;
-import java.util.ArrayList;
-import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
@@ -30,17 +28,16 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  *
  * @author Andrej Petras
  */
-public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
-  
-    public AgentWrapper add(Agent data) {
-        AgentWrapper result = new AgentWrapper();
-        result.agent = data;
-        return add(result);
-    }
+public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
 
+    @Override
+    protected AgentWrapper createWrapper() {
+        return new AgentWrapper();
+    }
+      
     public void request(AgentWrapper item) {
         item.request = true;
-        update(item);
+        update();
     }
 
     public void error(String guid, String error) {
@@ -49,7 +46,7 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
             item.clear();
             item.error = error;
             item.request = false;
-            update(item);
+            update();
         }
     }
 
@@ -61,7 +58,7 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
                 item.connected = true;
                 item.request = false;
                 item.server = server;
-                update(item);
+                update();
             }
         }
     }
@@ -72,43 +69,28 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
             result = findById(data.getGuid());
             if (result != null) {
                 result.clear();
-                result.agent = data;
-                update(result);
+                result.data = data;
+                update();
             } else {
-                result = add(data);
+                result = addItem(data);
             }
         }
         return result;
     }
 
     @Override
-    public AgentWrapper findById(final Object guid) {
-        AgentWrapper item = find(new EntityDataGrid.FilterItem<AgentWrapper>() {
-            @Override
-            public AgentWrapper isItem(AgentWrapper item) {
-                if (item.agent.getGuid().equals(guid)) {
-                    return item;
-                }
-                return null;
-            }
-        });
-        return item;
-    }
-
-    @Override
     protected void createColumns() {
-        EntityDataGrid<AgentWrapper> table = dataGrid;
 
-        Column colAction = table.addColumn(" ", true, new EntityImageColumn<AgentWrapper, Boolean>() {
+        Column colAction = addColumn(" ", true, new EntityImageColumn<AgentWrapper, Boolean>() {
             @Override
             public Boolean getObject(AgentWrapper object) {
-                return object.agent.isEnabled();
+                return object.data.isEnabled();
             }
 
             @Override
             public String getValue(AgentWrapper object) {
                 String result = "images/empty.png";
-                if (!object.agent.isEnabled()) {
+                if (!object.data.isEnabled()) {
                     result = "images/status_disabled.png";
                 } else if (object.request) {
                     result = "images/status.gif";
@@ -123,25 +105,25 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
             }
         });
 
-        table.setColumnWidth(colAction, 25, Style.Unit.PX);
+        setColumnWidth(colAction, 25, Unit.PX);
 
-        Column colName = table.addColumn("Name", true, new EntityTextColumn<AgentWrapper>() {
+        Column colName = addColumn("Name", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {
-                return object.agent.getName();
+                return object.data.getName();
             }
         });
-        table.setColumnWidth(colName, 200, Style.Unit.PX);
+        setColumnWidth(colName, 200, Unit.PX);
 
-        Column colServer = table.addColumn("Server", true, new EntityTextColumn<AgentWrapper>() {
+        Column colServer = addColumn("Server", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {
-                return object.agent.getServer();
+                return object.data.getServer();
             }
         });
-        table.setColumnWidth(colServer, 200, Style.Unit.PX);
+        setColumnWidth(colServer, 200, Unit.PX);
 
-        Column colStatus = table.addColumn("Status", true, new EntityTextColumn<AgentWrapper>() {
+        Column colStatus = addColumn("Status", true, new EntityTextColumn<AgentWrapper>() {
             @Override
             public String getObject(AgentWrapper object) {
                 if (object.connected) {
@@ -150,7 +132,7 @@ public class AgentGridPanel extends AbstractGridPanel<AgentWrapper> {
                 return object.error;
             }
         });
-        table.setColumnWidth(colStatus, 200, Style.Unit.PX);
+        setColumnWidth(colStatus, 200, Unit.PX);
 
     }
 }

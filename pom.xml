@@ -42,7 +42,6 @@
         <module>smonitor-agent</module>
         <module>smonitor-agent-client</module>
         <module>smonitor-agent-web</module>
-        <module>gwt-uc</module>
         <module>smonitor-web</module>
     </modules>
 

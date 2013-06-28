@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.admin.client.model;
-
-import org.lorislab.smonitor.gwt.uc.model.Wrapper;
-import org.lorislab.smonitor.rs.model.SessionInfo;
+package org.lorislab.smonitor.gwt.uc.table.column;
 
 /**
- *
+ * The entity boolean column.
+ * 
  * @author Andrej Petras
  */
-public class SessionWrapper extends Wrapper<SessionInfo> {
-    
-    public boolean request;
-
-    @Override
-    public String getId() {
-        return data.getId();
-    }
+public abstract class EntityBooleanColumn<T> extends AbstractNumberColumn<T, Boolean> {
+ 
 }

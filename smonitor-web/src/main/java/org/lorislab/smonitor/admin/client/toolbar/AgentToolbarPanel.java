@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.panel;
+package org.lorislab.smonitor.admin.client.toolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,33 +23,45 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 
 /**
  *
  * @author Andrej Petras
  */
-public class SessionToolbarPanel extends PopupPanel {
-
+public class AgentToolbarPanel extends PopupPanel {
 
     @UiField
-    Button btnDelete;
+    Button btnEditAction;
+
+    @UiField
+    Button btnEditDelete;
     
     @UiField
-    Button btnInfo;
+    Button btnEditInfo;
 
     @UiField
-    Button btnRefresh;
+    Button btnEditRefresh;
     
-    private SessionInfo data;
+    private AgentWrapper data;
     
     private ClickButtonHandler handler;
     
-    public SessionToolbarPanel() {
+    public AgentToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
         setStyleName("arrow-popup-right");
-                       
-        btnDelete.addClickHandler(new ClickHandler() {
+        
+        btnEditAction.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (handler != null && data != null) {
+                    handler.edit(data);
+                }
+                close();
+            }
+        });
+        
+        btnEditDelete.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -59,7 +71,7 @@ public class SessionToolbarPanel extends PopupPanel {
             }
         });  
      
-        btnRefresh.addClickHandler(new ClickHandler() {
+        btnEditRefresh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -69,7 +81,7 @@ public class SessionToolbarPanel extends PopupPanel {
             }
         });
         
-        btnInfo.addClickHandler(new ClickHandler() {
+        btnEditInfo.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -85,15 +97,18 @@ public class SessionToolbarPanel extends PopupPanel {
         this.handler = handler;
     }
     
-    public void open(int left, int top, SessionInfo data) {
+    public void open(int left, int top, AgentWrapper data) {
         this.data = data;
-        int size = 1;
-        btnInfo.setVisible(data.isValid());
-        btnDelete.setVisible(data.isValid());        
-        if (data.isValid()) {
-            size = size + 2;
+        int size = 2;
+        if (data.connected) {
+            size = size + 1;
+        }
+        if (data.data.isEnabled()) {
+            size = size + 1;
         }
         size = size * 32;
+        btnEditInfo.setVisible(data.connected);
+        btnEditRefresh.setVisible(data.data.isEnabled());
         this.setHeight("" + size + "px");
         this.setPopupPosition(left-55, top-(size/2)+10);
         this.show();
@@ -106,15 +121,19 @@ public class SessionToolbarPanel extends PopupPanel {
 
     public interface ClickButtonHandler {
         
-        public void info(SessionInfo data);
+        public void edit(AgentWrapper data);
+
+        public void password(AgentWrapper data);
         
-        public void delete(SessionInfo data);
+        public void info(AgentWrapper data);
         
-        public void refresh(SessionInfo data);
+        public void delete(AgentWrapper data);
+        
+        public void refresh(AgentWrapper data);
         
     }
     
-    interface MyUiBinder extends UiBinder<Widget, SessionToolbarPanel> {
+    interface MyUiBinder extends UiBinder<Widget, AgentToolbarPanel> {
     }
-    private static SessionToolbarPanel.MyUiBinder uiBinder = GWT.create(SessionToolbarPanel.MyUiBinder.class);    
+    private static AgentToolbarPanel.MyUiBinder uiBinder = GWT.create(AgentToolbarPanel.MyUiBinder.class);    
 }

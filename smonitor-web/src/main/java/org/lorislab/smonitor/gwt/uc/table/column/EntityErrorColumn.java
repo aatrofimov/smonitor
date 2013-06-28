@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.page;
+package org.lorislab.smonitor.gwt.uc.table.column;
 
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.user.cellview.client.Column;
 
 /**
- * The view page interface.
+ * The entity error column.
  *
  * @author Andrej Petras
  */
-public abstract class ViewPage extends Composite {
+public class EntityErrorColumn<T> extends Column<T, String> {
 
     /**
-     * Gets the page title.
+     * The message.
+     */
+    private String message;
+
+    /**
+     * The default constructor.
      *
-     * @return the page title.
+     * @param message the message.
      */
-    public abstract String getPageTitle();
+    public EntityErrorColumn(String message) {
+        super(new TextCell());
+        this.message = message;
+    }
 
     /**
-     * The open page method.
+     * {@inheritDoc}
      */
-    public abstract void openPage();
-
-    /**
-     * The close page method.
-     */
-    public abstract void closePage();
+    @Override
+    public String getValue(T object) {
+        return message;
+    }
 }

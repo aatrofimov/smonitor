@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.admin.client.model;
 
+import org.lorislab.smonitor.gwt.uc.model.Wrapper;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.model.ServerInfo;
 
@@ -22,9 +23,7 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  *
  * @author Andrej Petras
  */
-public class AgentWrapper {
-    
-    public Agent agent;
+public class AgentWrapper extends Wrapper<Agent> {
     
     public ServerInfo server;
         
@@ -38,5 +37,10 @@ public class AgentWrapper {
         server = null;
         connected = false;
         error = null;
+    }
+
+    @Override
+    public String getId() {
+        return data.getGuid();
     }
 }

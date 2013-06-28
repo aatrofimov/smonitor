@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.admin.client.model;
-
-import org.lorislab.smonitor.gwt.uc.model.Wrapper;
-import org.lorislab.smonitor.rs.model.SessionInfo;
+package org.lorislab.smonitor.gwt.uc.table.handler;
 
 /**
+ * The entity tab selection handler.
  *
- * @author Andrej Petras
+ * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @param <E> the entity.
+ * @param <T> the list item.
  */
-public class SessionWrapper extends Wrapper<SessionInfo> {
-    
-    public boolean request;
+public interface EntityTablePanelSelectionHandler<E, T> {
 
-    @Override
-    public String getId() {
-        return data.getId();
-    }
+    /**
+     * The selection change method.
+     *
+     * @param model the model.
+     * @param item the selected item.
+     */
+    public void selectionChanged(E model, T item);
 }

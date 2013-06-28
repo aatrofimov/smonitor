@@ -16,6 +16,7 @@
 package org.lorislab.smonitor.gwt.uc;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.UIObject;
 
 /**
  * The GWT constants.
@@ -24,14 +25,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public final class ConstantValues {
 
-    /**
-     * The target blank.
-     */
-    public static final String TARGET_BLANK = "_blank";
-    /**
-     * The div tag.
-     */
-    public static final String HTML_TAG_DIV = "<div/>";
     /**
      * The date pattern.
      */

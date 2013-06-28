@@ -6,14 +6,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.gwt.uc.form.ModelForm;
-import org.lorislab.smonitor.rs.model.SessionInfo;
 import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 
 /*
@@ -66,7 +60,7 @@ public class SessionInfoDetailsPanel extends PopupPanel {
 
     public void open(SessionInfoDetails data) {
         attributePanel.reset();
-        attributePanel.addAll(data.getAttributes());
+        attributePanel.addAllItems(data.getAttributes());
         sessionForm.open(data);
         this.center();
         this.show();

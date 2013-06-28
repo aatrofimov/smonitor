@@ -13,31 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.form;
+package org.lorislab.smonitor.gwt.uc.table.column;
 
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.cell.client.ImageCell;
 
 /**
+ * The entity image column.
  *
  * @author Andrej Petras
  */
-public abstract class AbstractTextBoxProperty<T, E> extends ModelFormProperty<T, TextBox, E>{
+public abstract class EntityImageColumn<T, K extends Comparable<K>> extends AbstractEntityColumn<T, K, String> {
 
-    public AbstractTextBoxProperty() {
-        this(false);
+    /**
+     * The default constructor.
+     */
+    public EntityImageColumn() {
+        super(new ImageCell());
     }
-    
-    public AbstractTextBoxProperty(boolean readonly) {
-        super(new TextBox());
-        widget.setReadOnly(readonly);
-    }
-    
-    @Override
-    public TextBox getWidget(String styleName) {        
-        if (styleName != null) {
-            widget.setStyleName(styleName);
-        }
-        return widget;
-    }
-    
 }

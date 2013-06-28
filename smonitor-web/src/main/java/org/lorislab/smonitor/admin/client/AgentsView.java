@@ -33,13 +33,13 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.panel.AgentGridPanel;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
-import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
 import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
+import org.lorislab.smonitor.admin.client.toolbar.AgentToolbarPanel;
 import org.lorislab.smonitor.gwt.uc.page.ViewPage;
-import org.lorislab.smonitor.gwt.uc.panel.ArrowPopupPanel2;
+import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.service.AgentRestService;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
@@ -65,7 +65,7 @@ public class AgentsView extends ViewPage implements AgentController {
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
     private Client<AgentRestService> agentService = ClientFactory.create(AgentRestService.class);
-    private ArrowPopupPanel2 tableMenu = new ArrowPopupPanel2();    
+    private AgentToolbarPanel tableMenu = new AgentToolbarPanel();    
     private QuestionDialogBox<String> deleteQuestion = new QuestionDialogBox<String>();
 
     public AgentsView() {
@@ -107,10 +107,10 @@ public class AgentsView extends ViewPage implements AgentController {
             }
         });
 
-        tableMenu.setHandler(new ArrowPopupPanel2.ClickButtonHandler() {
+        tableMenu.setHandler(new AgentToolbarPanel.ClickButtonHandler() {
             @Override
             public void edit(AgentWrapper data) {
-                openDialog(data.agent, EntityDialogBox.Mode.UPDATE);
+                openDialog(data.data, EntityDialogBox.Mode.UPDATE);
             }
 
             @Override
@@ -128,7 +128,7 @@ public class AgentsView extends ViewPage implements AgentController {
 
             @Override
             public void delete(AgentWrapper data) {
-                deleteQuestion.open(data.agent.getGuid(), "Delete Agent", "Do you really want to delete selected agent " + data.agent.getName() + " ?");
+                deleteQuestion.open(data.data.getGuid(), "Delete Agent", "Do you really want to delete selected agent " + data.data.getName() + " ?");
             }
         });
 
@@ -148,7 +148,7 @@ public class AgentsView extends ViewPage implements AgentController {
             }
         });
 
-        agentPanel.setChangeSizeHandler(new AbstractGridPanel.ChangeSizeHandler() {
+        agentPanel.setChangeSizeHandler(new EntityDataGrid.ChangeSizeHandler() {
             @Override
             public void changeSize(int size) {
                 resultCount.setText("" + size);
@@ -165,7 +165,7 @@ public class AgentsView extends ViewPage implements AgentController {
             agentPanel.reset();
             if (value != null) {                
                 for (Agent agent : value) {
-                    AgentWrapper w = agentPanel.add(agent);
+                    AgentWrapper w = agentPanel.addItem(agent);
                     refreshAgent(w);     
                 }
             }
@@ -174,11 +174,11 @@ public class AgentsView extends ViewPage implements AgentController {
     
     private void refreshAgent(AgentWrapper data) {      
         if (data != null) {
-            if (data.agent.isEnabled()) {
+            if (data.data.isEnabled() && !data.request) {
                 agentPanel.request(data);
-                serverService.call(serverInfo, serverInfoError).getServer(data.agent.getGuid());
+                serverService.call(serverInfo, serverInfoError).getServer(data.data.getGuid());
             } else {
-                agentPanel.error(data.agent.getGuid(), null);
+                agentPanel.error(data.data.getGuid(), null);
             }        
         }
     }

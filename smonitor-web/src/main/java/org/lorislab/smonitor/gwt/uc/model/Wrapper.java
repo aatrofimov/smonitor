@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.admin.client.model;
-
-import org.lorislab.smonitor.gwt.uc.model.Wrapper;
-import org.lorislab.smonitor.rs.model.SessionInfo;
+package org.lorislab.smonitor.gwt.uc.model;
 
 /**
+ * The wrapper.
  *
  * @author Andrej Petras
+ * @param <T> the data.
  */
-public class SessionWrapper extends Wrapper<SessionInfo> {
-    
-    public boolean request;
+public abstract class Wrapper<T> {
 
-    @Override
-    public String getId() {
-        return data.getId();
-    }
+    /**
+     * The data.
+     */
+    public T data;
+
+    /**
+     * Gets the id.
+     *
+     * @return the id.
+     */
+    public abstract String getId();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.page;
+package org.lorislab.smonitor.gwt.uc.table.column;
 
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.cell.client.TextCell;
 
 /**
- * The view page interface.
- *
+ * The abstract number column.
+ * 
  * @author Andrej Petras
  */
-public abstract class ViewPage extends Composite {
+public abstract class AbstractNumberColumn<T, K extends Comparable<K>> extends AbstractEntityColumn<T, K, String> {
+    /**
+     * The default constructor.
+     */
+    public AbstractNumberColumn() {
+        super(new TextCell());
+    }
 
     /**
-     * Gets the page title.
-     *
-     * @return the page title.
+     * {@inheritDoc}
      */
-    public abstract String getPageTitle();
-
-    /**
-     * The open page method.
-     */
-    public abstract void openPage();
-
-    /**
-     * The close page method.
-     */
-    public abstract void closePage();
+    @Override
+    public String getValue(T object) {
+        K data = getObject(object);
+        if (data != null) {
+            return data.toString();
+        }
+        return null;
+    }    
 }

@@ -13,35 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.form;
+package org.lorislab.smonitor.gwt.uc.form.property;
 
 import com.google.gwt.user.client.ui.CheckBox;
 
 /**
+ * The boolean check-box property.
  *
  * @author Andrej Petras
  */
-public abstract class BooleanCheckBoxProperty<T> extends ModelFormProperty<T, CheckBox, Boolean>{
+public abstract class BooleanCheckBoxProperty<T> extends ModelFormProperty<T, CheckBox, Boolean> {
 
+    /**
+     * The default constructor.
+     */
     public BooleanCheckBoxProperty() {
         this(false);
     }
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param readOnly the read only flag.
+     */
     public BooleanCheckBoxProperty(boolean readOnly) {
         super(new CheckBox());
         widget.setEnabled(!readOnly);
     }
-  
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setWidgetValue(Boolean value) {
         widget.setValue(value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Boolean getWidgetValue() {
         return widget.getValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CheckBox getWidget(String styleName) {
         if (styleName != null) {
@@ -49,5 +67,4 @@ public abstract class BooleanCheckBoxProperty<T> extends ModelFormProperty<T, Ch
         }
         return widget;
     }
-    
 }

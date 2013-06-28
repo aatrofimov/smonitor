@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 lorislab.org.
+ * Copyright 2013 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.form;
+package org.lorislab.smonitor.gwt.uc.table.column;
 
 /**
+ * The entity long column.
  *
  * @author Andrej Petras
  */
-public abstract class StringTextBoxProperty<T> extends AbstractTextBoxProperty<T,String>{
-    
-    public StringTextBoxProperty() {
-        super();
-    }
-    
-    public StringTextBoxProperty(boolean readonly) {
-        super(readonly);
-    }
-    
-    @Override
-    public String getWidgetValue() {
-        return widget.getText();
-    }
-
-    @Override
-    public void setWidgetValue(String value) {
-        widget.setText(value);
-    }
-    
-    
+public abstract class EntityLongColumn<T> extends AbstractNumberColumn<T, Long> {
 }

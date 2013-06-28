@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.panel;
+package org.lorislab.smonitor.admin.client.toolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,45 +23,33 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 
 /**
  *
  * @author Andrej Petras
  */
-public class ArrowPopupPanel2 extends PopupPanel {
+public class SessionToolbarPanel extends PopupPanel {
+
 
     @UiField
-    Button btnEditAction;
-
-    @UiField
-    Button btnEditDelete;
+    Button btnDelete;
     
     @UiField
-    Button btnEditInfo;
+    Button btnInfo;
 
     @UiField
-    Button btnEditRefresh;
+    Button btnRefresh;
     
-    private AgentWrapper data;
+    private SessionWrapper data;
     
     private ClickButtonHandler handler;
     
-    public ArrowPopupPanel2() {
+    public SessionToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
         setStyleName("arrow-popup-right");
-        
-        btnEditAction.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.edit(data);
-                }
-                close();
-            }
-        });
-        
-        btnEditDelete.addClickHandler(new ClickHandler() {
+                       
+        btnDelete.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -71,7 +59,7 @@ public class ArrowPopupPanel2 extends PopupPanel {
             }
         });  
      
-        btnEditRefresh.addClickHandler(new ClickHandler() {
+        btnRefresh.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -81,7 +69,7 @@ public class ArrowPopupPanel2 extends PopupPanel {
             }
         });
         
-        btnEditInfo.addClickHandler(new ClickHandler() {
+        btnInfo.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 if (handler != null && data != null) {
@@ -97,18 +85,15 @@ public class ArrowPopupPanel2 extends PopupPanel {
         this.handler = handler;
     }
     
-    public void open(int left, int top, AgentWrapper data) {
+    public void open(int left, int top, SessionWrapper data) {
         this.data = data;
-        int size = 2;
-        if (data.connected) {
-            size = size + 1;
-        }
-        if (data.agent.isEnabled()) {
-            size = size + 1;
+        int size = 1;
+        btnInfo.setVisible(data.data.isValid());
+        btnDelete.setVisible(data.data.isValid());        
+        if (data.data.isValid()) {
+            size = size + 2;
         }
         size = size * 32;
-        btnEditInfo.setVisible(data.connected);
-        btnEditRefresh.setVisible(data.agent.isEnabled());
         this.setHeight("" + size + "px");
         this.setPopupPosition(left-55, top-(size/2)+10);
         this.show();
@@ -121,19 +106,15 @@ public class ArrowPopupPanel2 extends PopupPanel {
 
     public interface ClickButtonHandler {
         
-        public void edit(AgentWrapper data);
-
-        public void password(AgentWrapper data);
+        public void info(SessionWrapper data);
         
-        public void info(AgentWrapper data);
+        public void delete(SessionWrapper data);
         
-        public void delete(AgentWrapper data);
-        
-        public void refresh(AgentWrapper data);
+        public void refresh(SessionWrapper data);
         
     }
     
-    interface MyUiBinder extends UiBinder<Widget, ArrowPopupPanel2> {
+    interface MyUiBinder extends UiBinder<Widget, SessionToolbarPanel> {
     }
-    private static ArrowPopupPanel2.MyUiBinder uiBinder = GWT.create(ArrowPopupPanel2.MyUiBinder.class);    
+    private static SessionToolbarPanel.MyUiBinder uiBinder = GWT.create(SessionToolbarPanel.MyUiBinder.class);    
 }

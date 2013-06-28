@@ -15,103 +15,103 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.cellview.client.Column;
 import java.util.Date;
+import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
+import com.google.gwt.dom.client.Style.Unit;
 import org.lorislab.smonitor.rs.model.SessionInfo;
 
 /**
  *
  * @author Andrej Petras
  */
-public class SessionGridPanel extends AbstractGridPanel<SessionInfo> {
-    
+public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper> {
+
     @Override
-    public SessionInfo findById(final Object id) {
-        SessionInfo item = find(new EntityDataGrid.FilterItem<SessionInfo>() {
-            @Override
-            public SessionInfo isItem(SessionInfo item) {
-                if (item.getId().equals(id)) {
-                    return item;
-                }
-                return null;
-            }
-        });
-        return item;
+    protected SessionWrapper createWrapper() {
+        return new SessionWrapper();
     }
-              
+    
+    public void replaceById(String id, SessionInfo data) {
+        if (data != null) {
+            SessionWrapper item = findById(id);
+            if (item != null) {
+                item.data = data;
+                flush();
+            }
+        }
+    }
+
     @Override
     protected void createColumns() {
-        EntityDataGrid<SessionInfo> table = dataGrid;
 
-
-        Column colAction = table.addColumn(" ", true, new EntityImageColumn<SessionInfo, Boolean>() {
+        Column colAction = addColumn(" ", true, new EntityImageColumn<SessionWrapper, Boolean>() {
             @Override
-            public Boolean getObject(SessionInfo object) {
-                return object.isValid();
+            public Boolean getObject(SessionWrapper object) {
+                return object.data.isValid();
             }
 
             @Override
-            public String getValue(SessionInfo object) {
+            public String getValue(SessionWrapper object) {
                 String result = "images/status_error.png";
-                if (object.isValid()) {
+                if (object.data.isValid()) {
                     result = "images/status_ok.png";
                 }
                 return result;
             }
         });
-        table.setColumnWidth(colAction, 25, Style.Unit.PX);
-        
-        Column colAgent = table.addColumn("Agent", true, new EntityTextColumn<SessionInfo>() {
-            @Override
-            public String getObject(SessionInfo object) {
-                return object.getAgent();
-            }
-        });
-        table.setColumnWidth(colAgent, 100, Style.Unit.PX);
-        
-        Column colApp = table.addColumn("Application", true, new EntityTextColumn<SessionInfo>() {
-            @Override
-            public String getObject(SessionInfo object) {
-                return object.getApplication();
-            }
-        });
-        table.setColumnWidth(colApp, 100, Style.Unit.PX);
-        
-        Column colId = table.addColumn("Id", true, new EntityTextColumn<SessionInfo>() {
-            @Override
-            public String getObject(SessionInfo object) {
-                return object.getId();
-            }
-        });
-        table.setColumnWidth(colId, 150, Style.Unit.PX);
+        setColumnWidth(colAction, 25, Unit.PX);
 
-        Column colUser = table.addColumn("User", true, new EntityTextColumn<SessionInfo>() {
+        Column colAgent = addColumn("Agent", true, new EntityTextColumn<SessionWrapper>() {
             @Override
-            public String getObject(SessionInfo object) {
-                return object.getUser();
+            public String getObject(SessionWrapper object) {
+                return object.data.getAgent();
             }
         });
-        table.setColumnWidth(colUser, 100, Style.Unit.PX);
+        setColumnWidth(colAgent, 100, Unit.PX);
 
-        Column colCreate = table.addColumn("Create", true, new EntityDateColumn<SessionInfo>() {
+        Column colApp = addColumn("Application", true, new EntityTextColumn<SessionWrapper>() {
             @Override
-            public Date getObject(SessionInfo object) {
-                return object.getCreationTime();
+            public String getObject(SessionWrapper object) {
+                return object.data.getApplication();
             }
         });
-        table.setColumnWidth(colCreate, 90, Style.Unit.PX);
+        setColumnWidth(colApp, 100, Unit.PX);
 
-        Column colUpdate = table.addColumn("Update", true, new EntityDateColumn<SessionInfo>() {
+        Column colId = addColumn("Id", true, new EntityTextColumn<SessionWrapper>() {
             @Override
-            public Date getObject(SessionInfo object) {
-                return object.getLastAccessedTime();
+            public String getObject(SessionWrapper object) {
+                return object.data.getId();
             }
         });
-        table.setColumnWidth(colUpdate, 90, Style.Unit.PX);
+        setColumnWidth(colId, 150, Unit.PX);
+
+        Column colUser = addColumn("User", true, new EntityTextColumn<SessionWrapper>() {
+            @Override
+            public String getObject(SessionWrapper object) {
+                return object.data.getUser();
+            }
+        });
+        setColumnWidth(colUser, 100, Unit.PX);
+
+        Column colCreate = addColumn("Create", true, new EntityDateColumn<SessionWrapper>() {
+            @Override
+            public Date getObject(SessionWrapper object) {
+                return object.data.getCreationTime();
+            }
+        });
+        setColumnWidth(colCreate, 90, Unit.PX);
+
+        Column colUpdate = addColumn("Update", true, new EntityDateColumn<SessionWrapper>() {
+            @Override
+            public Date getObject(SessionWrapper object) {
+                return object.data.getLastAccessedTime();
+            }
+        });
+        setColumnWidth(colUpdate, 90, Unit.PX);
     }
 }

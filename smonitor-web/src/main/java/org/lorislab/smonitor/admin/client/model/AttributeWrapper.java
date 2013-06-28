@@ -16,18 +16,17 @@
 package org.lorislab.smonitor.admin.client.model;
 
 import org.lorislab.smonitor.gwt.uc.model.Wrapper;
-import org.lorislab.smonitor.rs.model.SessionInfo;
+import org.lorislab.smonitor.rs.model.AttributeInfo;
 
 /**
  *
  * @author Andrej Petras
  */
-public class SessionWrapper extends Wrapper<SessionInfo> {
-    
-    public boolean request;
+public class AttributeWrapper extends Wrapper<AttributeInfo> {
 
     @Override
     public String getId() {
-        return data.getId();
+        return data.getName();
     }
+    
 }

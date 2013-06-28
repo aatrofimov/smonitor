@@ -19,11 +19,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import java.util.Date;
 import java.util.List;
 import org.lorislab.smonitor.gwt.uc.ConstantValues;
-import org.lorislab.smonitor.gwt.uc.form.BooleanCheckBoxProperty;
-import org.lorislab.smonitor.gwt.uc.form.DateTextBoxProperty;
+import org.lorislab.smonitor.gwt.uc.form.property.BooleanCheckBoxProperty;
+import org.lorislab.smonitor.gwt.uc.form.property.DateTextBoxProperty;
 import org.lorislab.smonitor.gwt.uc.form.ModelForm;
-import org.lorislab.smonitor.gwt.uc.form.StringListBoxProperty;
-import org.lorislab.smonitor.gwt.uc.form.StringTextBoxProperty;
+import org.lorislab.smonitor.gwt.uc.form.property.StringListBoxProperty;
+import org.lorislab.smonitor.gwt.uc.form.property.StringTextBoxProperty;
 import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 
 /**

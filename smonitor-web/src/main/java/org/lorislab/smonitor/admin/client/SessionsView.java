@@ -41,15 +41,16 @@ import org.jboss.errai.common.client.api.RemoteCallback;
 import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
-import org.lorislab.smonitor.admin.client.panel.AbstractGridPanel;
+import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.admin.client.panel.SessionInfoDetailsPanel;
 import org.lorislab.smonitor.admin.client.service.Client;
 import org.lorislab.smonitor.admin.client.service.ClientFactory;
 import org.lorislab.smonitor.admin.client.service.RestServiceExceptionCallback;
+import org.lorislab.smonitor.admin.client.toolbar.SessionToolbarPanel;
 import org.lorislab.smonitor.gwt.uc.page.ViewPage;
-import org.lorislab.smonitor.gwt.uc.panel.SessionToolbarPanel;
+import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.rs.exception.RestServiceException;
 import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.SessionInfo;
@@ -86,7 +87,7 @@ public class SessionsView extends ViewPage {
     private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
     private AgentController agentController;
 
-    private QuestionDialogBox<SessionInfo> deleteQuestion = new QuestionDialogBox<SessionInfo>();
+    private QuestionDialogBox<SessionWrapper> deleteQuestion = new QuestionDialogBox<SessionWrapper>();
     private SessionInfoDetailsPanel detailsPanel = new SessionInfoDetailsPanel();
     
     public SessionsView(AgentController agentController) {
@@ -129,7 +130,7 @@ public class SessionsView extends ViewPage {
             @Override
             public void onRowOver(TableRowElement row) {
                 int index = row.getRowIndex();
-                SessionInfo w = sessionPanel.get(index);
+                SessionWrapper w = sessionPanel.get(index);
                 TableCellElement cell = row.getCells().getItem(0);
                 sessionToolbar.open(cell.getAbsoluteLeft(), cell.getAbsoluteTop(), w);
             }
@@ -140,7 +141,7 @@ public class SessionsView extends ViewPage {
             }
         });
         
-        sessionPanel.setChangeSizeHandler(new AbstractGridPanel.ChangeSizeHandler() {
+        sessionPanel.setChangeSizeHandler(new EntityDataGrid.ChangeSizeHandler() {
             @Override
             public void changeSize(int size) {
                 resultCount.setText("" + sessionPanel.size());
@@ -150,25 +151,25 @@ public class SessionsView extends ViewPage {
         sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
 
             @Override
-            public void info(SessionInfo data) {
-                appService.call(sessionDetails).getSesssionDetails(data.getGuid(), data.getHost(), data.getApplication(), data.getId());                        
+            public void info(SessionWrapper data) {
+                appService.call(sessionDetails).getSesssionDetails(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());                        
             }
 
             @Override
-            public void delete(SessionInfo data) {                
-                deleteQuestion.open(data, "Delete Session", "Do you really want to delete selected session " + data.getId() + " ?");
+            public void delete(SessionWrapper data) {                
+                deleteQuestion.open(data, "Delete Session", "Do you really want to delete selected session " + data.data.getId() + " ?");
             }
 
             @Override
-            public void refresh(SessionInfo data) {
-                appService.call(sessionRefresh).getSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
+            public void refresh(SessionWrapper data) {
+                appService.call(sessionRefresh).getSesssion(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
         });
         
-        deleteQuestion.setOkHandler(new DialogEventHandler<SessionInfo>() {
+        deleteQuestion.setOkHandler(new DialogEventHandler<SessionWrapper>() {
             @Override
-            public void event(SessionInfo data) {
-                appService.call(sessionDelete).deleteSesssion(data.getGuid(), data.getHost(), data.getApplication(), data.getId());
+            public void event(SessionWrapper data) {
+                appService.call(sessionDelete).deleteSesssion(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
         });
           
@@ -206,7 +207,7 @@ public class SessionsView extends ViewPage {
             Set<String> tmp = new HashSet<String>();
             for (AgentWrapper w : data) {
                 if (w.server != null) {
-                    agentsList.addItem(w.agent.getName(), w.agent.getGuid());
+                    agentsList.addItem(w.data.getName(), w.data.getGuid());
                     List<ServerApplication> apps = w.server.getApplications();
                     if (apps != null) {
                         for (ServerApplication a : apps) {
@@ -238,7 +239,7 @@ public class SessionsView extends ViewPage {
         @Override
         public void callback(List<SessionInfo> value) {
             sessionPanel.reset();
-            sessionPanel.addAll(value);            
+            sessionPanel.addAllItems(value);            
         }
     };
     

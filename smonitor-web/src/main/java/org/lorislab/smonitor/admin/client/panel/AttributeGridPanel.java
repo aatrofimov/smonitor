@@ -19,83 +19,77 @@ import com.google.gwt.user.cellview.client.Column;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityLongColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
-import org.lorislab.smonitor.rs.model.AttributeInfo;
 import com.google.gwt.dom.client.Style.Unit;
+import java.util.ArrayList;
+import java.util.List;
+import org.lorislab.smonitor.admin.client.model.AttributeWrapper;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
+import org.lorislab.smonitor.rs.model.AttributeInfo;
 
 /**
  *
  * @author Andrej Petras
  */
-public class AttributeGridPanel extends AbstractGridPanel2<AttributeInfo> {
+public class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeWrapper> {
+
+    @Override
+    protected AttributeWrapper createWrapper() {
+       return new AttributeWrapper();
+    }
 
     @Override
     protected void createColumns() {
         
-        Column colAction = addColumn(" ", true, new EntityImageColumn<AttributeInfo, Boolean>() {
+        Column colAction = addColumn(" ", true, new EntityImageColumn<AttributeWrapper, Boolean>() {
             @Override
-            public Boolean getObject(AttributeInfo object) {
-                return object.isSerializable();
+            public Boolean getObject(AttributeWrapper object) {
+                return object.data.isSerializable();
             }
 
             @Override
-            public String getValue(AttributeInfo object) {
-                if (object.isSerializable()) {
+            public String getValue(AttributeWrapper object) {
+                if (object.data.isSerializable()) {
                     return "images/status_ok.png";
                 }
                 return "images/status_error.png";
             }
         });
-        setColumnWidth(colAction, 25, com.google.gwt.dom.client.Style.Unit.PX);
+        setColumnWidth(colAction, 25, Unit.PX);
         
-        Column colName = this.addColumn("Name", true, new EntityTextColumn<AttributeInfo>() {
+        Column colName = this.addColumn("Name", true, new EntityTextColumn<AttributeWrapper>() {
             @Override
-            public String getObject(AttributeInfo object) {
-                return object.getName();
+            public String getObject(AttributeWrapper object) {
+                return object.data.getName();
             }
         });
         this.setColumnWidth(colName, 250, Unit.PX);
         
-        Column colType = this.addColumn("Type", true, new EntityTextColumn<AttributeInfo>() {
+        Column colType = this.addColumn("Type", true, new EntityTextColumn<AttributeWrapper>() {
             @Override
-            public String getObject(AttributeInfo object) {
-                return object.getType();
+            public String getObject(AttributeWrapper object) {
+                return object.data.getType();
             }
         });
         this.setColumnWidth(colType, 280, Unit.PX);  
                        
-        Column colSerSize = this.addColumn("Ser. size", true, new EntityLongColumn<AttributeInfo>() {
+        Column colSerSize = this.addColumn("Ser. size", true, new EntityLongColumn<AttributeWrapper>() {
             @Override
-            public Long getObject(AttributeInfo object) {
-                if (object.isSerializable()) {
-                return object.getSerializableSize();
+            public Long getObject(AttributeWrapper object) {
+                if (object.data.isSerializable()) {
+                return object.data.getSerializableSize();
                 }
                 return null;
             }
         });
         this.setColumnWidth(colSerSize, 75, Unit.PX); 
         
-        Column colSize = this.addColumn("Size", true, new EntityLongColumn<AttributeInfo>() {
+        Column colSize = this.addColumn("Size", true, new EntityLongColumn<AttributeWrapper>() {
             @Override
-            public Long getObject(AttributeInfo object) {
-                return object.getSize();
+            public Long getObject(AttributeWrapper object) {
+                return object.data.getSize();
             }
         });
         this.setColumnWidth(colSize, 50, Unit.PX);        
-    }
-
-    @Override
-    protected AttributeInfo findById(final Object id) {
-        AttributeInfo item = find(new EntityDataGrid.FilterItem<AttributeInfo>() {
-            @Override
-            public AttributeInfo isItem(AttributeInfo item) {
-                if (item.getName().equals((String) id)) {
-                    return item;
-                }
-                return null;
-            }
-        });
-        return item;
     }
     
 }

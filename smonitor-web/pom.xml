@@ -44,12 +44,6 @@
         </dependency>                
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>gwt-uc</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>        
-        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
             <artifactId>smonitor-services</artifactId>
             <version>${project.version}</version>
             <classifier>sources</classifier>

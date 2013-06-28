@@ -13,34 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.gwt.uc.form;
+package org.lorislab.smonitor.gwt.uc.form.property;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import java.util.Date;
 
 /**
+ * The date text property.
  *
  * @author Andrej Petras
+ * @param <T> the object.
  */
 public abstract class DateTextBoxProperty<T> extends AbstractTextBoxProperty<T, Date> {
 
+    /**
+     * The date time format.
+     */
     private DateTimeFormat format;
-    
+
+    /**
+     * The default constructor.
+     *
+     * @param format the date time format.
+     */
     public DateTextBoxProperty(DateTimeFormat format) {
         super();
         this.format = format;
     }
 
+    /**
+     * The default constructor.
+     *
+     * @param format the date time format.
+     * @param readOnly the read only flag.
+     */
     public DateTextBoxProperty(DateTimeFormat format, boolean readonly) {
         super(readonly);
         this.format = format;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setWidgetValue(Date value) {
         widget.setText(format.format(value));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Date getWidgetValue() {
         return format.parse(widget.getText());
