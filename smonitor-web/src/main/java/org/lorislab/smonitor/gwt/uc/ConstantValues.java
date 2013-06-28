@@ -16,7 +16,6 @@
 package org.lorislab.smonitor.gwt.uc;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.UIObject;
 
 /**
  * The GWT constants.
@@ -34,8 +33,13 @@ public final class ConstantValues {
      */
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
 
+    /**
+     * The mouse over event.
+     */
     public static final String EVENT_MOUSEOVER = "mouseover";
-    
+    /**
+     * The mouse out event.
+     */    
     public static final String EVENT_MOUSEOUT = "mouseout";
     
     /**

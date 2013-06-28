@@ -17,123 +17,96 @@ package org.lorislab.smonitor.admin.client.toolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
 
 /**
- *
+ * The agent tool bar.
+ * 
  * @author Andrej Petras
  */
-public class AgentToolbarPanel extends PopupPanel {
+public class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolbarPanel.ClickButtonHandler> {
 
     @UiField
     Button btnEditAction;
-
     @UiField
     Button btnEditDelete;
-    
     @UiField
     Button btnEditInfo;
-
     @UiField
     Button btnEditRefresh;
-    
-    private AgentWrapper data;
-    
-    private ClickButtonHandler handler;
-    
+
     public AgentToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
         setStyleName("arrow-popup-right");
-        
-        btnEditAction.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.edit(data);
-                }
-                close();
-            }
-        });
-        
-        btnEditDelete.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.delete(data);
-                }
-                close();
-            }
-        });  
-     
-        btnEditRefresh.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.refresh(data);
-                }
-                close();
-            }
-        });
-        
-        btnEditInfo.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.info(data);
-                }
-                close();
-            }
-        });
-                      
     }
 
-    public void setHandler(ClickButtonHandler handler) {
-        this.handler = handler;
+    @UiHandler("btnEditAction")
+    void clickEdit(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().edit(getData());
+        }
+        close();
     }
     
-    public void open(int left, int top, AgentWrapper data) {
-        this.data = data;
+    @UiHandler("btnEditDelete")
+    void clickDelete(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().delete(getData());
+        }
+        close();
+    }
+    
+    @UiHandler("btnEditRefresh")
+    void clickRefresh(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().refresh(getData());
+        }
+        close();
+    }
+
+    @UiHandler("btnEditInfo")
+    void clickInfo(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().info(getData());
+        }
+        close();
+    }
+
+    public void open(int left, int top, AgentWrapper wrapper) {
         int size = 2;
-        if (data.connected) {
+        if (wrapper.connected) {
             size = size + 1;
         }
-        if (data.data.isEnabled()) {
+        if (wrapper.data.isEnabled()) {
             size = size + 1;
         }
         size = size * 32;
-        btnEditInfo.setVisible(data.connected);
-        btnEditRefresh.setVisible(data.data.isEnabled());
-        this.setHeight("" + size + "px");
-        this.setPopupPosition(left-55, top-(size/2)+10);
-        this.show();
+        btnEditInfo.setVisible(wrapper.connected);
+        btnEditRefresh.setVisible(wrapper.data.isEnabled());
+        super.open(left - 55, top - (size / 2) + 10, size, wrapper);
     }
 
-    public void close() {
-        data = null;
-        this.hide();
-    }
 
     public interface ClickButtonHandler {
-        
+
         public void edit(AgentWrapper data);
 
         public void password(AgentWrapper data);
-        
+
         public void info(AgentWrapper data);
-        
+
         public void delete(AgentWrapper data);
-        
+
         public void refresh(AgentWrapper data);
-        
     }
-    
+
     interface MyUiBinder extends UiBinder<Widget, AgentToolbarPanel> {
     }
-    private static AgentToolbarPanel.MyUiBinder uiBinder = GWT.create(AgentToolbarPanel.MyUiBinder.class);    
+    private static AgentToolbarPanel.MyUiBinder uiBinder = GWT.create(AgentToolbarPanel.MyUiBinder.class);
 }

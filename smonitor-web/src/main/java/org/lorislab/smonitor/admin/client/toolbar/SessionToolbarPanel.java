@@ -17,104 +17,78 @@ package org.lorislab.smonitor.admin.client.toolbar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
+import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
 
 /**
- *
+ * The session tool bar.
+ * 
  * @author Andrej Petras
  */
-public class SessionToolbarPanel extends PopupPanel {
-
+public class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, SessionToolbarPanel.ClickButtonHandler> {
 
     @UiField
     Button btnDelete;
-    
     @UiField
     Button btnInfo;
-
     @UiField
     Button btnRefresh;
-    
-    private SessionWrapper data;
-    
-    private ClickButtonHandler handler;
-    
+
     public SessionToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
         setStyleName("arrow-popup-right");
-                       
-        btnDelete.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.delete(data);
-                }
-                close();
-            }
-        });  
-     
-        btnRefresh.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.refresh(data);
-                }
-                close();
-            }
-        });
-        
-        btnInfo.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (handler != null && data != null) {
-                    handler.info(data);
-                }
-                close();
-            }
-        });
-                      
     }
 
-    public void setHandler(ClickButtonHandler handler) {
-        this.handler = handler;
+    @UiHandler("btnDelete")
+    void clickDelete(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().delete(getData());
+        }
+        close();
     }
     
-    public void open(int left, int top, SessionWrapper data) {
-        this.data = data;
+    @UiHandler("btnRefresh")
+    void clickRefresh(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().refresh(getData());
+        }
+        close();
+    }
+    
+    @UiHandler("btnInfo")
+    void clickInfo(ClickEvent event) {
+        if (isEvent()) {
+            getHandler().info(getData());
+        }
+        close();
+    }
+
+    public void open(int left, int top, SessionWrapper wrapper) {
         int size = 1;
-        btnInfo.setVisible(data.data.isValid());
-        btnDelete.setVisible(data.data.isValid());        
-        if (data.data.isValid()) {
+        btnInfo.setVisible(wrapper.data.isValid());
+        btnDelete.setVisible(wrapper.data.isValid());
+        if (wrapper.data.isValid()) {
             size = size + 2;
         }
         size = size * 32;
-        this.setHeight("" + size + "px");
-        this.setPopupPosition(left-55, top-(size/2)+10);
-        this.show();
-    }
-
-    public void close() {
-        data = null;
-        this.hide();
+        super.open(left - 55, top - (size / 2) + 10, size, wrapper);
     }
 
     public interface ClickButtonHandler {
-        
+
         public void info(SessionWrapper data);
-        
+
         public void delete(SessionWrapper data);
-        
+
         public void refresh(SessionWrapper data);
-        
     }
-    
+
     interface MyUiBinder extends UiBinder<Widget, SessionToolbarPanel> {
     }
-    private static SessionToolbarPanel.MyUiBinder uiBinder = GWT.create(SessionToolbarPanel.MyUiBinder.class);    
+    private static SessionToolbarPanel.MyUiBinder uiBinder = GWT.create(SessionToolbarPanel.MyUiBinder.class);
 }
