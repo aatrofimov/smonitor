@@ -76,7 +76,7 @@ public class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, Session
         if (wrapper.data.isValid()) {
             size = size + 2;
         }
-        size = size * 32;
+        size = size * 33;
         super.open(left - 30, top - (size / 2) + 14, size, wrapper);
     }
 

@@ -144,7 +144,7 @@ public class SessionsView extends ViewPage {
         sessionPanel.setChangeSizeHandler(new EntityDataGrid.ChangeSizeHandler() {
             @Override
             public void changeSize(int size) {
-                resultCount.setText("" + sessionPanel.size());
+                resultCount.setText("# " + sessionPanel.size());
             }
         });
         

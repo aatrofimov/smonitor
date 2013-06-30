@@ -41,7 +41,7 @@
                 <g:south size="43">
                     <g:FlowPanel>
                         <g:FlowPanel styleName="result-items panel-box-10">
-                            <g:Label ui:field="resultCount" addStyleNames="icon-list" title="Session counts">0</g:Label>
+                            <g:Label ui:field="resultCount" title="Session counts"># 0</g:Label>
                         </g:FlowPanel>
                                 
                         <g:FlowPanel styleName="criteria-actions panel-box-10">

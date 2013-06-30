@@ -8,7 +8,7 @@
         <g:north size="43">
             <g:FlowPanel>
                 <g:FlowPanel styleName="result-items panel-box-10">
-                    <g:Label ui:field="resultCount" addStyleNames="icon-list" title="Agent counts">0</g:Label>
+                    <g:Label ui:field="resultCount" title="Agent counts"># 0</g:Label>
                 </g:FlowPanel>
                 <g:FlowPanel styleName="criteria-actions panel-box-10">
                     <g:Button ui:field="btnAgentRefresh" addStyleNames="button-action button-view icon-retweet"></g:Button>                                                

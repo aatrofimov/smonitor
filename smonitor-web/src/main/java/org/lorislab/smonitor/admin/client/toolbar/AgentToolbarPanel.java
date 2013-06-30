@@ -86,7 +86,7 @@ public class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolba
         if (wrapper.data.isEnabled()) {
             size = size + 1;
         }
-        size = size * 32;
+        size = size * 33;
         btnEditInfo.setVisible(wrapper.connected);
         btnEditRefresh.setVisible(wrapper.data.isEnabled());
         super.open(left - 30, top - (size / 2) + 14, size, wrapper);

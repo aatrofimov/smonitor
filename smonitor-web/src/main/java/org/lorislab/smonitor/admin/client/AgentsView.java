@@ -151,7 +151,7 @@ public class AgentsView extends ViewPage implements AgentController {
         agentPanel.setChangeSizeHandler(new EntityDataGrid.ChangeSizeHandler() {
             @Override
             public void changeSize(int size) {
-                resultCount.setText("" + size);
+                resultCount.setText("# " + size);
             }
         });
     }
