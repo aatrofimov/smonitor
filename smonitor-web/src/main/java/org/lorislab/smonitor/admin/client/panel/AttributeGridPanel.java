@@ -20,10 +20,7 @@ import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityLongColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import com.google.gwt.dom.client.Style.Unit;
-import java.util.ArrayList;
-import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AttributeWrapper;
-import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.rs.model.AttributeInfo;
 
@@ -50,9 +47,9 @@ public class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeW
             @Override
             public String getValue(AttributeWrapper object) {
                 if (object.data.isSerializable()) {
-                    return "icon-download";
+                    return "icon-download status-icon-green";
                 }
-                return "icon-alert";
+                return "icon-attention status-icon-red";
             }
         });
         setColumnWidth(colAction, 25, Unit.PX);        

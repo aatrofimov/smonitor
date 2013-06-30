@@ -92,12 +92,12 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
             public String getValue(AgentWrapper object) {
                 String result = null;
                 if (!object.data.isEnabled()) {
-                    result = "icon-unlink status-icon-gray";
+                    result = "icon-record status-icon-gray";
                 } else if (object.request) {
                     result = "icon-arrows-ccw animate-spin status-icon-blue";
                 } else {
                     if (object.connected) {
-                        result = "icon-link-1 status-icon-green";
+                        result = "icon-record status-icon-green";
                     } else if (object.error != null) {
                         result = "icon-alert status-icon-red";
                     }

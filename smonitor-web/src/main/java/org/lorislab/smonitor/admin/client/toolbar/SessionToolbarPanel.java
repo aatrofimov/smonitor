@@ -21,6 +21,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
@@ -33,11 +34,11 @@ import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
 public class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, SessionToolbarPanel.ClickButtonHandler> {
 
     @UiField
-    Button btnDelete;
+    ToggleButton btnDelete;
     @UiField
-    Button btnInfo;
+    ToggleButton btnInfo;
     @UiField
-    Button btnRefresh;
+    ToggleButton btnRefresh;
 
     public SessionToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
@@ -76,7 +77,7 @@ public class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, Session
             size = size + 2;
         }
         size = size * 32;
-        super.open(left - 55, top - (size / 2) + 10, size, wrapper);
+        super.open(left - 30, top - (size / 2) + 14, size, wrapper);
     }
 
     public interface ClickButtonHandler {

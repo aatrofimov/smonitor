@@ -4,9 +4,9 @@
 
 
     <g:FlowPanel>                    
-        <g:Button ui:field="btnRefresh" addStyleNames="button-action icon-arrows-ccw arrow-popup-content"></g:Button>
-        <g:Button ui:field="btnInfo" addStyleNames="button-action icon-info arrow-popup-content"></g:Button>           
-        <g:Button ui:field="btnDelete" addStyleNames="button-action icon-trash arrow-popup-content"></g:Button>
+        <g:ToggleButton ui:field="btnRefresh" addStyleNames="arrow-popup-nativebutton icon-arrows-ccw" />
+        <g:ToggleButton ui:field="btnInfo" addStyleNames="arrow-popup-nativebutton icon-info"/>         
+        <g:ToggleButton ui:field="btnDelete" addStyleNames="arrow-popup-nativebutton icon-trash"/>  
     </g:FlowPanel>
     
 </ui:UiBinder>

@@ -20,7 +20,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
@@ -33,13 +33,13 @@ import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
 public class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolbarPanel.ClickButtonHandler> {
 
     @UiField
-    Button btnEditAction;
+    ToggleButton btnEditAction;
     @UiField
-    Button btnEditDelete;
+    ToggleButton btnEditDelete;
     @UiField
-    Button btnEditInfo;
+    ToggleButton btnEditInfo;
     @UiField
-    Button btnEditRefresh;
+    ToggleButton btnEditRefresh;
 
     public AgentToolbarPanel() {
         setWidget(uiBinder.createAndBindUi(this));
@@ -89,7 +89,7 @@ public class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolba
         size = size * 32;
         btnEditInfo.setVisible(wrapper.connected);
         btnEditRefresh.setVisible(wrapper.data.isEnabled());
-        super.open(left - 55, top - (size / 2) + 10, size, wrapper);
+        super.open(left - 30, top - (size / 2) + 14, size, wrapper);
     }
 
 

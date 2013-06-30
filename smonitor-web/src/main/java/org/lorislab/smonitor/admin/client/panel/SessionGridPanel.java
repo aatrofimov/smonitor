@@ -64,11 +64,11 @@ public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper
 
             @Override
             public String getValue(SessionWrapper object) {
-                String result = "icon-alert";
+                String result = "icon-record status-icon-red";
                 if (object.request) {
-                    result = "icon-arrows-ccw animate-spin";
+                    result = "icon-arrows-ccw animate-spin status-icon-blue";
                 } else if (object.data.isValid()) {
-                    result = "icon-eye";
+                    result = "icon-record status-icon-green";
                 }
                 return result;
             }
