@@ -1,5 +1,9 @@
+/*
+-moz-linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important
+*/
 
 @import "fonts/entypo.css";
+@import "fonts/animation.css";
 
 .gwt-Button {
   margin: 0;

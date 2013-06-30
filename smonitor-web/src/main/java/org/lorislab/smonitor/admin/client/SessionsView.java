@@ -162,6 +162,7 @@ public class SessionsView extends ViewPage {
 
             @Override
             public void refresh(SessionWrapper data) {
+                sessionPanel.request(data);
                 appService.call(sessionRefresh).getSesssion(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
         });

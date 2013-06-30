@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AttributeWrapper;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
+import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.rs.model.AttributeInfo;
 
 /**
@@ -39,8 +40,8 @@ public class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeW
 
     @Override
     protected void createColumns() {
-        
-        Column colAction = addColumn(" ", true, new EntityImageColumn<AttributeWrapper, Boolean>() {
+               
+        Column colAction = addColumn(" ", true, new EntitySpanColumn<AttributeWrapper, Boolean>() {
             @Override
             public Boolean getObject(AttributeWrapper object) {
                 return object.data.isSerializable();
@@ -49,12 +50,13 @@ public class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeW
             @Override
             public String getValue(AttributeWrapper object) {
                 if (object.data.isSerializable()) {
-                    return "images/status_ok.png";
+                    return "icon-download";
                 }
-                return "images/status_error.png";
+                return "icon-alert";
             }
         });
-        setColumnWidth(colAction, 25, Unit.PX);
+        setColumnWidth(colAction, 25, Unit.PX);        
+        
         
         Column colName = this.addColumn("Name", true, new EntityTextColumn<AttributeWrapper>() {
             @Override

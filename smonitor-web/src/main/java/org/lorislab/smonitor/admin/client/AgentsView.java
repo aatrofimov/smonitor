@@ -159,6 +159,7 @@ public class AgentsView extends ViewPage implements AgentController {
     public void refresh() {
         agentService.call(agents).get();
     }
+    
     final RemoteCallback<List<Agent>> agents = new RemoteCallback<List<Agent>>() {
         @Override
         public void callback(List<Agent> value) {

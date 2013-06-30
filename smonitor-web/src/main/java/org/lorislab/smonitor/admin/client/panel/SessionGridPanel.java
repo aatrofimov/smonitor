@@ -23,6 +23,7 @@ import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import com.google.gwt.dom.client.Style.Unit;
+import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.rs.model.SessionInfo;
 
 /**
@@ -36,12 +37,18 @@ public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper
         return new SessionWrapper();
     }
     
+    public void request(SessionWrapper item) {
+        item.request = true;
+        set(item);
+    }
+    
     public void replaceById(String id, SessionInfo data) {
         if (data != null) {
             SessionWrapper item = findById(id);
             if (item != null) {
+                item.request = false;
                 item.data = data;
-                flush();
+                set(item);
             }
         }
     }
@@ -49,7 +56,7 @@ public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper
     @Override
     protected void createColumns() {
 
-        Column colAction = addColumn(" ", true, new EntityImageColumn<SessionWrapper, Boolean>() {
+        Column colAction = addColumn(" ", true, new EntitySpanColumn<SessionWrapper, Boolean>() {
             @Override
             public Boolean getObject(SessionWrapper object) {
                 return object.data.isValid();
@@ -57,9 +64,11 @@ public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper
 
             @Override
             public String getValue(SessionWrapper object) {
-                String result = "images/status_error.png";
-                if (object.data.isValid()) {
-                    result = "images/status_ok.png";
+                String result = "icon-alert";
+                if (object.request) {
+                    result = "icon-arrows-ccw animate-spin";
+                } else if (object.data.isValid()) {
+                    result = "icon-eye";
                 }
                 return result;
             }

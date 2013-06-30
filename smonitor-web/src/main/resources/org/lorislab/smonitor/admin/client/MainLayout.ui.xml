@@ -357,6 +357,32 @@
         }        
         
         @external table-basic;
+        
+        .status-icon-red {
+            color: #ff3424;
+            font-size: 18;
+        }              
+        
+        .status-icon-green {
+            color: #1cc339;
+            font-size: 18;
+        }
+             
+        .status-icon-yellow {
+            color: #ffdd24;
+            font-size: 18;
+        }
+
+        .status-icon-blue {
+            color: #349AFF;
+            font-size: 18;
+        }    
+        
+        .status-icon-gray {
+            color: #AEAEAE;
+            font-size: 18;
+        }                                                    
+        @external .status-icon-red, .status-icon-green, .status-icon-yellow, .status-icon-blue, .status-icon-gray;
     </ui:style>
     
     <g:SimplePanel styleName="{style.content-body}" width="100%" height="100%">   

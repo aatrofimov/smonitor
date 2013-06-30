@@ -20,6 +20,7 @@ import com.google.gwt.user.cellview.client.Column;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
+import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.model.ServerInfo;
@@ -37,7 +38,7 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
       
     public void request(AgentWrapper item) {
         item.request = true;
-        update();
+        set(item);
     }
 
     public void error(String guid, String error) {
@@ -46,7 +47,7 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
             item.clear();
             item.error = error;
             item.request = false;
-            update();
+            set(item);
         }
     }
 
@@ -58,7 +59,7 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
                 item.connected = true;
                 item.request = false;
                 item.server = server;
-                update();
+                set(item);
             }
         }
     }
@@ -81,7 +82,7 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
     @Override
     protected void createColumns() {
 
-        Column colAction = addColumn(" ", true, new EntityImageColumn<AgentWrapper, Boolean>() {
+        Column colAction = addColumn(" ", true, new EntitySpanColumn<AgentWrapper, Boolean>() {
             @Override
             public Boolean getObject(AgentWrapper object) {
                 return object.data.isEnabled();
@@ -89,16 +90,16 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
 
             @Override
             public String getValue(AgentWrapper object) {
-                String result = "images/empty.png";
+                String result = null;
                 if (!object.data.isEnabled()) {
-                    result = "images/status_disabled.png";
+                    result = "icon-unlink status-icon-gray";
                 } else if (object.request) {
-                    result = "images/status.gif";
+                    result = "icon-arrows-ccw animate-spin status-icon-blue";
                 } else {
                     if (object.connected) {
-                        result = "images/status_ok.png";
+                        result = "icon-link-1 status-icon-green";
                     } else if (object.error != null) {
-                        result = "images/status_error.png";
+                        result = "icon-alert status-icon-red";
                     }
                 }
                 return result;

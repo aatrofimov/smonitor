@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-
+    
     <g:FlowPanel>                    
         <g:Button ui:field="btnEditAction" addStyleNames="button-action icon-pencil"></g:Button>
         <g:Button ui:field="btnEditDelete" addStyleNames="button-action icon-trash arrow-popup-content"></g:Button>
