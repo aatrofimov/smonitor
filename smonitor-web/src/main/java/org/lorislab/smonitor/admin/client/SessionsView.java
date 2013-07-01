@@ -66,10 +66,8 @@ public class SessionsView extends ViewPage {
 
     @UiField
     DockLayoutPanel searchCriteria;
-    
     @UiField
     FlowPanel searchCriteriaItems;
-    
     @UiField(provided = true)
     ChosenListBox agentsList;
     @UiField(provided = true)
@@ -82,35 +80,35 @@ public class SessionsView extends ViewPage {
     Button btnSessionSearch;
     @UiField
     Label resultCount;
-    
     private SessionToolbarPanel sessionToolbar = new SessionToolbarPanel();
     private Client<ApplicationService> appService = ClientFactory.create(ApplicationService.class);
     private AgentController agentController;
-
     private QuestionDialogBox<SessionWrapper> deleteQuestion = new QuestionDialogBox<SessionWrapper>();
     private SessionInfoDetailsPanel detailsPanel = new SessionInfoDetailsPanel();
-    
+
     public SessionsView(AgentController agentController) {
         this.agentController = agentController;
         ChosenOptions options = new ChosenOptions();
         options.setResources(GWT.<MyResources>create(MyResources.class));
         agentsList = new ChosenListBox(true, options);
-        
+
         options = new ChosenOptions();
-        options.setResources(GWT.<MyResources>create(MyResources.class));        
+        options.setResources(GWT.<MyResources>create(MyResources.class));
         appList = new ChosenListBox(true, options);
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        
+
         searchCriteria.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
-        searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);        
+        searchCriteriaItems.getElement().getParentElement().getStyle().setOverflow(Overflow.VISIBLE);
 
         btnSessionReset.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                agentsList.clear();
-                appList.clear();
+                agentsList.setSelectedIndex(-1);
+                agentsList.update();
+                appList.setSelectedIndex(-1);
+                appList.update();
             }
         });
 
@@ -120,12 +118,12 @@ public class SessionsView extends ViewPage {
                 SessionSearchCriteria criteria = new SessionSearchCriteria();
                 criteria.setAgents(getValues(agentsList));
                 criteria.setApplications(getValues(appList));
-                
-                sessionPanel.reset();                
+
+                sessionPanel.reset();
                 appService.call(sessionSearch, sessionSearchError).findSessions(criteria);
             }
         });
-        
+
         sessionPanel.setTableRowHoverHandler(new TableRowHoverHandler() {
             @Override
             public void onRowOver(TableRowElement row) {
@@ -140,23 +138,22 @@ public class SessionsView extends ViewPage {
                 sessionToolbar.close();
             }
         });
-        
+
         sessionPanel.setChangeSizeHandler(new EntityDataGrid.ChangeSizeHandler() {
             @Override
             public void changeSize(int size) {
                 resultCount.setText("# " + sessionPanel.size());
             }
         });
-        
-        sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
 
+        sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
             @Override
             public void info(SessionWrapper data) {
-                appService.call(sessionDetails).getSesssionDetails(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());                        
+                appService.call(sessionDetails).getSesssionDetails(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
 
             @Override
-            public void delete(SessionWrapper data) {                
+            public void delete(SessionWrapper data) {
                 deleteQuestion.open(data, "Delete Session", "Do you really want to delete selected session " + data.data.getId() + " ?");
             }
 
@@ -166,14 +163,14 @@ public class SessionsView extends ViewPage {
                 appService.call(sessionRefresh).getSesssion(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
         });
-        
+
         deleteQuestion.setOkHandler(new DialogEventHandler<SessionWrapper>() {
             @Override
             public void event(SessionWrapper data) {
                 appService.call(sessionDelete).deleteSesssion(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
         });
-          
+
     }
 
     private static Set<String> getValues(ChosenListBox list) {
@@ -181,7 +178,7 @@ public class SessionsView extends ViewPage {
         if (list != null) {
             String[] values = list.getValues();
             if (values != null && values.length > 0) {
-                result.addAll(Arrays.asList(values));                
+                result.addAll(Arrays.asList(values));
             } else {
                 int size = list.getItemCount();
                 String item;
@@ -202,7 +199,7 @@ public class SessionsView extends ViewPage {
         appList.clear();
         sessionToolbar.close();
         deleteQuestion.close();
-        
+
         List<AgentWrapper> data = agentController.getAgents();
         if (data != null) {
             Set<String> tmp = new HashSet<String>();
@@ -235,15 +232,13 @@ public class SessionsView extends ViewPage {
     public String getPageTitle() {
         return "Sessions";
     }
-    
     final RemoteCallback<List<SessionInfo>> sessionSearch = new RemoteCallback<List<SessionInfo>>() {
         @Override
         public void callback(List<SessionInfo> value) {
             sessionPanel.reset();
-            sessionPanel.addAllItems(value);            
+            sessionPanel.addAllItems(value);
         }
     };
-    
     final RemoteCallback<SessionInfo> sessionRefresh = new RemoteCallback<SessionInfo>() {
         @Override
         public void callback(SessionInfo value) {
@@ -252,7 +247,6 @@ public class SessionsView extends ViewPage {
             }
         }
     };
-    
     final RemoteCallback<SessionInfoDetails> sessionDetails = new RemoteCallback<SessionInfoDetails>() {
         @Override
         public void callback(SessionInfoDetails value) {
@@ -261,13 +255,11 @@ public class SessionsView extends ViewPage {
             }
         }
     };
-    
     final RestServiceExceptionCallback sessionSearchError = new RestServiceExceptionCallback() {
         @Override
         public void exception(RestServiceException exception) {
         }
     };
-
     final RemoteCallback<String> sessionDelete = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
@@ -275,7 +267,7 @@ public class SessionsView extends ViewPage {
             deleteQuestion.close();
         }
     };
-    
+
     interface MyUiBinder extends UiBinder<Widget, SessionsView> {
     }
     private static SessionsView.MyUiBinder uiBinder = GWT.create(SessionsView.MyUiBinder.class);
