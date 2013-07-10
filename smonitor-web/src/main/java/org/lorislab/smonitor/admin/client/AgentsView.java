@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.admin.client;
 
+import org.lorislab.smonitor.admin.client.listener.AgentChangeListener;
 import org.lorislab.smonitor.admin.client.panel.AgentDialogBox;
 import org.lorislab.smonitor.gwt.uc.dialogbox.EntityDialogBox;
 import com.google.gwt.core.client.GWT;
@@ -50,7 +51,7 @@ import org.lorislab.smonitor.rs.service.ServerService;
  *
  * @author Andrej Petras
  */
-public class AgentsView extends ViewPage implements AgentController {
+public class AgentsView extends ViewPage {
 
     @UiField
     AgentGridPanel agentPanel;
@@ -61,6 +62,7 @@ public class AgentsView extends ViewPage implements AgentController {
     
     @UiField
     Label resultCount;
+    private AgentChangeListener agentChangeListener;
     
     private AgentDialogBox dialogBox = new AgentDialogBox();
     private Client<ServerService> serverService = ClientFactory.create(ServerService.class);
@@ -156,6 +158,10 @@ public class AgentsView extends ViewPage implements AgentController {
         });
     }
 
+    public void setAgentChangeListener(AgentChangeListener agentChangeListener) {
+        this.agentChangeListener = agentChangeListener;
+    }
+    
     public void refresh() {
         agentService.call(agents).get();
     }
@@ -180,6 +186,10 @@ public class AgentsView extends ViewPage implements AgentController {
                 serverService.call(serverInfo, serverInfoError).getServer(data.data.getGuid());
             } else {
                 agentPanel.error(data.data.getGuid(), null);
+                // update choose list in the session view
+                if (agentChangeListener != null) {
+                    agentChangeListener.agentChanged(agentPanel.get());
+                }                   
             }        
         }
     }
@@ -190,16 +200,30 @@ public class AgentsView extends ViewPage implements AgentController {
             agentPanel.error(exception.getRef(), exception.getMessage());
         }
     };
+    /**
+     * The remote call to get the service info for the agent.
+     */
     final RemoteCallback<ServerInfo> serverInfo = new RemoteCallback<ServerInfo>() {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void callback(ServerInfo value) {
-            agentPanel.update(value);
+            // update the server info in the agent panel
+            AgentWrapper w = agentPanel.update(value);
+            // update choose list in the session view
+            if (w != null && agentChangeListener != null) {
+                agentChangeListener.agentChanged(agentPanel.get());
+            }            
         }
     };
     final RemoteCallback<String> agentDelete = new RemoteCallback<String>() {
         @Override
         public void callback(String value) {
-            agentPanel.removeById(value);
+            AgentWrapper w = agentPanel.removeById(value);
+            if (w != null && agentChangeListener != null) {
+                agentChangeListener.agentChanged(agentPanel.get());
+            }
             deleteQuestion.close();
         }
     };
@@ -240,11 +264,6 @@ public class AgentsView extends ViewPage implements AgentController {
         return "Agents";
     }
 
-    @Override
-    public List<AgentWrapper> getAgents() {
-        return agentPanel.get();
-    }
-    
     interface MyUiBinder extends UiBinder<Widget, AgentsView> {
     }
     private static AgentsView.MyUiBinder uiBinder = GWT.create(AgentsView.MyUiBinder.class);

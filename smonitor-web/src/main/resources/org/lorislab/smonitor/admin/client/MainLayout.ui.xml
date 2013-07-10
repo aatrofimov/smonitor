@@ -455,7 +455,7 @@
             <g:south size="20">
                 <g:HTMLPanel>
                     <div align="center">
-                        jBoss session monitor created by <a href='https://github.com/andrejpetras'>Andrej Petras</a>. Version: 
+                        Session monitor created by <a href='https://github.com/andrejpetras'>Andrej Petras</a>. Version: 
                         <span ui:field="version"></span>
                     </div>
                 </g:HTMLPanel>

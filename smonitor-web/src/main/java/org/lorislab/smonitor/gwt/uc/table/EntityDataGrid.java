@@ -20,7 +20,9 @@ import org.lorislab.smonitor.gwt.uc.table.handler.ColumnSortHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.RowHoverEvent;
+import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.ListDataProvider;
 import java.util.ArrayList;
@@ -306,11 +308,13 @@ public abstract class EntityDataGrid<E, T extends Wrapper<E>> extends DataGrid<T
      *
      * @param data the model to remove.
      */
-    public void removeById(final Object id) {
+    public T removeById(final Object id) {
+        T result = null;
         if (id != null) {
-            T item = findById(id);
-            remove(item);
+            result = findById(id);
+            remove(result);
         }
+        return result;
     }
 
     /**
@@ -368,6 +372,24 @@ public abstract class EntityDataGrid<E, T extends Wrapper<E>> extends DataGrid<T
         return column;
     }
 
+    /**
+     * Adds the column to the grid.
+     *
+     * @param <K> the entity.
+     * @param name the column name.
+     * @param sorting the sorting flag.
+     * @param column the column.
+     * @param footer the footer.
+     * @return the corresponding column.
+     */
+    public <K extends Comparable<K>> Column<T, ?> addColumn(String name, boolean sorting, final AbstractEntityColumn<T, K, ?> column, Header footer) {
+        addColumn(column, new TextHeader(name), footer);
+        if (sorting) {
+            addColumnSortHandler(new ColumnSortHandler<T>(dataProvider.getList(), column));
+        }
+        return column;
+    }
+    
     /**
      * This method is call after the methods add, remove or deleted are call.
      */

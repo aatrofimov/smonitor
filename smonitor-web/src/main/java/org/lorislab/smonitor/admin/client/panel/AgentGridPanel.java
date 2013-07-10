@@ -15,11 +15,12 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
-import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import org.lorislab.smonitor.rs.admin.model.Agent;
@@ -31,11 +32,21 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  */
 public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
 
+//    /**
+//     * The default constructor.
+//     */
+//    public AgentGridPanel() {
+//        setAutoFooterRefreshDisabled(false);        
+//    }
+//    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected AgentWrapper createWrapper() {
         return new AgentWrapper();
     }
-      
+
     public void request(AgentWrapper item) {
         item.request = true;
         set(item);
@@ -51,17 +62,19 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
         }
     }
 
-    public void update(ServerInfo server) {
+    public AgentWrapper update(ServerInfo server) {
+        AgentWrapper result = null;
         if (server != null) {
-            AgentWrapper item = findById(server.getGuid());
-            if (item != null) {
-                item.clear();
-                item.connected = true;
-                item.request = false;
-                item.server = server;
-                set(item);
+            result = findById(server.getGuid());
+            if (result != null) {
+                result.clear();
+                result.connected = true;
+                result.request = false;
+                result.server = server;
+                set(result);
             }
         }
+        return result;
     }
 
     public AgentWrapper update(final Agent data) {
@@ -82,6 +95,13 @@ public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
     @Override
     protected void createColumns() {
 
+//        Header<String> sumFooter = new Header<String>(new TextCell()) {
+//            @Override
+//            public String getValue() {
+//                return "# " + get().size();
+//            }
+//        };
+        
         Column colAction = addColumn(" ", true, new EntitySpanColumn<AgentWrapper, Boolean>() {
             @Override
             public Boolean getObject(AgentWrapper object) {

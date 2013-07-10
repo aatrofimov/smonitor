@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.admin.client;
+package org.lorislab.smonitor.admin.client.listener;
 
 import java.util.List;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 
 /**
+ * The agent change listener.
  *
  * @author Andrej Petras
  */
-public interface AgentController {
-    
-    public List<AgentWrapper> getAgents();
+public interface AgentChangeListener {
+
+    /**
+     * Adds the list of wrappers.
+     *
+     * @param agents the list of wrappers.
+     */
+    public void agentChanged(List<AgentWrapper> agents);
 }
