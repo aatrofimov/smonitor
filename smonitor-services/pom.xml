@@ -13,12 +13,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-<!--        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>config</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>-->
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>datastore</artifactId>

@@ -33,8 +33,6 @@
 	
     <modules>
         <module>objectprofiler</module>
-        <module>config</module>
-        <module>config-file</module>
 	<module>datastore</module>
         <module>connector</module>
         <module>connector-tomcat</module>  

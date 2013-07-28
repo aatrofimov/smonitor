@@ -22,12 +22,7 @@
             <groupId>org.lorislab.smonitor</groupId>
             <artifactId>smonitor-agent</artifactId>
             <version>${project.version}</version>
-        </dependency> 
-<!--        <dependency>
-            <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>config-file</artifactId>
-            <version>${project.version}</version>
-        </dependency>        -->                   
+        </dependency>                 
     </dependencies>
 
 
