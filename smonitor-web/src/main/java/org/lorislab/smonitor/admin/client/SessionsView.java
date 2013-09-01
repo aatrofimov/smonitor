@@ -42,6 +42,7 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
+import org.lorislab.smonitor.admin.client.panel.PleaseWaitPanel;
 import org.lorislab.smonitor.admin.client.panel.QuestionDialogBox;
 import org.lorislab.smonitor.admin.client.panel.SessionGridPanel;
 import org.lorislab.smonitor.admin.client.panel.SessionInfoDetailsPanel;
@@ -147,6 +148,7 @@ public class SessionsView extends ViewPage implements AgentChangeListener {
         sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
             @Override
             public void info(SessionWrapper data) {
+                PleaseWaitPanel.open();
                 appService.call(sessionDetails).getSesssionDetails(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
 
@@ -208,6 +210,7 @@ public class SessionsView extends ViewPage implements AgentChangeListener {
             if (value != null) {
                 detailsPanel.open(value);
             }
+            PleaseWaitPanel.close(false);
         }
     };
     final RestServiceExceptionCallback sessionSearchError = new RestServiceExceptionCallback() {
