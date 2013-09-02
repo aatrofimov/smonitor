@@ -15,25 +15,23 @@
  */
 package org.lorislab.smonitor.admin.client;
 
+import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import javax.annotation.PostConstruct;
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
-import org.jboss.errai.ioc.client.api.AfterInitialization;
-import org.jboss.errai.ioc.client.api.EntryPoint;
 
 /**
- *
+ * The administrator entry point.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-@EntryPoint
-public class Admin {
+public class Admin implements EntryPoint {
 
     private MainLayout mainLayout;
 
-    @PostConstruct
-    public void create() {
+    @Override
+    public void onModuleLoad() {
 
         // Rest client configuration
         RestClient.setJacksonMarshallingActive(true);
@@ -51,10 +49,9 @@ public class Admin {
         // Create main content
         mainLayout = new MainLayout();
         RootLayoutPanel.get().add(mainLayout);
-    }
-
-    @AfterInitialization
-    private void init() {
+        
+        // init
         mainLayout.init();
     }
+
 }
