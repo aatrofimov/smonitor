@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Andrej Petras
  */
-public class ServiceException  extends RuntimeException {
+public final class ServiceException  extends RuntimeException {
     
     private static final long serialVersionUID = -4382293726363854140L;
     

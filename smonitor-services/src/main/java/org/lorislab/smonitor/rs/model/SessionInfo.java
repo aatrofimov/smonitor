@@ -21,7 +21,7 @@ import java.util.Date;
  *
  * @author Andrej Petras
  */
-public class SessionInfo {
+public final class SessionInfo {
     
     private String guid;
     

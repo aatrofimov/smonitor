@@ -30,7 +30,7 @@ import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
  * 
  * @author Andrej Petras
  */
-public class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolbarPanel.ClickButtonHandler> {
+public final class AgentToolbarPanel extends AbstractToolbar<AgentWrapper, AgentToolbarPanel.ClickButtonHandler> {
 
     @UiField
     ToggleButton btnEditAction;

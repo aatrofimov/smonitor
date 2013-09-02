@@ -19,7 +19,7 @@ package org.lorislab.smonitor.rs.admin.model;
  *
  * @author Andrej Petras
  */
-public class ChangeAgentKeyRequest {
+public final class ChangeAgentKeyRequest {
     
     private String guid;
     

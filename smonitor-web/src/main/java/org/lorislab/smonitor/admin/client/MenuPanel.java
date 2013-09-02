@@ -29,7 +29,7 @@ import org.lorislab.smonitor.admin.client.handler.MenuPanelHandler;
  *
  * @author Andrej Petras
  */
-public class MenuPanel extends Composite {
+public final class MenuPanel extends Composite {
 
     @UiField
     ToggleButton btnAgent;

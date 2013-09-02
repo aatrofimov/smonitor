@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.HTML;
  * 
  * @author Andrej Petras
  */
-public class PleaseWaitPanel {
+public final class PleaseWaitPanel {
     
     /**
      * The panel instance.

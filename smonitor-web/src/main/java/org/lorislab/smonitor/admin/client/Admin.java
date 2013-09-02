@@ -26,7 +26,7 @@ import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class Admin implements EntryPoint {
+public final class Admin implements EntryPoint {
 
     private MainLayout mainLayout;
 

@@ -21,10 +21,11 @@ import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 import org.lorislab.smonitor.agent.security.AgentSecurityService;
 
 /**
- *
+ * The agent client executor.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AgentClientExecutor extends ApacheHttpClient4Executor {
+public final class AgentClientExecutor extends ApacheHttpClient4Executor {
     
     /**
      * The security key.

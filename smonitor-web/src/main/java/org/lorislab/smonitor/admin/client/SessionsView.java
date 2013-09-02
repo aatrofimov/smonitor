@@ -65,7 +65,7 @@ import org.lorislab.smonitor.rs.service.ApplicationService;
  *
  * @author Andrej Petras
  */
-public class SessionsView extends ViewPage implements AgentChangeListener {
+public final class SessionsView extends ViewPage implements AgentChangeListener {
 
     @UiField
     DockLayoutPanel searchCriteria;

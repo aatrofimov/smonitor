@@ -38,7 +38,7 @@ import org.lorislabr.smonitor.agent.rs.client.service.ApplicationClientService;
  *
  * @author Andrej Petras
  */
-public class ApplicationServiceImpl implements ApplicationService {
+public final class ApplicationServiceImpl implements ApplicationService {
 
     private static final Logger LOGGER = Logger.getLogger(ApplicationServiceImpl.class.getName());
     private AgentDataService service;

@@ -22,7 +22,7 @@ import org.lorislab.smonitor.rs.model.SessionInfo;
  *
  * @author Andrej Petras
  */
-public class SessionWrapper extends Wrapper<SessionInfo> {
+public final class SessionWrapper extends Wrapper<SessionInfo> {
     
     public boolean request;
 

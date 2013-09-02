@@ -22,7 +22,7 @@ import java.io.Serializable;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AgentException extends Exception implements Serializable {
+public final class AgentException extends Exception implements Serializable {
 
     /**
      * The UID for this class.

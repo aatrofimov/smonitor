@@ -22,7 +22,7 @@ import org.lorislab.smonitor.rs.model.AttributeInfo;
  *
  * @author Andrej Petras
  */
-public class AttributeWrapper extends Wrapper<AttributeInfo> {
+public final class AttributeWrapper extends Wrapper<AttributeInfo> {
 
     @Override
     public String getId() {

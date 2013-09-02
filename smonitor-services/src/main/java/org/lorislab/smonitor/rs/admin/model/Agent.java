@@ -19,7 +19,7 @@ package org.lorislab.smonitor.rs.admin.model;
  *
  * @author Andrej Petras
  */
-public class Agent {
+public final class Agent {
     
     private String guid;
     

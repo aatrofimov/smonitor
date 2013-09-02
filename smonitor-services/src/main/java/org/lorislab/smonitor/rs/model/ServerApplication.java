@@ -19,7 +19,7 @@ package org.lorislab.smonitor.rs.model;
  *
  * @author Andrej Petras
  */
-public class ServerApplication {
+public final class ServerApplication {
  /**
      * The application id.
      */

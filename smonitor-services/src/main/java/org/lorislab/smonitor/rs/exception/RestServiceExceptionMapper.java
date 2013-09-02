@@ -27,7 +27,7 @@ import javax.ws.rs.ext.Provider;
  * @author Andrej Petras
  */
 @Provider
-public class RestServiceExceptionMapper implements ExceptionMapper<ServiceException> {
+public final class RestServiceExceptionMapper implements ExceptionMapper<ServiceException> {
 
     @Context
     private HttpHeaders headers;

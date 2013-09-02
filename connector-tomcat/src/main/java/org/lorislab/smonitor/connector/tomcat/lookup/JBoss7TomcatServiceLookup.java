@@ -32,7 +32,7 @@ import org.jboss.msc.service.ServiceName;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
+public final class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
 
     /**
      * The logger for this class.

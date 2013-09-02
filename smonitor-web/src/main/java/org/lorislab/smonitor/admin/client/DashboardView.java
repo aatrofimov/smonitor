@@ -24,7 +24,7 @@ import org.lorislab.smonitor.gwt.uc.page.ViewPage;
  *
  * @author Andrej Petras
  */
-public class DashboardView extends ViewPage {
+public final class DashboardView extends ViewPage {
 
     @Override
     public void openPage() {

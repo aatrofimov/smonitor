@@ -31,7 +31,7 @@ import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
  *
  * @author Andrej Petras
  */
-public class QuestionDialogBox<T> extends PopupPanel {
+public final class QuestionDialogBox<T> extends PopupPanel {
     
     @UiField
     Label title;

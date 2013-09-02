@@ -20,6 +20,6 @@ package org.lorislab.smonitor.connector.model;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class HostDetails extends Host {
+public final class HostDetails extends Host {
     
 }

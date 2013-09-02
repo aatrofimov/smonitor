@@ -28,7 +28,7 @@ import org.lorislab.smonitor.rs.model.AttributeInfo;
  *
  * @author Andrej Petras
  */
-public class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeWrapper> {
+public final class AttributeGridPanel extends EntityDataGrid<AttributeInfo, AttributeWrapper> {
 
     @Override
     protected AttributeWrapper createWrapper() {

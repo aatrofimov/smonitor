@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Andrej Petras
  */
-public class RestServiceException {
+public final class RestServiceException {
     
     private String ref;
     

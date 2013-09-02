@@ -20,7 +20,6 @@ import java.util.Date;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
-import org.lorislab.smonitor.gwt.uc.table.column.EntityImageColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import com.google.gwt.dom.client.Style.Unit;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
@@ -30,7 +29,7 @@ import org.lorislab.smonitor.rs.model.SessionInfo;
  *
  * @author Andrej Petras
  */
-public class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper> {
+public final class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionWrapper> {
 
     @Override
     protected SessionWrapper createWrapper() {

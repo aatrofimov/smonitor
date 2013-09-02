@@ -29,13 +29,14 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
 /**
- *
+ * The security provider.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 @Provider
 @SecurityPrecedence
 @ServerInterceptor
-public class SecurityProvider implements PreProcessInterceptor {
+public final class SecurityProvider implements PreProcessInterceptor {
 
     @Override
     public ServerResponse preProcess(HttpRequest request, ResourceMethod method) throws Failure, WebApplicationException {        

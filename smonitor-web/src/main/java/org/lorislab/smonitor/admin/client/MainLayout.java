@@ -34,7 +34,7 @@ import org.lorislab.smonitor.rs.service.ConfigService;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class MainLayout extends Composite {
+public final class MainLayout extends Composite {
 
     @UiField
     SimplePanel mainPanel;

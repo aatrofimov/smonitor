@@ -15,10 +15,8 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.Header;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
@@ -30,7 +28,7 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  *
  * @author Andrej Petras
  */
-public class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
+public final class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
 
 //    /**
 //     * The default constructor.

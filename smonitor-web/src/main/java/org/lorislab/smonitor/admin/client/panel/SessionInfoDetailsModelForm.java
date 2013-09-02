@@ -30,7 +30,7 @@ import org.lorislab.smonitor.rs.model.SessionInfoDetails;
  *
  * @author Andrej Petras
  */
-public class SessionInfoDetailsModelForm extends ModelForm<SessionInfoDetails> {
+public final class SessionInfoDetailsModelForm extends ModelForm<SessionInfoDetails> {
 
     @Override
     public void createProperties() {

@@ -25,7 +25,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
  *
  * @author Andrej Petras
  */
-public class SpanCell extends AbstractCell<String> {
+public final class SpanCell extends AbstractCell<String> {
 
     /**
      * The template.

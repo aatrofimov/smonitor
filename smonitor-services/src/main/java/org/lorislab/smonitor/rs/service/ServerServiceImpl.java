@@ -34,7 +34,7 @@ import org.lorislabr.smonitor.agent.rs.client.service.ServerClientService;
  *
  * @author Andrej Petras
  */
-public class ServerServiceImpl implements ServerService {
+public final class ServerServiceImpl implements ServerService {
 
     private static final Logger LOGGER = Logger.getLogger(ServerServiceImpl.class.getName());
     

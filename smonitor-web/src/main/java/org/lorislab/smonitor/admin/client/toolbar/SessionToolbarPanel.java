@@ -20,7 +20,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import org.lorislab.smonitor.admin.client.model.SessionWrapper;
@@ -31,7 +30,7 @@ import org.lorislab.smonitor.gwt.uc.toolbar.AbstractToolbar;
  * 
  * @author Andrej Petras
  */
-public class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, SessionToolbarPanel.ClickButtonHandler> {
+public final class SessionToolbarPanel extends AbstractToolbar<SessionWrapper, SessionToolbarPanel.ClickButtonHandler> {
 
     @UiField
     ToggleButton btnDelete;

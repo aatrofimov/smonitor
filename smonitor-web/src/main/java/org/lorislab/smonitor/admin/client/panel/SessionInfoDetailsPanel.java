@@ -29,7 +29,7 @@ import org.lorislab.smonitor.rs.model.SessionInfoDetails;
  *
  * @author Andrej Petras
  */
-public class SessionInfoDetailsPanel extends PopupPanel {
+public final class SessionInfoDetailsPanel extends PopupPanel {
 
     @UiField
     Button btnClose;

@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationDetails extends Application {
+public final class ApplicationDetails extends Application {
 
     /**
      * The count of active sessions.

@@ -19,7 +19,7 @@ package org.lorislab.smonitor.agent.security;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AgentSecurityService {
+public final class AgentSecurityService {
  
     public static final String HEADER_KEY = "SMonitor-Agent-Key";
     

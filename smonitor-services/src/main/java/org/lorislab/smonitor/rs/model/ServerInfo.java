@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Andrej Petras
  */
-public class ServerInfo {
+public final class ServerInfo {
     
     private String guid;
     

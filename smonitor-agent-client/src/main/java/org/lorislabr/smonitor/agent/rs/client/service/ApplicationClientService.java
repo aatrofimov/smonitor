@@ -31,7 +31,7 @@ import org.lorislabr.smonitor.agent.rs.client.AbstractClientService;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationClientService extends AbstractClientService<ApplicationService> implements ApplicationService {
+public final class ApplicationClientService extends AbstractClientService<ApplicationService> implements ApplicationService {
 
     /**
      * The default constructor.

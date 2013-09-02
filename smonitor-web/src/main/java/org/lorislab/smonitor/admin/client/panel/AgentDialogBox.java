@@ -32,7 +32,7 @@ import org.lorislab.smonitor.rs.admin.model.Agent;
  *
  * @author Andrej Petras
  */
-public class AgentDialogBox extends EntityDialogBox<Agent> {
+public final class AgentDialogBox extends EntityDialogBox<Agent> {
 
     @UiField
     Label title;

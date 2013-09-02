@@ -23,7 +23,7 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  *
  * @author Andrej Petras
  */
-public class AgentWrapper extends Wrapper<Agent> {
+public final class AgentWrapper extends Wrapper<Agent> {
     
     public ServerInfo server;
         

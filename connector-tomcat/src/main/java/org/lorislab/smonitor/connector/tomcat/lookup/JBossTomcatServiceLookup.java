@@ -25,7 +25,7 @@ import org.apache.catalina.core.StandardService;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class JBossTomcatServiceLookup extends TomcatServiceLookup {
+public final class JBossTomcatServiceLookup extends TomcatServiceLookup {
     /** The JMX domain. */
     private static final String JMX_DOMAIN = "jboss.web";
     /** The name. */

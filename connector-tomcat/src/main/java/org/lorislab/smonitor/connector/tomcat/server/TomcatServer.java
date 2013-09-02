@@ -44,7 +44,7 @@ import org.apache.catalina.session.StandardSession;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class TomcatServer {
+public final class TomcatServer {
 
     /**
      * The logger for this class.

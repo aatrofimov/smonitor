@@ -26,7 +26,7 @@ import org.lorislab.smonitor.connector.model.Server;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerServiceImpl implements ServerService {
+public final class ServerServiceImpl implements ServerService {
 
     /**
      * {@inheritDoc}

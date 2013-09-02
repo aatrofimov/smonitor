@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author Andrej Petras
  */
-public class SessionSearchCriteria {
+public final class SessionSearchCriteria {
     
     private Set<String> agents;
     

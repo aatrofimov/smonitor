@@ -21,7 +21,7 @@ import java.util.Set;
  *
  * @author Andrej Petras
  */
-public class SessionCriteria {
+public final class SessionCriteria {
     
     private Set<String> applications;
 

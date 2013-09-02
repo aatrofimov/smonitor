@@ -32,7 +32,7 @@ import org.lorislab.smonitor.connector.model.SessionDetails;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ApplicationServiceImpl implements ApplicationService {
+public final class ApplicationServiceImpl implements ApplicationService {
 
     /**
      * {@inheritDoc}

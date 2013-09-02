@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class SessionDetails {
+public final class SessionDetails {
 
     /**
      * The session.

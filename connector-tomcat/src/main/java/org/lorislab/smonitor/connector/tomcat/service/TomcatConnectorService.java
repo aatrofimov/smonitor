@@ -35,7 +35,7 @@ import org.lorislab.smonitor.connector.model.SessionCriteria;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class TomcatConnectorService implements ConnectorService {
+public final class TomcatConnectorService implements ConnectorService {
 
     /**
      * {@inheritDoc}

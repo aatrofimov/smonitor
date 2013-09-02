@@ -19,7 +19,7 @@ package org.lorislab.smonitor.rs.model;
  *
  * @author Andrej Petras
  */
-public class AttributeInfo {
+public final class AttributeInfo {
 /**
      * The name.
      */

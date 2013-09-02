@@ -29,7 +29,7 @@ import org.lorislab.smonitor.service.ServiceFactory;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AgentRestServiceImpl implements AgentRestService {
+public final class AgentRestServiceImpl implements AgentRestService {
 
     private AgentDataService service;
 

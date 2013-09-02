@@ -20,7 +20,7 @@ package org.lorislab.smonitor.connector.model;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class AttributeDetails extends Attribute {
+public final class AttributeDetails extends Attribute {
     
     /**
      * The default constructor.

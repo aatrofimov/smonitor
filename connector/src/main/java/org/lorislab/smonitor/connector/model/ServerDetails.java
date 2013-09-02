@@ -20,6 +20,6 @@ package org.lorislab.smonitor.connector.model;
  * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public class ServerDetails extends Server {
+public final class ServerDetails extends Server {
     
 }

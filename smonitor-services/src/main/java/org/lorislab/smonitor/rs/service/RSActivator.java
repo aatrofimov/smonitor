@@ -27,7 +27,7 @@ import org.lorislab.smonitor.rs.exception.RestServiceExceptionMapper;
  * @author Andrej Petras
  */
 @ApplicationPath("rs")
-public class RSActivator extends Application {
+public final class RSActivator extends Application {
 
     private static final Set<Class<?>> RESOURCES = new HashSet<Class<?>>();
     

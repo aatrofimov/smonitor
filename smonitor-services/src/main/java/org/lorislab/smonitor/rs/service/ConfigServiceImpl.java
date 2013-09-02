@@ -23,7 +23,7 @@ import org.lorislab.smonitor.rs.exception.ServiceException;
  *
  * @author Andrej Petras
  */
-public class ConfigServiceImpl implements ConfigService {
+public final class ConfigServiceImpl implements ConfigService {
 
     /**
      * The MAVEN property file.

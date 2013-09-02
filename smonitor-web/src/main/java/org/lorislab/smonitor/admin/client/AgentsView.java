@@ -48,10 +48,11 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
 import org.lorislab.smonitor.rs.service.ServerService;
 
 /**
- *
+ * The agents view.
+ * 
  * @author Andrej Petras
  */
-public class AgentsView extends ViewPage {
+public final class AgentsView extends ViewPage {
 
     @UiField
     AgentGridPanel agentPanel;
