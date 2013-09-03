@@ -60,6 +60,7 @@ public final class SessionInfoDetailsPanel extends PopupPanel {
 
     public void open(SessionInfoDetails data) {
         attributePanel.reset();
+        attributePanel.setSessionInfoDetails(data);
         attributePanel.addAllItems(data.getAttributes());
         sessionForm.open(data);
         this.center();

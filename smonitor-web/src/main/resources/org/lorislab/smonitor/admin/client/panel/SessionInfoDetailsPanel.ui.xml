@@ -83,7 +83,7 @@
                                                        labelStyleName="{style.entity-details-label}"/>
                     </g:SimplePanel>        
                 </g:center>
-                <g:south size="300">
+                <g:south size="340">
                     <g:SimplePanel styleName="panel-box-10">
                         <s:AttributeGridPanel ui:field="attributePanel" styleName="table-basic layout-panel "/>
                     </g:SimplePanel>                    

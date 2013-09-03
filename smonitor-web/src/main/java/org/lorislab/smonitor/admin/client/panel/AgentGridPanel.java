@@ -18,6 +18,7 @@ package org.lorislab.smonitor.admin.client.panel;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.Column;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
+import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
@@ -30,13 +31,6 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
  */
 public final class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
 
-//    /**
-//     * The default constructor.
-//     */
-//    public AgentGridPanel() {
-//        setAutoFooterRefreshDisabled(false);        
-//    }
-//    
     /**
      * {@inheritDoc}
      */
@@ -93,14 +87,7 @@ public final class AgentGridPanel extends EntityDataGrid<Agent, AgentWrapper> {
     @Override
     protected void createColumns() {
 
-//        Header<String> sumFooter = new Header<String>(new TextCell()) {
-//            @Override
-//            public String getValue() {
-//                return "# " + get().size();
-//            }
-//        };
-        
-        Column colAction = addColumn(" ", true, new EntitySpanColumn<AgentWrapper, Boolean>() {
+        Column colAction = addColumn(ConstantValues.space(), true, new EntitySpanColumn<AgentWrapper, Boolean>() {
             @Override
             public Boolean getObject(AgentWrapper object) {
                 return object.data.isEnabled();

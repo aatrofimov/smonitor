@@ -16,6 +16,8 @@
 package org.lorislab.smonitor.gwt.uc;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
  * The GWT constants.
@@ -32,16 +34,15 @@ public final class ConstantValues {
      * The date time format.
      */
     public static final DateTimeFormat DATE_FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
-
     /**
      * The mouse over event.
      */
     public static final String EVENT_MOUSEOVER = "mouseover";
     /**
      * The mouse out event.
-     */    
+     */
     public static final String EVENT_MOUSEOUT = "mouseout";
-    
+
     /**
      * The private constructor.
      */
@@ -49,4 +50,9 @@ public final class ConstantValues {
         // empty constructor
     }
 
+    public static SafeHtml space() {
+        SafeHtmlBuilder shb = new SafeHtmlBuilder();
+        shb.appendHtmlConstant("&nbsp;");
+        return shb.toSafeHtml();
+    }
 }

@@ -38,7 +38,7 @@
         color: #349aff;
         text-transform: uppercase;
         padding: 0 20px;
-        line-height: 38px;
+        line-height: 30px;
         border-bottom: 1px solid #eee;
         top: 0;
         left: 0;
@@ -386,13 +386,27 @@
                 
         @external .layout-panel, .criteria-actions;  
         
+        .table-basic tfoot tr th {
+        font-weight: 600;
+        font-size: 13px;
+        color: #349aff;
+        text-transform: uppercase;
+        padding: 0 20px;
+        line-height: 25px;
+        border-top: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-shadow: 0px;
+        } 
+				
         .table-basic thead tr th {
         font-weight: 600;
         font-size: 13px;
         color: #349aff;
         text-transform: uppercase;
         padding: 0 20px;
-        line-height: 38px;
+        line-height: 30px;
         border-bottom: 1px solid #eee;
         top: 0;
         left: 0;

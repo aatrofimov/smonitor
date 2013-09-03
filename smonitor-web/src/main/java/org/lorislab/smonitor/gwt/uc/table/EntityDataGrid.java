@@ -15,6 +15,7 @@
  */
 package org.lorislab.smonitor.gwt.uc.table;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import org.lorislab.smonitor.gwt.uc.table.column.AbstractEntityColumn;
 import org.lorislab.smonitor.gwt.uc.table.handler.ColumnSortHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -355,6 +356,23 @@ public abstract class EntityDataGrid<E, T extends Wrapper<E>> extends DataGrid<T
         return addColumn(name, false, column);
     }
 
+    /**
+     * Adds the column to the grid.
+     *
+     * @param <K> the entity.
+     * @param name the HTML column header.
+     * @param sorting the sorting flag.
+     * @param column the column.
+     * @return the corresponding column.
+     */    
+    public <K extends Comparable<K>> Column<T, ?> addColumn(SafeHtml html, boolean sorting, final AbstractEntityColumn<T, K, ?> column) {
+        addColumn(column, html);
+        if (sorting) {
+            addColumnSortHandler(new ColumnSortHandler<T>(dataProvider.getList(), column));
+        }
+        return column;
+    }
+    
     /**
      * Adds the column to the grid.
      *

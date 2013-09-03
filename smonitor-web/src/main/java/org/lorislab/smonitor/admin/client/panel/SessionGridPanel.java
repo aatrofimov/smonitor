@@ -22,6 +22,7 @@ import org.lorislab.smonitor.gwt.uc.table.EntityDataGrid;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityDateColumn;
 import org.lorislab.smonitor.gwt.uc.table.column.EntityTextColumn;
 import com.google.gwt.dom.client.Style.Unit;
+import org.lorislab.smonitor.gwt.uc.ConstantValues;
 import org.lorislab.smonitor.gwt.uc.table.column.EntitySpanColumn;
 import org.lorislab.smonitor.rs.model.SessionInfo;
 
@@ -55,7 +56,7 @@ public final class SessionGridPanel extends EntityDataGrid<SessionInfo, SessionW
     @Override
     protected void createColumns() {
 
-        Column colAction = addColumn(" ", true, new EntitySpanColumn<SessionWrapper, Boolean>() {
+        Column colAction = addColumn(ConstantValues.space(), true, new EntitySpanColumn<SessionWrapper, Boolean>() {
             @Override
             public Boolean getObject(SessionWrapper object) {
                 return object.data.isValid();

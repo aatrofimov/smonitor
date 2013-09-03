@@ -126,20 +126,20 @@ public final class SessionInfoDetailsModelForm extends ModelForm<SessionInfoDeta
             }
         });
               
-        addProperty("Size", new StringTextBoxProperty<SessionInfoDetails>(true) {
-            @Override
-            public String getValue(SessionInfoDetails object) {                
-                return "" + object.getSize();
-            }
-        });
-        
-        addProperty("Ser. Size", new StringTextBoxProperty<SessionInfoDetails>(true) {
-            @Override
-            public String getValue(SessionInfoDetails object) {                
-                return "" + object.getSizeSerializable();
-            }
-        });
-        
+//        addProperty("Size", new StringTextBoxProperty<SessionInfoDetails>(true) {
+//            @Override
+//            public String getValue(SessionInfoDetails object) {                
+//                return "" + object.getSize();
+//            }
+//        });
+//        
+//        addProperty("Ser. Size", new StringTextBoxProperty<SessionInfoDetails>(true) {
+//            @Override
+//            public String getValue(SessionInfoDetails object) {                
+//                return "" + object.getSizeSerializable();
+//            }
+//        });
+//        
     }
     
 }
