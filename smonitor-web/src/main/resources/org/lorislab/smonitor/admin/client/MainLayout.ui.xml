@@ -100,7 +100,6 @@
         background: -webkit-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
         background: -o-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);
         background: -ms-linear-gradient(top, #ffffff 0%, #fafafa 5%, #eaebec 94%, #e2e3e4 100%);  
-        width: 30px;
         height: 30px;    
         font-size: 16px;          
         }
@@ -218,7 +217,7 @@
         .arrow-popup:after, .arrow-popup-top:after, .arrow-popup-right:after, .arrow-popup-bottom:after, .arrow-popup-left:after {
         content:"\25B8";
         display:block;
-        font-size:2em;
+        font-size:24px;
         height:0;
         line-height:0;
         position:absolute;

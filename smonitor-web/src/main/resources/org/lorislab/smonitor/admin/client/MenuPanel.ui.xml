@@ -15,11 +15,13 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            background:-moz-linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important;
-            background:-webkit-linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important;
-            background:-o-linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important;
-            background:-ms-linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important;
-            background:linear-gradient(right center , #000000 -29%, #414243 14%) repeat scroll 0 0 transparent !important;
+			background: -moz-linear-gradient(left, rgba(65, 66, 67, 0.98) 85%, rgba(20, 20, 20, 14) 120%)repeat scroll 0 0 transparent !important;
+			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(65,66,67,0.98)), color-stop(85%,rgba(65,66,67,0.98)), color-stop(120%,rgba(20,20,20,14))) repeat scroll 0 0 transparent !important;
+			background: -webkit-linear-gradient(left, rgba(65, 66, 67, 0.98) 85%, rgba(20, 20, 20, 14) 120%) repeat scroll 0 0 transparent !important;
+			background: -o-linear-gradient(left, rgba(65, 66, 67, 0.98) 85%, rgba(20, 20, 20, 14) 120%) repeat scroll 0 0 transparent !important;
+			background: -ms-linear-gradient(left, rgba(65, 66, 67, 0.98) 85%, rgba(20, 20, 20, 14) 120%) repeat scroll 0 0 transparent !important;
+			background: linear-gradient(to right, rgba(65, 66, 67, 0.98) 85%, rgba(20, 20, 20, 14) 120%) repeat scroll 0 0 transparent !important;		
+			
         }      
         .dashboard .sidebar .branding {
 	border-bottom: 1px solid #353637;
