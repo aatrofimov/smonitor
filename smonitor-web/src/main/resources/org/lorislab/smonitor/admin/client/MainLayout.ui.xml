@@ -183,7 +183,7 @@
         display:-moz-inline-stack;
         display:inline-block;
         font-size:12px;
-        font-family:arial;
+        <!--font-family:arial;-->
         <!--padding:.5em 1em;-->
         position:relative;
         text-align:center;
@@ -217,7 +217,7 @@
         .arrow-popup:after, .arrow-popup-top:after, .arrow-popup-right:after, .arrow-popup-bottom:after, .arrow-popup-left:after {
         content:"\25B8";
         display:block;
-        font-size:24px;
+        font-size:30px;
         height:0;
         line-height:0;
         position:absolute;
@@ -252,7 +252,7 @@
         
         .arrow-popup-right:after {
         color:#FFFFFF;
-        right:-13.38px;
+        right:-11px;
         top:50%;
         margin-top:-.05em;
         text-shadow:0 1px 2px #000000;
