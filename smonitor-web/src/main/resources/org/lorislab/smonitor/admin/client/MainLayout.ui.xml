@@ -342,12 +342,12 @@
 
         .checkbox-basic input:checked + label:after {
         color: #99A1A7;
-        content: '\e80d';
+        content: '\e806';
         font-size: 15px;
         left: 4px;
         position: absolute;
         top: 0;
-        font-family: "entypo";
+        font-family: "fontello";
         }
         .checkbox-basic input:checked + label {
         background-color: #E9ECEE;

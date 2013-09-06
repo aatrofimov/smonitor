@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.jboss.errai.common.client.api.RemoteCallback;
+import org.lorislab.smonitor.admin.client.factory.PleaseWaitPanelFactory;
 import org.lorislab.smonitor.admin.client.handler.DialogEventHandler;
 import org.lorislab.smonitor.admin.client.handler.TableRowHoverHandler;
 import org.lorislab.smonitor.admin.client.model.AgentWrapper;
@@ -148,7 +149,7 @@ public final class SessionsView extends ViewPage implements AgentChangeListener 
         sessionToolbar.setHandler(new SessionToolbarPanel.ClickButtonHandler() {
             @Override
             public void info(SessionWrapper data) {
-                PleaseWaitPanel.open();
+                PleaseWaitPanelFactory.open();
                 appService.call(sessionDetails).getSesssionDetails(data.data.getGuid(), data.data.getHost(), data.data.getApplication(), data.data.getId());
             }
 
@@ -210,7 +211,7 @@ public final class SessionsView extends ViewPage implements AgentChangeListener 
             if (value != null) {
                 detailsPanel.open(value);
             }
-            PleaseWaitPanel.close(false);
+            PleaseWaitPanelFactory.close(false);
         }
     };
     final RestServiceExceptionCallback sessionSearchError = new RestServiceExceptionCallback() {

@@ -15,59 +15,26 @@
  */
 package org.lorislab.smonitor.admin.client.panel;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The please wait panel.
  * 
  * @author Andrej Petras
  */
-public final class PleaseWaitPanel {
+public final class PleaseWaitPanel extends PopupPanel {
     
-    /**
-     * The panel instance.
-     */
-    private static DecoratedPopupPanel PANEL = null;
-    
-    /**
-     * The open flag.
-     */
-    private static boolean IS_OPEN = false;
-    
-    /**
-     * Opens the please wait dialog.
-     */
-    public static void open() {
-	
-		if (PANEL == null) {
-			PANEL = new DecoratedPopupPanel(false);
-		}
-
-		if (!IS_OPEN) {
-			PANEL.setWidget(new HTML("Loading..."));
-			PANEL.setGlassEnabled(true);
-			PANEL.setPopupPosition(Window.getClientWidth() / 2 - 50, Window.getClientHeight() / 2 - 45);
-			PANEL.show();
-			IS_OPEN = true;
-		}
-	}
-
-    /**
-     * Close the please wait dialog.
-     * 
-     * @param reload the reload flag.
-     */
-	public static void close(boolean reload) {
-		if (PANEL != null) {
-			PANEL.hide();
-
-			IS_OPEN = false;
-			if (reload) {
-				Window.Location.reload();
-			}
-		}
-
-	}    
+    public PleaseWaitPanel() {
+        super(false);
+        setWidget(uiBinder.createAndBindUi(this));
+        setStyleName("pleaseWaitPanel");
+		setGlassEnabled(true);		
+    }
+   
+    interface MyUiBinder extends UiBinder<Widget, PleaseWaitPanel> {
+    }
+    private static PleaseWaitPanel.MyUiBinder uiBinder = GWT.create(PleaseWaitPanel.MyUiBinder.class);    
 }

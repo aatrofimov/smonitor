@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     
     <g:FlowPanel>                    
-        <g:ToggleButton ui:field="btnEditAction" addStyleNames="arrow-popup-nativebutton icon-pencil" />
+        <g:ToggleButton ui:field="btnEditAction" addStyleNames="arrow-popup-nativebutton icon-cog" />
         <g:ToggleButton ui:field="btnEditDelete" addStyleNames="arrow-popup-nativebutton icon-trash" />
         <g:ToggleButton ui:field="btnEditRefresh" addStyleNames="arrow-popup-nativebutton icon-arrows-ccw" />
         <g:ToggleButton ui:field="btnEditInfo" addStyleNames="arrow-popup-nativebutton icon-info" />
