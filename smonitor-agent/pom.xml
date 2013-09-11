@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.lorislab.smonitor</groupId>
         <artifactId>smonitor</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-Alpha1</version>
     </parent>
     <name>smonitor-agent</name>
     <artifactId>smonitor-agent</artifactId>
