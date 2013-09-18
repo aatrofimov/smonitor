@@ -12,6 +12,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<scm>
+		<connection>scm:git:https://github.com/lorislab/smonitor.git</connection>
+		<developerConnection>scm:git:git@github.com:lorislab/smonitor.git</developerConnection>
+		<url>https://github.com/lorislab/smonitor</url>
+		<tag>HEAD</tag>
+	</scm>
+
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
@@ -188,6 +195,15 @@
 		</plugins>    
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.4.1</version>
+					<configuration>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
+				</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>2.4</version>
