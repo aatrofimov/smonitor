@@ -41,6 +41,7 @@
 		<module>objectprofiler</module>
 		<module>datastore</module>
 		<module>connector</module>
+		<module>connector-tomcat</module>
 		<module>connector-tomcat6</module>  
 		<module>connector-tomcat7</module>
 		<module>connector-jboss5</module>
@@ -177,7 +178,13 @@
 				<artifactId>gwtquery</artifactId>
 				<version>1.3.3</version>
 				<scope>provided</scope>
-			</dependency>			                                                 
+			</dependency>	
+			<!-- MAPDB -->
+			<dependency>
+				<groupId>org.mapdb</groupId>
+				<artifactId>mapdb</artifactId>
+				<version>0.9.5</version>
+			</dependency>  					                                                 
 		</dependencies>
 	</dependencyManagement>    
     
