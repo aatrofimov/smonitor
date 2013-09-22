@@ -15,7 +15,6 @@
  */
 package org.lorislab.smonitor.connector.tomcat.service;
 
-import java.util.HashSet;
 import org.lorislab.smonitor.connector.model.Application;
 import org.lorislab.smonitor.connector.model.ApplicationDetails;
 import org.lorislab.smonitor.connector.model.AttributeDetails;
@@ -25,24 +24,45 @@ import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionDetails;
 import org.lorislab.smonitor.connector.service.ConnectorService;
 import org.lorislab.smonitor.connector.tomcat.util.TomcatUtil;
-import org.lorislab.smonitor.connector.tomcat.server.TomcatServer;
 import java.util.List;
-import java.util.Set;
+import org.apache.catalina.Service;
 import org.lorislab.smonitor.connector.model.SessionCriteria;
+import org.lorislab.smonitor.connector.tomcat.listener.TrackingContainerListener;
 
 /**
  * The tomcat connector service.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras
  */
-public final class TomcatConnectorService implements ConnectorService {
+public abstract class TomcatConnectorService implements ConnectorService {
 
+    /**
+     * The tomcat server.
+     */
+    protected org.apache.catalina.Server server;
+    /**
+     * The tomcat server service.
+     */
+    protected Service service;
+    /**
+     * The version.
+     */
+    protected String version;
+    /**
+     * The name.
+     */
+    private String name;
+    
+    public TomcatConnectorService(String name) {
+        this.name = name;
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public String getVersion() {
-        return TomcatServer.getInstance().getVersion();
+        return version;
     }
 
     /**
@@ -50,7 +70,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public String getName() {
-        return TomcatServer.getInstance().getName();
+        return name;
     }
 
     /**
@@ -58,8 +78,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public Server getServer() {
-        TomcatServer server = TomcatServer.getInstance();
-        Server result = TomcatUtil.createServer(server.getService());;
+        Server result = TomcatUtil.createServer(service);
         return result;
     }
 
@@ -84,8 +103,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public List<Application> getApplications() {
-        TomcatServer server = TomcatServer.getInstance();
-        List<Application> result = TomcatUtil.getApplications(server.getContexts());
+        List<Application> result = TomcatUtil.getApplications(service);
         return result;
     }
      
@@ -94,8 +112,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public List<Application> getApplications(String host) {
-        TomcatServer server = TomcatServer.getInstance();
-        List<Application> result = TomcatUtil.getApplications(server.getContexts(host));
+        List<Application> result = TomcatUtil.getApplications(service, host);
         return result;
     }
 
@@ -103,10 +120,8 @@ public final class TomcatConnectorService implements ConnectorService {
      * {@inheritDoc}
      */
     @Override
-    public ApplicationDetails getApplicationDetails(String host, String application) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
-        ApplicationDetails result = TomcatUtil.createApplicationDetails(server.getContext(host, id));
+    public ApplicationDetails getApplicationDetails(String host, String application) {        
+        ApplicationDetails result = TomcatUtil.createApplicationDetails(service, host, application);
         return result;
     }
 
@@ -115,9 +130,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public List<Session> getSessions(String host, String application) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
-        List<Session> result = TomcatUtil.getSessions(host, application, server.getSessions(host, id));
+        List<Session> result = TomcatUtil.getSessions(service, host, application);
         return result;
     }
 
@@ -127,14 +140,9 @@ public final class TomcatConnectorService implements ConnectorService {
     @Override
     public List<Session> findSessionByCriteria(SessionCriteria criteria) {
         List<Session> result = null;
-        TomcatServer server = TomcatServer.getInstance();
         if (criteria != null) {
-            if (criteria.getApplications() != null) {
-                Set<String> apps = new HashSet<String>();
-                for (String aa : criteria.getApplications()) {
-                    apps.add(TomcatUtil.createTomcatApplicationId(aa));
-                }                
-                result = TomcatUtil.createSearchResult(server.getSessions(apps));
+            if (criteria.getApplications() != null) {               
+                result = TomcatUtil.findSessionByCriteria(service, criteria.getApplications());
             }
         }                
         return result;
@@ -145,9 +153,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public SessionDetails getSessionDetails(String host, String application, String session) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
-        SessionDetails result = TomcatUtil.createSessionDetails(host, application, server.getSession(host, id, session));
+        SessionDetails result = TomcatUtil.createSessionDetails(service, host, application, session);
         return result;
     }
 
@@ -156,9 +162,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public Session getSession(String host, String application, String session) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
-        Session result = TomcatUtil.createSession(host, application, server.getSession(host, id, session));
+        Session result = TomcatUtil.createSession(service, host, application, session);
         return result;
     }
     
@@ -167,9 +171,7 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public Session deleteSession(String host, String application, String session) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
-        Session result = TomcatUtil.createSession(host, application, server.deleteSession(host, id, session));
+        Session result = TomcatUtil.deleteSession(service, host, application, session);
         return result;
     }
     
@@ -178,8 +180,16 @@ public final class TomcatConnectorService implements ConnectorService {
      */
     @Override
     public AttributeDetails getAttributeDetails(String host, String application, String session, String attribute) {
-        TomcatServer server = TomcatServer.getInstance();
-        String id = TomcatUtil.createTomcatApplicationId(application);
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public void start() {
+        TomcatUtil.addContainerListener(service, TrackingContainerListener.INSTANCE);
+    }
+
+    @Override
+    public void shutdown() {
+        TomcatUtil.removeContainerListener(service, TrackingContainerListener.INSTANCE);
+    }    
 }

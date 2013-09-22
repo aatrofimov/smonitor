@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
-    <servlet-mapping>
-        <servlet-name>javax.ws.rs.core.Application</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+	
+	<listener>
+		<listener-class>org.lorislab.smonitor.agent.listener.InitContextListener</listener-class>
+	</listener>	
 </web-app>

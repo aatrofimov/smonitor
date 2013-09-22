@@ -149,4 +149,8 @@ public interface ConnectorService {
      * @return the attribute details.
      */
     AttributeDetails getAttributeDetails(String host, String application, String session, String attribute);
+    
+    void start();
+    
+    void shutdown();
 }

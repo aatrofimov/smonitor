@@ -27,7 +27,7 @@ import java.util.ServiceLoader;
 public final class ConnectorServiceFactory {
    
     /** The connector service. */
-    private static ConnectorService service = null;
+    private static ConnectorService SERVICE = null;
     
     /**
      * Load the connector service implementation
@@ -37,7 +37,7 @@ public final class ConnectorServiceFactory {
         if (list != null) {
             Iterator<ConnectorService> iter = list.iterator();
             if (iter.hasNext()) {
-                service = iter.next();
+                SERVICE = iter.next();
             }
         }        
     }
@@ -55,6 +55,6 @@ public final class ConnectorServiceFactory {
      * @return the connector service instance.
      */
     public static ConnectorService getService() {
-        return service;
+        return SERVICE;
     }
 }

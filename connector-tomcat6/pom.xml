@@ -6,20 +6,20 @@
         <artifactId>smonitor</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>      
-    <name>connector-tomcat</name>
-    <artifactId>connector-tomcat</artifactId>
+    <name>connector-tomcat6</name>
+    <artifactId>connector-tomcat6</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>org.lorislab.smonitor</groupId>
-            <artifactId>connector</artifactId>
+            <artifactId>connector-tomcat</artifactId>
             <version>${project.version}</version>
-        </dependency>                  
-        <!-- TOMCAT COMMON -->
+        </dependency>                       
+        <!-- TOMCAT -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>catalina</artifactId>
             <scope>provided</scope>
-        </dependency>   
+        </dependency>            
     </dependencies>
 </project>

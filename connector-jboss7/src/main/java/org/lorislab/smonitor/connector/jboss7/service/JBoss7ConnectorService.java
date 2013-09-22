@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.connector.tomcat.lookup;
+package org.lorislab.smonitor.connector.jboss7.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
+import javax.management.ObjectName;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.core.StandardServer;
@@ -26,54 +29,41 @@ import org.jboss.as.web.WebServer;
 import org.jboss.msc.service.ServiceContainer;
 import org.jboss.msc.service.ServiceController;
 import org.jboss.msc.service.ServiceName;
+import org.lorislab.smonitor.connector.tomcat.service.TomcatConnectorService;
+import org.lorislab.smonitor.connector.tomcat.util.TomcatUtil;
+import org.lorislab.smonitor.connector.jboss7.listener.TrackingJBoss7ContainerListener;
 
 /**
- * The jBoss 7 tomcat 7 lookup service class.
+ * The JBOSS 7 connector service.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public final class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
+public final class JBoss7ConnectorService extends TomcatConnectorService {
 
     /**
      * The logger for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(JBoss7TomcatServiceLookup.class.getName());
-    /**
-     * The JMX domain.
-     */
-    private static final String JMX_DOMAIN = "web";
-    /**
-     * The name.
-     */
-    private static final String NAME = "Tomcat7";
-
-    /**
-     * The default constructor.
-     */
-    public JBoss7TomcatServiceLookup() {
-        super(NAME);
+    private static final Logger LOGGER = Logger.getLogger(JBoss7ConnectorService.class.getName());
+    
+    public JBoss7ConnectorService() {
+        super("JBoss 7");
+        
+        // get the server version
+        try {
+            MBeanServer mBeanServer = MBeanServerFactory.findMBeanServer(null).get(0);
+            version = (String) mBeanServer.getAttribute(new ObjectName("jboss.as:management-root=server"), "releaseVersion");
+        } catch (Exception ex) {
+           throw new RuntimeException("Error get the version of the server", ex);
+        }  
+        
+        // get the tomcat server
+        server = getJBoss7TomcatServer();
+        
+        // get the tomcat server service
+        service = getJBoss7TomcatService();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Server getServer() {
-        StandardServer result = null;
-        WebServer webServer = getWebServer();
-        if (webServer == null) {
-            LOGGER.log(Level.SEVERE, "The web server is null!");
-        } else {
-            result = webServer.getServer();
-        }
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Service getService() {
+    
+    public Service getJBoss7TomcatService() {
         StandardService result = null;
         WebServer webServer = getWebServer();
         if (webServer == null) {
@@ -83,15 +73,21 @@ public final class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
         }
         return result;
     }
-
-    /**
-     * Gets the web server.
-     *
-     * @return the web server.
-     */
+    
+    public Server getJBoss7TomcatServer() {
+        StandardServer result = null;
+        WebServer webServer = getWebServer();
+        if (webServer == null) {
+            LOGGER.log(Level.SEVERE, "The web server is null!");
+        } else {
+            result = webServer.getServer();
+        }
+        return result;
+    }
+    
     private static WebServer getWebServer() {
         WebServer result = null;
-        ServiceName service = ServiceName.JBOSS.append(JMX_DOMAIN);
+        ServiceName service = ServiceName.JBOSS.append("web");
         ServiceContainer container = CurrentServiceContainer.getServiceContainer();
         ServiceController<?> controller = container.getService(service);
         if (controller == null) {
@@ -101,4 +97,15 @@ public final class JBoss7TomcatServiceLookup extends TomcatServiceLookup {
         }
         return result;
     }
+    
+    @Override
+    public void start() {
+        TomcatUtil.addContainerListener(service, TrackingJBoss7ContainerListener.LISTENER_INSTANCE);
+    }
+
+    @Override
+    public void shutdown() {
+        TomcatUtil.removeContainerListener(service, TrackingJBoss7ContainerListener.LISTENER_INSTANCE);
+    }
+
 }

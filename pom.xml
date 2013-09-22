@@ -41,7 +41,11 @@
 		<module>objectprofiler</module>
 		<module>datastore</module>
 		<module>connector</module>
-		<module>connector-tomcat</module>  
+		<module>connector-tomcat6</module>  
+		<module>connector-tomcat7</module>
+		<module>connector-jboss5</module>
+		<module>connector-jboss6</module>
+		<module>connector-jboss7</module>
 		<module>smonitor-services</module>      
 		<module>smonitor-agent</module>
 		<module>smonitor-agent-client</module>
