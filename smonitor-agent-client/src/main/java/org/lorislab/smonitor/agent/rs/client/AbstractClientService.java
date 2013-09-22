@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislabr.smonitor.agent.rs.client;
+package org.lorislab.smonitor.agent.rs.client;
 
-import org.lorislabr.smonitor.agent.rs.client.executor.AgentClientExecutor;
+import org.lorislab.smonitor.agent.rs.client.executor.AgentClientExecutor;
 import org.jboss.resteasy.client.ProxyFactory;
 
 /**

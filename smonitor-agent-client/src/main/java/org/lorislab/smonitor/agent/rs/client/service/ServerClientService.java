@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislabr.smonitor.agent.rs.client.service;
+package org.lorislab.smonitor.agent.rs.client.service;
 
 import org.lorislab.smonitor.agent.rs.exception.AgentException;
 import org.lorislab.smonitor.agent.rs.service.ServerService;
 import org.lorislab.smonitor.connector.model.HostDetails;
 import org.lorislab.smonitor.connector.model.Server;
-import org.lorislabr.smonitor.agent.rs.client.AbstractClientService;
+import org.lorislab.smonitor.agent.rs.client.AbstractClientService;
 
 /**
  * The server service client.

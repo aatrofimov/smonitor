@@ -28,7 +28,7 @@ import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.ServerInfo;
 import org.lorislab.smonitor.service.ServiceFactory;
 import org.lorislab.smonitor.util.RSClientUtil;
-import org.lorislabr.smonitor.agent.rs.client.service.ServerClientService;
+import org.lorislab.smonitor.agent.rs.client.service.ServerClientService;
 
 /**
  *

@@ -16,8 +16,8 @@
 package org.lorislab.smonitor.rs.admin.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import javax.ws.rs.PathParam;
 import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 import org.lorislab.smonitor.datastore.model.AgentData;
@@ -40,7 +40,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
     @Override
     public List<Agent> get() {
         List<Agent> result = new ArrayList<Agent>();
-        List<AgentData> items = service.findAll();
+        Collection<AgentData> items = service.findAll();
         if (items != null) {
             for (AgentData item : items) {
                 Agent tmp = create(item);
@@ -51,7 +51,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent get(@PathParam("guid") String guid) {
+    public Agent get(String guid) {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
         if (item != null) {
@@ -79,12 +79,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
 
     @Override
     public String delete(String guid) {
-        String result = null;
-        boolean tmp = service.deleteById(guid);
-        if (tmp) {
-            result = guid;
-        }
-        return result;
+        return service.delete(guid);
     }
 
     @Override

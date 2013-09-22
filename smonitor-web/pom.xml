@@ -14,19 +14,13 @@
 	<dependencies>  
 		<dependency>
 			<groupId>org.lorislab.smonitor</groupId>
-			<artifactId>connector-tomcat</artifactId>
+			<artifactId>connector</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.lorislab.smonitor</groupId>
 			<artifactId>smonitor-services</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>h2</artifactId>
-					<groupId>com.h2database</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>                          
 		<dependency>
 			<groupId>org.lorislab.smonitor</groupId>
@@ -34,7 +28,17 @@
 			<version>${project.version}</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
-		</dependency>                
+		</dependency>
+		<dependency>
+			<groupId>org.lorislab.smonitor</groupId>
+			<artifactId>smonitor-agent-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.mapdb</groupId>
+			<artifactId>mapdb</artifactId>
+			<scope>compile</scope>
+		</dependency> 		                
 		<!-- ERRAI -->       
 		<dependency>
 			<groupId>org.jboss.errai</groupId>

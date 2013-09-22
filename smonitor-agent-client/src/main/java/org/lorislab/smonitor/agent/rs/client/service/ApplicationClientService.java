@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislabr.smonitor.agent.rs.client.service;
+package org.lorislab.smonitor.agent.rs.client.service;
 
 import org.lorislab.smonitor.agent.rs.service.ApplicationService;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.lorislab.smonitor.connector.model.AttributeDetails;
 import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionDetails;
 import org.lorislab.smonitor.connector.model.SessionCriteria;
-import org.lorislabr.smonitor.agent.rs.client.AbstractClientService;
+import org.lorislab.smonitor.agent.rs.client.AbstractClientService;
 
 /**
  * The application client service.

@@ -39,7 +39,6 @@
 	
 	<modules>
 		<module>objectprofiler</module>
-		<module>datastore</module>
 		<module>connector</module>
 		<module>connector-tomcat</module>
 		<module>connector-tomcat6</module>  

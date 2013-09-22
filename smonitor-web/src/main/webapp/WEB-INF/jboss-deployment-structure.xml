@@ -3,7 +3,6 @@
     <deployment>
          <dependencies>
               <module name="org.apache.httpcomponents" />
-              <module name="com.h2database.h2" />
               <module name="org.jboss.msc" />
               <module name="org.jboss.as.server" />              
         </dependencies>

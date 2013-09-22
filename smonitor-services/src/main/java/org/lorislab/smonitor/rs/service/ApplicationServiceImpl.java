@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import org.lorislab.smonitor.connector.model.Session;
 import org.lorislab.smonitor.connector.model.SessionCriteria;
 import org.lorislab.smonitor.connector.model.SessionDetails;
-import org.lorislab.smonitor.datastore.criteria.AgentDataSearchCriteria;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
 import org.lorislab.smonitor.rs.exception.ServiceException;
@@ -32,7 +31,7 @@ import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 import org.lorislab.smonitor.service.ServiceFactory;
 import org.lorislab.smonitor.util.MapperUtil;
 import org.lorislab.smonitor.util.RSClientUtil;
-import org.lorislabr.smonitor.agent.rs.client.service.ApplicationClientService;
+import org.lorislab.smonitor.agent.rs.client.service.ApplicationClientService;
 
 /**
  *
@@ -122,10 +121,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
         List<SessionInfo> result = new ArrayList<SessionInfo>();
         if (criteria != null) {
 
-            AgentDataSearchCriteria tmp = new AgentDataSearchCriteria();
-            tmp.setEnabled(true);
-            tmp.setGuids(criteria.getAgents());
-            List<AgentData> agents = service.findByCriteria(tmp);
+            List<AgentData> agents = service.findEnabledAgents(criteria.getAgents());
             if (agents != null) {
                 for (AgentData agent : agents) {
 

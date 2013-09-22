@@ -15,29 +15,34 @@
  */
 package org.lorislab.smonitor.datastore.model;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras
  */
-@DatabaseTable(tableName = "SM_AGENT")
-public class AgentData extends PersistenceData {
-    
-    public static final String FIELD_ENABLED = "enabled";
-    
-    @DatabaseField(canBeNull = false, unique = true)
-    private String name;
-    
-    @DatabaseField(canBeNull = false, unique = true)
-    private String server;
-    
-    @DatabaseField(canBeNull = true)
-    private String key;
+public class AgentData implements Serializable {
 
-    @DatabaseField(canBeNull = false)
+    private static final long serialVersionUID = 4319212340865836308L;
+    private String guid = UUID.randomUUID().toString();
+    private String oldGuid = guid;
+    private String name;
+    private String server;
+    private String key;
     private boolean enabled;
+
+    public boolean isNew() {
+        return guid.equals(oldGuid);
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    protected void setGuid(String guid) {
+        this.guid = guid;
+    }
     
     /**
      * @return the name
@@ -88,5 +93,23 @@ public class AgentData extends PersistenceData {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-        
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AgentData data = (AgentData) o;
+        return guid.equals(data.guid);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + (this.guid != null ? this.guid.hashCode() : 0);
+        return hash;
+    }
 }
