@@ -48,6 +48,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warName>smonitor</warName>
+					<packagingExcludes>**/*.map</packagingExcludes>
 				</configuration>
 			</plugin>			
 		</plugins>   
