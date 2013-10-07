@@ -56,7 +56,7 @@ public interface AgentRestService {
     
     @DELETE
     @Path("{guid}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public String delete(@PathParam("guid") String guid);
     
     @POST
