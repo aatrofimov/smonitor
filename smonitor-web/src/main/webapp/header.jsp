@@ -14,6 +14,17 @@
 	<script type="text/javascript" language="javascript" src="assets/js/table.js"></script>	
 	<!-- KNOCKOUT -->
 	<script type="text/javascript" language="javascript" src="assets/js/knockout-2.3.0.js"></script>
-	
+
+	<!-- S-MONITOR -->
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/Exception.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/ServerApplication.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/ServerInfo.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/Agent.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/wrapper/AgentWrapper.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/service/Rest.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/service/AgentService.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/service/ServerInfoService.js"></script>	
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/view/AgentViewModel.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/view/AgentsViewModel.js"></script>
 </head>
     
