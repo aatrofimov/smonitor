@@ -1,7 +1,11 @@
 function AgentsViewModel() {
 	var _this = this;
 	this.agents = ko.observableArray();
-
+	this.searchText = ko.observable();
+	this.table = ko.observable();
+	this.tableBody = ko.observable();
+	this.tableHeader = ko.observable();
+	
 	function _sortName(left, right) {
 		return left.agent.name() == right.agent.name() ? 0 : (left.agent.name() < right.agent.name() ? -1 : 1);
 	};
@@ -27,30 +31,46 @@ function AgentsViewModel() {
 		}
 	};
 
-	this.sortReset = function() {
-		
-	}
+	this.searchClear = function() {
+		_this.searchText(null);
+		var tbody = $(_this.tableBody());
+		tbody.find('tr').show();
+	};
 	
+	this.search = function(data, event) {
+		var q = _this.searchText();		
+		var tbody = $(_this.tableBody());
+		if (q === '') {
+			tbody.find('tr').show();
+		} else {
+			tbody.find('tr').hide();
+			tbody.find('td').find('p').filter(':filterTableFind("' + q.replace(/(['"])/g, '\\$1') + '")').closest('tr').show(); 	
+		}		
+	};
+	
+	this.sortClear = function() {
+		var thead = $(_this.tableHeader());		
+		thead.find('span').each(function() {
+			$( this ).removeClass('sort glyphicon-sort-by-attributes glyphicon-sort-by-attributes-alt');
+			$( this ).addClass('glyphicon-sort');
+		});
+	};
+		
 	this.sort = function(name, data, event) {
 		
-		var header = $(event.target);
-		var table = header.parents('table.sortable');
-		var span = header.find('span');
-		
+		var span = $(event.target).find('span');		
 		if (span.hasClass('sort')) {	
-			span.toggleClass('glyphicon-sort-by-alphabet-alt');		
-			span.toggleClass('glyphicon-sort-by-alphabet');
-
+			span.toggleClass('glyphicon-sort-by-attributes-alt');		
+			span.toggleClass('glyphicon-sort-by-attributes');
 		} else {
-			var tmp = table.find('span.sort');
-			tmp.removeClass('sort glyphicon-sort-by-alphabet glyphicon-sort-by-alphabet-alt');	
+			var tmp = $(_this.table()).find('span.sort');
+			tmp.removeClass('sort glyphicon-sort-by-attributes glyphicon-sort-by-attributes-alt');	
 			tmp.addClass('glyphicon-sort');
-
 			span.removeClass('glyphicon-sort');
-			span.addClass('sort glyphicon-sort-by-alphabet');		
+			span.addClass('sort glyphicon-sort-by-attributes');		
 		}	
 		
-		var sort = span.hasClass('glyphicon-sort-by-alphabet-alt');
+		var sort = span.hasClass('glyphicon-sort-by-attributes-alt');
 		if (name == "name") {
 			_sort(sort, _sortName);
 		} else if (name == "server") {
@@ -109,6 +129,8 @@ function AgentsViewModel() {
 	};
 
 	this.getAll = function() {
+		_this.searchClear();
+		_this.sortClear();
 		AgentService.all(function(allData) {
 			var mappedTasks = $.map(allData, function(item) {
 				return new AgentWrapper(item);

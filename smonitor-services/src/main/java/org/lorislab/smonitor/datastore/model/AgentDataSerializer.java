@@ -22,7 +22,8 @@ import java.io.Serializable;
 import org.mapdb.Serializer;
 
 /**
- *
+ * The agent data serialise class.
+ * 
  * @author Andrej Petras
  */
 public class AgentDataSerializer implements Serializer<AgentData>, Serializable {

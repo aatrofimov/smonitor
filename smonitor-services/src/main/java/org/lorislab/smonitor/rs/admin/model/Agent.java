@@ -16,49 +16,20 @@
 package org.lorislab.smonitor.rs.admin.model;
 
 /**
- *
+ * The agent class.
+ * 
  * @author Andrej Petras
  */
 public final class Agent {
     
-    private String guid;
+    public String guid;
     
-    private String name;
+    public String name;
 
-    private String server;
+    public String server;
     
-    private boolean enabled;
+    public boolean enabled;
     
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
-    
-    public String getName() {
-        return name;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }      
-
-    public String getServer() {
-        return server;
-    }
+    public boolean saved;
         
 }

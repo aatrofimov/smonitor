@@ -25,22 +25,17 @@ import java.util.UUID;
 public class AgentData implements Serializable {
 
     private static final long serialVersionUID = 4319212340865836308L;
-    private String guid = UUID.randomUUID().toString();
-    private String oldGuid = guid;
+    private String guid = UUID.randomUUID().toString();    
     private String name;
     private String server;
     private String key;
     private boolean enabled;
-
-    public boolean isNew() {
-        return guid.equals(oldGuid);
-    }
-
+    
     public String getGuid() {
         return guid;
     }
 
-    protected void setGuid(String guid) {
+    public void setGuid(String guid) {
         this.guid = guid;
     }
     

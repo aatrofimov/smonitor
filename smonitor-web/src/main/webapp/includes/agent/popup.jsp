@@ -7,23 +7,21 @@
 				<h4 class="modal-title">Create agent</h4>
 			</div>
 			<div class="modal-body">
-
-				<div class="control-group">
-					<div class="controls">
-						<input data-bind="value: agent.name" type="text" id="inputAgent" placeholder="Agent name" style="width: 150px;">
+				<div class="form-group">
+					<label class="label label-primary" for="name">Agent name</label>
+					<input class="form-control" style="margin-top: 7px;" type="text" name="name" data-bind="value: agent.name">
+					<br/>
+					<label class="label label-primary" for="server">Server</label>
+					<input class="form-control" style="margin-top: 7px;" type="server" name="server" data-bind="value: agent.server">
+					<br/>
+					
+					<label class="label label-primary" >Enabled</label>
+					<div class="checkbox-basic">
+						<input id="enabledId" class="form-control" style="margin-top: 7px;" type="checkbox" name="enabled" data-bind="checked: agent.enabled" >
+						<label for="enabledId"></label>
 					</div>
+					
 				</div>
-				<div class="control-group">
-					<div class="controls">
-						<input data-bind="value: agent.server" type="text" id="inputServer" placeholder="Description" style="width: 300px;">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="inputEnabled">Enabled</label>
-					<div class="controls">
-						<input type="checkbox" data-bind="checked: agent.enabled" id="inputEnabled" placeholder="Enabled" style="width: 300px;" />
-					</div>
-				</div>							
 			</div>
 			<div class="modal-footer">
 				<a href="#" data-dismiss="modal" class="btn">Cancel</a>

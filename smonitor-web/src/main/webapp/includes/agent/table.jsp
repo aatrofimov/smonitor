@@ -1,23 +1,32 @@
 
 <div id="agentTable">
-	<!-- BUTTONS -->
-	<button type="button" class="btn btn-success" data-bind="click: getAll">Refresh</button>
-	<button type="button" class="btn btn-success" data-bind="click: create" >Add</button>
-
-
 	<!-- TABLE PANEL -->
 
 	<div class="panel panel-default">
 		<!-- SEARCH -->
 		<div class="panel-heading">
+			<div class="input-group">
+				<input id="search" type="search" class="form-control" placeholder="Search" data-bind="value: searchText, valueUpdate: 'afterkeydown', event: {  keyup: search }">
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default" data-bind="click: searchClear">Clean</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+						Menu
+						<span class="caret"></span>
+					</button>					
+					<ul class="dropdown-menu pull-right" role="menu">
+						<li><a href="#" data-bind="click: getAll">Refresh</a></li>
+						<li><a href="#" data-bind="click: create" >Add</a></li>
+					</ul>					
+				</div >
+			</div>
 			<div class="form-group">
-				<input  id="agentsSearch" type="search" class="form-control" placeholder="Search">
+				
 			</div>	  
 		</div>
 
 		<!-- TABLE -->
-		<table id="agentsTable" class="table table-striped sortable">
-			<thead>
+		<table id="agentsTable" class="table table-striped sortable" data-bind="element: table">
+			<thead data-bind="element: tableHeader">
 				<tr>
 					<th data-bind="click: function(data, event) { sort('status', data, event) }"><span class="glyphicon glyphicon-sort" style="padding-right: 10px"></span>Status</th>
 					<th data-bind="click: function(data, event) { sort('name', data, event) }"><span class="glyphicon glyphicon-sort" style="padding-right: 10px"></span>Name</th>
@@ -26,7 +35,7 @@
 				</tr>
 			</thead>	
 
-			<tbody data-bind="foreach: agents">
+			<tbody data-bind="foreach: agents, element: tableBody">
 				<tr>
 					<td data-value="agent.enabled()">
 						<div class="btn-group" data-bind="ifnot: request">

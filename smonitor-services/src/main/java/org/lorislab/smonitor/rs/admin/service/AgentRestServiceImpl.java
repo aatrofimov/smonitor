@@ -43,7 +43,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
         Collection<AgentData> items = service.findAll();
         if (items != null) {
             for (AgentData item : items) {
-                Agent tmp = create(item);
+                Agent tmp = map(item);
                 result.add(tmp);
             }
         }
@@ -55,24 +55,24 @@ public final class AgentRestServiceImpl implements AgentRestService {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
         if (item != null) {
-            result = create(item);
+            result = map(item);
         }
         return result;
     }
 
     @Override
     public Agent create() throws ServiceException {
-        return create(new AgentData());
+        return map(new AgentData());
     }
 
     @Override
     public Agent update(String guid, Agent data) {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
-        item = update(item, data);
+        item = map(data);
         item = service.save(item);
         if (item != null) {
-            result = create(item);
+            result = map(item);
         }
         return result;
     }
@@ -110,22 +110,21 @@ public final class AgentRestServiceImpl implements AgentRestService {
         return result;
     }
 
-    private static AgentData update(AgentData item, Agent data) {
-        if (item == null) {
-            item = new AgentData();
-        }
-        item.setName(data.getName());
-        item.setServer(data.getServer());
-        item.setEnabled(data.isEnabled());   
-        return item;
+    private static AgentData map(Agent data) {
+        AgentData result = new AgentData();
+        result.setGuid(data.guid);
+        result.setName(data.name);
+        result.setServer(data.server);
+        result.setEnabled(data.enabled);   
+        return result;
     }
     
-    private static Agent create(AgentData data) {
+    private static Agent map(AgentData data) {
         Agent result = new Agent();
-        result.setGuid(data.getGuid());
-        result.setEnabled(data.isEnabled());
-        result.setName(data.getName());
-        result.setServer(data.getServer());
+        result.guid = data.getGuid();
+        result.enabled = data.isEnabled();
+        result.name = data.getName();
+        result.server = data.getServer();
         return result;
     }
 }

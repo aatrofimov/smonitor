@@ -12,6 +12,43 @@
 	margin-right: auto !important;
 }
 
+/** CHECKBOX */
+.checkbox-basic {
+	margin-top: 7px;
+}
+
+.checkbox-basic input {
+	display: none;
+}
+
+.checkbox-basic label {
+	background-color: #FAFAFA;
+	border: 1px solid #CACECE;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 -15px 10px -12px rgba(0, 0, 0, 0.05) inset;
+	display: inline-block;
+	padding: 9px;
+	position: relative;
+}
+
+
+.checkbox-basic input:checked + label:after {
+	color: #99A1A7;
+	content: '\e806';
+	font-size: 15px;
+	left: 4px;
+	position: absolute;
+	top: 0;
+	font-family: "fontello";
+}
+.checkbox-basic input:checked + label {
+	background-color: #E9ECEE;
+	border: 1px solid #ADB8C0;
+	color: #99A1A7;
+}
+
+
+/*
 table.sortable span.sign {
     display: block;
     position: absolute;
@@ -96,3 +133,4 @@ table.sortable thead th:hover:not([data-defaultsort=disabled]) {
 table.sortable thead th div.mozilla {
 	position: relative;
 }
+*/
