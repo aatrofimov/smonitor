@@ -1,10 +1,10 @@
  
 
-<div class="modal fade" id="addAgentPopup">
+<div class="modal fade" id="addAgentPopup" data-bind="element: panel">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Create agent</h4>
+				<h4 class="modal-title" data-bind="text: title">Title</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
@@ -25,7 +25,8 @@
 			</div>
 			<div class="modal-footer">
 				<a href="#" data-dismiss="modal" class="btn">Cancel</a>
-				<a href="#" class="btn btn-primary" data-bind="click: addAgent" >Create</a>
+				<a href="#" class="btn btn-primary" data-bind="click: createAgent, element: btnCreate" >Create</a>
+				<a href="#" class="btn btn-primary" data-bind="click: updateAgent, element: btnUpdate" >Update</a>
 			</div>
 		</div>
 	</div>

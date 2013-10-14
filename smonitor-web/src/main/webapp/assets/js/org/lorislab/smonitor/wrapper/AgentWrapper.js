@@ -18,6 +18,10 @@ function AgentWrapper(data) {
 	this.message = ko.observable(null);
 }
 
+AgentWrapper.prototype.update = function(data) {
+	this.agent.set(data);
+};
+
 AgentWrapper.prototype.statusOk = function(data) {
 	if (this.serverInfo != null) {
 		this.serverInfo.updateApp(data);

@@ -1,3 +1,5 @@
 target/
 /smonitor-web/.errai
 .errai
+
+.netbeans_automatic_build

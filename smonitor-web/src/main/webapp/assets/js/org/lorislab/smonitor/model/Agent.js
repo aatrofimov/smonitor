@@ -23,6 +23,15 @@ function Agent() {
 			this.enabled(data.enabled);
 		}
 	};
+	
+	this.copy = function(data) {
+		if (data) {
+			this.guid = data.guid;
+			this.name(data.name());
+			this.server(data.server());
+			this.enabled(data.enabled());			
+		}
+	}
 }
 
 Agent.prototype.isObservable = function() {

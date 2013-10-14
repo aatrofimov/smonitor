@@ -44,8 +44,8 @@
 							</button>						
 							<ul class="dropdown-menu">
 								<li data-bind="if: agent.enabled"><a href="#" data-bind="click: $parent.refresh" >Refresh</a></li>
-								<li><a href="#" >Edit</a></li>
-								<li><a href="#" data-bind="click: $parent.delete">Delete</a></li>
+								<li><a href="#" data-bind="click: $parent.edit">Edit</a></li>
+								<li><a href="#" data-bind="click: $parent.remove">Delete</a></li>
 							</ul>			
 						</div>
 						<div data-bind="if: request">

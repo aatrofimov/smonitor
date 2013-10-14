@@ -87,7 +87,6 @@ function AgentsViewModel() {
 	};
 
 	this.add = function(agent) {
-
 		AgentService.add(agent,
 				function(result) {
 					var tmp = new AgentWrapper(result);
@@ -97,13 +96,30 @@ function AgentsViewModel() {
 				});
 	};
 
+	this.update = function(agent) {
+		AgentService.update(agent, function(result) {
+			var tmp =  ko.utils.arrayFirst(_this.agents(), function(item) {
+					return result.guid == item.agent.guid;
+			});
+			if (tmp) {
+				tmp.update(result);
+				_this.updateServerInfo(tmp);
+				agentViewModel.close();	
+			}
+		});
+	};
+	
 	this.create = function() {
 		AgentService.create(function(result) {
-			agentViewModel.open(result);			
+			agentViewModel.create(result);			
 		});
 	};
 
-	this.delete = function(wrapper) {
+	this.edit = function(wrapper) {
+		agentViewModel.edit(wrapper.agent);	
+	};
+	
+	this.remove = function(wrapper) {
 		bootbox.confirm("Do you really want to delete selected agent " + wrapper.agent.name() + " ?", function(result) {
 			if (result) {
 				AgentService.remove(wrapper.agent, function(result) {

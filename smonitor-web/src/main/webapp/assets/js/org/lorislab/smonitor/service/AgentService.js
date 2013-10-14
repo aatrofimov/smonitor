@@ -11,6 +11,10 @@ AgentService = {
 		REST.post(REST.url(AgentService._url, [ agent.guid ]), agent, call_ok, call_error);
 	},
 
+	update: function(agent, call_ok, call_error) {
+		REST.post(REST.url(AgentService._url, [ agent.guid ]), agent, call_ok, call_error);
+	},
+			
 	all: function(call_ok, call_error) {
 		REST.get(AgentService._url, call_ok, call_error);
 	},
