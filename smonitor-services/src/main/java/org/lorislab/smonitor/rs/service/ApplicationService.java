@@ -39,23 +39,23 @@ public interface ApplicationService {
     @Path("session/m/{guid}/{host}/{application}/{session}")     
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)     
-    public SessionInfo getSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
+    public SessionInfo getSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
                 
     @GET
     @Path("session/d/{guid}/{host}/{application}/{session}")     
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)     
-    public SessionInfoDetails getSesssionDetails(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
+    public SessionInfoDetails getSesssionDetails(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
 
     @DELETE
     @Path("session/m/{guid}/{host}/{application}/{session}")     
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)     
-    public String deleteSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id);
+    public String deleteSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
     
     @POST
     @Path("session/search")
     @Produces(MediaType.APPLICATION_JSON)    
     @Consumes(MediaType.APPLICATION_JSON)    
-    public List<SessionInfo> findSessions(SessionSearchCriteria criteria);
+    public List<SessionInfo> findSessions(SessionSearchCriteria criteria) throws Exception;
 }

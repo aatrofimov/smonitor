@@ -32,5 +32,5 @@ public interface ServerService {
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ServerInfo getServer(@PathParam("guid") String guid);
+    public ServerInfo getServer(@PathParam("guid") String guid) throws Exception;
 }

@@ -37,31 +37,31 @@ public interface AgentRestService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Agent> get();
+    public List<Agent> get() throws Exception;
        
     @GET
     @Path("{guid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent get(@PathParam("guid") String guid);
+    public Agent get(@PathParam("guid") String guid) throws Exception;
         
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent create();
+    public Agent create() throws Exception;
     
     @POST
     @Path("{guid}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent update(@PathParam("guid") String guid, Agent agent);
+    public Agent update(@PathParam("guid") String guid, Agent agent) throws Exception;
     
     @DELETE
     @Path("{guid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String delete(@PathParam("guid") String guid);
+    public String delete(@PathParam("guid") String guid) throws Exception;
     
     @POST
     @Path("password")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)    
-    public boolean changePassword(ChangeAgentKeyRequest data);    
+    public boolean changePassword(ChangeAgentKeyRequest data) throws Exception;    
 }

@@ -17,7 +17,7 @@ package org.lorislab.smonitor.rs.service;
 
 import java.io.InputStream;
 import java.util.Properties;
-import org.lorislab.smonitor.rs.exception.ServiceException;
+import org.lorislab.smonitor.base.exception.ServiceException;
 
 /**
  *
@@ -36,7 +36,7 @@ public final class ConfigServiceImpl implements ConfigService {
 
     //TODO: load from manifest
     @Override
-    public String getVersion() {
+    public String getVersion() throws Exception {
         Properties properties = new Properties();
         try {            
             InputStream input = ConfigServiceImpl.class.getClassLoader().getResourceAsStream(PROPERTY_FILE);

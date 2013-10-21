@@ -30,5 +30,5 @@ public interface ConfigService {
     @GET
     @Path("version")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getVersion();
+    public String getVersion() throws Exception;
 }

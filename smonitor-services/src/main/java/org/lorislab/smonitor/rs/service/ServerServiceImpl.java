@@ -27,7 +27,7 @@ import org.lorislab.smonitor.datastore.service.AgentDataService;
 import org.lorislab.smonitor.rs.model.ServerApplication;
 import org.lorislab.smonitor.rs.model.ServerInfo;
 import org.lorislab.smonitor.service.ServiceFactory;
-import org.lorislab.smonitor.util.RSClientUtil;
+import org.lorislab.smonitor.rs.client.RSClientUtil;
 import org.lorislab.smonitor.agent.rs.client.service.ServerClientService;
 
 /**
@@ -38,14 +38,14 @@ public final class ServerServiceImpl implements ServerService {
 
     private static final Logger LOGGER = Logger.getLogger(ServerServiceImpl.class.getName());
     
-    private AgentDataService service;
+    private final AgentDataService service;
 
     public ServerServiceImpl() {
         service = ServiceFactory.getAgentDataService();
     }
 
     @Override
-    public ServerInfo getServer(String guid) {
+    public ServerInfo getServer(String guid) throws Exception {
         ServerInfo result = null;
         AgentData data = service.findByBuid(guid);
         if (data != null) {

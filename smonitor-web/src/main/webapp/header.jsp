@@ -15,6 +15,11 @@
 	<!-- TABLE -->
 	<script type="text/javascript" language="javascript" src="assets/js/table.js"></script>	
 	
+	<!-- BOOSTRAP -->	
+	<script type="text/javascript" language="javascript" src="assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/bootbox.min.js"></script>
+	<script type="text/javascript" language="javascript" src="assets/js/bootstrap-paginator.js"></script>
+ 
 	<!-- S-MONITOR -->
 	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/Exception.js"></script>
 	<script type="text/javascript" language="javascript" src="assets/js/org/lorislab/smonitor/model/ServerApplication.js"></script>

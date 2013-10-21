@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.rs.admin.model;
+
+package org.lorislab.smonitor.rs.client;
+
+import org.lorislab.smonitor.base.resources.annotations.ResourceKey;
 
 /**
- * The agent class.
- * 
+ *
  * @author Andrej Petras
  */
-public final class Agent {
+@ResourceKey
+public enum RSClientErrorKeys {
     
-    public String guid;
+    AUTH_FAILED,
     
-    public String name;
-
-    public String server;
+    ERROR,
     
-    public boolean enabled;
-        
+    BAD_ADDRESS,
+    
+    COULD_NOT_CONNECT_TO_SERVER;
 }

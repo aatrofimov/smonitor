@@ -24,13 +24,13 @@ import org.lorislab.smonitor.connector.model.SessionCriteria;
 import org.lorislab.smonitor.connector.model.SessionDetails;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
-import org.lorislab.smonitor.rs.exception.ServiceException;
+import org.lorislab.smonitor.base.exception.ServiceException;
 import org.lorislab.smonitor.rs.model.SessionInfo;
 import org.lorislab.smonitor.rs.model.SessionInfoDetails;
 import org.lorislab.smonitor.rs.model.SessionSearchCriteria;
 import org.lorislab.smonitor.service.ServiceFactory;
 import org.lorislab.smonitor.util.MapperUtil;
-import org.lorislab.smonitor.util.RSClientUtil;
+import org.lorislab.smonitor.rs.client.RSClientUtil;
 import org.lorislab.smonitor.agent.rs.client.service.ApplicationClientService;
 
 /**
@@ -40,14 +40,14 @@ import org.lorislab.smonitor.agent.rs.client.service.ApplicationClientService;
 public final class ApplicationServiceImpl implements ApplicationService {
 
     private static final Logger LOGGER = Logger.getLogger(ApplicationServiceImpl.class.getName());
-    private AgentDataService service;
+    private final AgentDataService service;
 
     public ApplicationServiceImpl() {
         service = ServiceFactory.getAgentDataService();
     }
 
     @Override
-    public SessionInfo getSesssion(String guid, String host, String application, String id) {
+    public SessionInfo getSesssion(String guid, String host, String application, String id) throws Exception {
         SessionInfo result = null;
 
         AgentData data = service.findByBuid(guid);
@@ -70,7 +70,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public SessionInfoDetails getSesssionDetails(String guid, String host, String application, String id) {
+    public SessionInfoDetails getSesssionDetails(String guid, String host, String application, String id) throws Exception {
         SessionInfoDetails result = null;
 
         AgentData data = service.findByBuid(guid);
@@ -93,7 +93,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
     }
     
     @Override
-    public String deleteSesssion(String guid, String host, String application, String id) {
+    public String deleteSesssion(String guid, String host, String application, String id) throws Exception {
         String result = null;
 
         AgentData data = service.findByBuid(guid);
@@ -117,7 +117,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
     
 
     @Override
-    public List<SessionInfo> findSessions(SessionSearchCriteria criteria) {
+    public List<SessionInfo> findSessions(SessionSearchCriteria criteria) throws Exception {
         List<SessionInfo> result = new ArrayList<SessionInfo>();
         if (criteria != null) {
 

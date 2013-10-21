@@ -15,38 +15,36 @@
  */
 package org.lorislab.smonitor.rs.exception;
 
-import java.util.Map;
-
 /**
  *
  * @author Andrej Petras
  */
 public final class RestServiceException {
     
-    private String ref;
+    private Enum<?> key;
+    
+    private Object ref;
     
     private String message;
 
-    private String details;
+    private Object[] params;
 
-    private Map<String, Object> params;
-
-    public Map<String, Object> getParams() {
+    public Object[] getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setRef(Object reference) {
+        this.ref = reference;
+    }
+    
+    public Object getReference() {
+        return this.ref;
+    }
+    
+    public void setParams(Object[] params) {
         this.params = params;
     }
-        
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-        
+           
     public String getMessage() {
         return message;
     }
@@ -55,12 +53,12 @@ public final class RestServiceException {
         this.message = message;
     }
 
-    public void setRef(String ref) {
-        this.ref = ref;
+    public void setKey(Enum<?> key) {
+        this.key = key;
     }
 
-    public String getRef() {
-        return ref;
+    public Enum<?> getKey() {
+        return key;
     }
         
 }

@@ -9,18 +9,12 @@
 				<input id="search" type="search" class="form-control" placeholder="Search" data-bind="value: searchText, valueUpdate: 'afterkeydown', event: {  keyup: search }">
 				<div class="input-group-btn">
 					<button type="button" class="btn btn-default" data-bind="click: searchClear">Clean</button>
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
-						Menu
-						<span class="caret"></span>
-					</button>					
-					<ul class="dropdown-menu pull-right" role="menu">
-						<li><a href="#" data-bind="click: getAll">Refresh</a></li>
-						<li><a href="#" data-bind="click: create" >Add</a></li>
-					</ul>					
+					<button type="button" class="btn btn-default" data-bind="click: getAll">Refresh</button>
+					<button type="button" class="btn btn-default" data-bind="click: create">Add</button>									
 				</div >
 			</div>
 			<div class="form-group">
-				
+
 			</div>	  
 		</div>
 
@@ -58,8 +52,10 @@
 					<td data-value="message"><p data-bind="text: message"></p></td>
 				</tr>
 			</tbody>			
-		</table>	
-
+		</table>			
+		<div style="float: right">
+			<div id="paginator" data-bind="element: paginator"></div>			
+		</div>
 	</div>
 
 </div>
@@ -67,5 +63,6 @@
 <script type="text/javascript">
 	var agentsViewModel = new AgentsViewModel();
 	ko.applyBindings(agentsViewModel, $('#agentTable')[0]);
+	agentsViewModel.init();
 </script>
 

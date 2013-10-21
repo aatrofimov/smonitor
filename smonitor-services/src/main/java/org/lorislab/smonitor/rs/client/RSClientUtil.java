@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.util;
+package org.lorislab.smonitor.rs.client;
 
 import javax.ws.rs.core.Response;
 import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
-import org.lorislab.smonitor.rs.exception.ServiceException;
+import org.lorislab.smonitor.base.exception.ServiceException;
 
 /**
  *
@@ -35,15 +35,15 @@ public final class RSClientUtil {
             ClientResponseFailure e = (ClientResponseFailure) ex;
             ClientResponse response = e.getResponse();
             if (response.getResponseStatus().equals(Response.Status.FORBIDDEN)) {
-                throw new ServiceException(guid, "Authentification failed", e);
+                throw new ServiceException(RSClientErrorKeys.AUTH_FAILED, guid, ex);
             }
-            throw new ServiceException(guid, "Error in the communication to the server " + response.getResponseStatus().getStatusCode(), e);
+            throw new ServiceException(RSClientErrorKeys.ERROR, guid, e, response.getResponseStatus().getStatusCode());
         } else {
             String msg = ex.getMessage();
             if (msg.startsWith(ClientProtocolException.class.getName())) {
-                throw new ServiceException(guid, "The server is not valid address.", ex);
+                throw new ServiceException(RSClientErrorKeys.BAD_ADDRESS, guid, ex);
             }
-            throw new ServiceException(guid, "Could not connect to the server", ex);
+            throw new ServiceException(RSClientErrorKeys.COULD_NOT_CONNECT_TO_SERVER,  guid, ex);
         }
     }
 }

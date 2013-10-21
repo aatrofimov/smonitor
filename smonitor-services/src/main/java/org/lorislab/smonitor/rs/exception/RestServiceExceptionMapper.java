@@ -15,12 +15,17 @@
  */
 package org.lorislab.smonitor.rs.exception;
 
+import org.lorislab.smonitor.base.exception.ServiceException;
+import java.util.Locale;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import org.lorislab.smonitor.base.resources.ResourceManager;
+import org.lorislab.smonitor.base.resources.model.ResourceMessage;
 
 /**
  *
@@ -34,14 +39,13 @@ public final class RestServiceExceptionMapper implements ExceptionMapper<Service
 
     @Override
     public Response toResponse(ServiceException exception) {
-        RestServiceException entity = new RestServiceException();
-        entity.setMessage(exception.getMessage());
-        entity.setRef(exception.getRef());
-        entity.setParams(exception.getParams());        
-        if (exception.getCause() != null) {
-            entity.setDetails(exception.getCause().getMessage());
-        }
-        return Response.status(Status.BAD_REQUEST).entity(entity).type(headers.getMediaType()).build();
+        RestServiceException entity = new RestServiceException();        
+        ResourceMessage rm = exception.getResource();        
+        entity.setMessage(ResourceManager.getMessage(rm, Locale.ENGLISH));
+        entity.setKey(rm.getResourceKey());
+        entity.setRef(rm.getReference());        
+        entity.setParams(rm.getArguments());                
+        return Response.status(Status.BAD_REQUEST).entity(entity).type(MediaType.APPLICATION_JSON_TYPE).build();
 
     }
     

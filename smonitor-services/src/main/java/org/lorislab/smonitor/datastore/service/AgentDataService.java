@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentNavigableMap;
 import org.lorislab.smonitor.datastore.db.DataStore;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.model.AgentDataSerializer;
+import org.lorislab.smonitor.datastore.resources.ErrorKeys;
+import org.lorislab.smonitor.base.exception.ServiceException;
 
 /**
  * The agent data service.
@@ -64,13 +66,15 @@ public class AgentDataService {
         return data;
     }
     
-    public String delete(String guid) {
+    public String delete(String guid) throws ServiceException {
         String result = null;
         AgentData tmp = map.remove(guid);
-        DataStore.commit();
-        if (tmp != null) {
+        if (tmp == null) {
+            throw new ServiceException(ErrorKeys.AGENT_DELETE_FAILED, guid);
+        } else {
+            DataStore.commit();
             result = tmp.getGuid();
-        }                
+        }
         return result;
     }
     

@@ -5,6 +5,9 @@ function AgentsViewModel() {
 	this.table = ko.observable();
 	this.tableBody = ko.observable();
 	this.tableHeader = ko.observable();
+	this.paginator = ko.observable();
+	
+	var _numPerPage = 2;
 	
 	function _sortName(left, right) {
 		return left.agent.name() == right.agent.name() ? 0 : (left.agent.name() < right.agent.name() ? -1 : 1);
@@ -35,13 +38,14 @@ function AgentsViewModel() {
 		_this.searchText(null);
 		var tbody = $(_this.tableBody());
 		tbody.find('tr').show();
+		_updateTable();
 	};
 	
 	this.search = function(data, event) {
 		var q = _this.searchText();		
 		var tbody = $(_this.tableBody());
 		if (q === '') {
-			tbody.find('tr').show();
+			_this.searchClear();
 		} else {
 			tbody.find('tr').hide();
 			tbody.find('td').find('p').filter(':filterTableFind("' + q.replace(/(['"])/g, '\\$1') + '")').closest('tr').show(); 	
@@ -80,6 +84,8 @@ function AgentsViewModel() {
 		} else if (name == "error") {
 			_sort(sort, _sortError);
 		}
+		
+		_updateTable();
 	};
 	
 	this.refresh = function(wrapper) {
@@ -148,15 +154,82 @@ function AgentsViewModel() {
 		_this.searchClear();
 		_this.sortClear();
 		AgentService.all(function(allData) {
+			
+			// mapping
 			var mappedTasks = $.map(allData, function(item) {
 				return new AgentWrapper(item);
 			});
 			_this.agents(mappedTasks);
+			
+			// update paginator
+			_updatePaginator();
+			
+			// get the server status
 			mappedTasks.forEach(function(item) {
 				_this.updateServerInfo(item);
 			});
 		});
+	};	
+	
+	function _updatePaginator() {		
+		var size = _this.agents().length;
+		var pages = size / _numPerPage;
+		if (size % _numPerPage > 0) {
+			pages = pages + 1;
+		}
+		var options = {
+			currentPage: 1,
+			totalPages: pages
+		};
+		$(_this.paginator()).bootstrapPaginator(options);		
+		_updateTableToPage(1);
 	};
-
-	this.getAll();
+	
+	function _updateTable() {
+		var pages = $(_this.paginator()).bootstrapPaginator("getPages");
+		_updateTableToPage(pages.current);
+	};
+	
+	function _updateTableToPage(currentPage) {
+		var tbody = $(_this.tableBody());
+		tbody.find('tr').hide().slice((currentPage-1) * _numPerPage, currentPage * _numPerPage).show();				
+	};
+	
+	function _clickPaginator(e, originalEvent, type, page) {
+		_updateTableToPage(page);
+	};
+	
+	this.init = function() {	
+		// initialize paginator
+		var options = {
+            currentPage: 1,
+            totalPages: 1,
+			onPageClicked: _clickPaginator,
+			useBootstrapTooltip:true,
+			bootstrapTooltipOptions: {
+                placement: 'bottom'
+            },
+			shouldShowPage:function(type, page, current){
+                return true;
+            },
+			itemContainerClass: function (type, page, current) {
+                switch(type)
+                {
+                    case "first":
+                    case "last":
+					case "prev":
+					case "next":
+                        return (page === current) ? "disabled" : "";;
+                    default:
+                        return (page === current) ? "active" : "";;
+                }		
+			}					
+		};
+		$(_this.paginator()).bootstrapPaginator(options);			
+		
+		// load agents
+		_this.getAll();
+	};
+	
+	
 }

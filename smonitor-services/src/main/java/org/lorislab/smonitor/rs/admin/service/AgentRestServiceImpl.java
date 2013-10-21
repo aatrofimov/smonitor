@@ -22,7 +22,7 @@ import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
-import org.lorislab.smonitor.rs.exception.ServiceException;
+import org.lorislab.smonitor.base.exception.ServiceException;
 import org.lorislab.smonitor.service.ServiceFactory;
 
 /**
@@ -31,14 +31,14 @@ import org.lorislab.smonitor.service.ServiceFactory;
  */
 public final class AgentRestServiceImpl implements AgentRestService {
 
-    private AgentDataService service;
+    private final AgentDataService service;
 
-    public AgentRestServiceImpl() {
+    public AgentRestServiceImpl() throws Exception {
         service = ServiceFactory.getAgentDataService();
     }
 
     @Override
-    public List<Agent> get() {
+    public List<Agent> get() throws Exception {
         List<Agent> result = new ArrayList<Agent>();
         Collection<AgentData> items = service.findAll();
         if (items != null) {
@@ -51,7 +51,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent get(String guid) {
+    public Agent get(String guid) throws Exception {
         Agent result = null;
         AgentData item = service.findByBuid(guid);
         if (item != null) {
@@ -61,15 +61,15 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent create() throws ServiceException {
+    public Agent create() throws Exception {
         return map(new AgentData());
     }
 
     @Override
-    public Agent update(String guid, Agent data) {
+    public Agent update(String guid, Agent data) throws Exception {
         Agent result = null;
-        AgentData item = service.findByBuid(guid);
-        item = map(data);
+//        AgentData item = service.findByBuid(guid);
+        AgentData item = map(data);
         item = service.save(item);
         if (item != null) {
             result = map(item);
@@ -78,12 +78,12 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public String delete(String guid) {
+    public String delete(String guid) throws Exception {
         return service.delete(guid);
     }
 
     @Override
-    public boolean changePassword(ChangeAgentKeyRequest data) {
+    public boolean changePassword(ChangeAgentKeyRequest data) throws Exception {
         boolean result = false;
         if (data != null) {
             if (data.getKey1() != null && data.getKey2() != null) {
@@ -110,7 +110,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
         return result;
     }
 
-    private static AgentData map(Agent data) {
+    private static AgentData map(Agent data) throws Exception {
         AgentData result = new AgentData();
         result.setGuid(data.guid);
         result.setName(data.name);
@@ -119,7 +119,7 @@ public final class AgentRestServiceImpl implements AgentRestService {
         return result;
     }
     
-    private static Agent map(AgentData data) {
+    private static Agent map(AgentData data) throws Exception {
         Agent result = new Agent();
         result.guid = data.getGuid();
         result.enabled = data.isEnabled();

@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.smonitor.rs.admin.model;
+
+package org.lorislab.smonitor.datastore.resources;
 
 /**
- * The agent class.
- * 
+ *
  * @author Andrej Petras
  */
-public final class Agent {
+public enum ErrorKeys {
     
-    public String guid;
-    
-    public String name;
-
-    public String server;
-    
-    public boolean enabled;
-        
+    AGENT_DELETE_FAILED;
 }
