@@ -23,67 +23,14 @@ public final class ServerApplication {
  /**
      * The application id.
      */
-    private String id;
+    public String id;
     /**
      * The application name.
      */
-    private String name;
+    public String name;
     /**
      * The host.
      */
-    private String host;
-
-    /**
-     * Gets the host.
-     *
-     * @return the host.
-     */
-    public String getHost() {
-        return host;
-    }
-
-    /**
-     * Sets the host.
-     *
-     * @param host the host.
-     */
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    /**
-     * Gets the application id.
-     *
-     * @return the application id.
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Sets the application id.
-     *
-     * @param id the application id.
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the application name.
-     *
-     * @return the application name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the application name.
-     *
-     * @param name the application name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }    
+    public String host;
+ 
 }

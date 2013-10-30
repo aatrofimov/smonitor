@@ -23,52 +23,20 @@ import java.util.List;
  */
 public final class ServerInfo {
     
-    private String guid;
+    public String guid;
     
     /**
      * The id.
      */
-    private String id;
+    public String id;
     /**
      * The name.
      */
-    private String name;
+    public String name;
     
     /**
      * The server applications.
      */
-    private List<ServerApplication> applications;
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-    
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<ServerApplication> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<ServerApplication> applications) {
-        this.applications = applications;
-    }
-        
+    public List<ServerApplication> applications;
+  
 }

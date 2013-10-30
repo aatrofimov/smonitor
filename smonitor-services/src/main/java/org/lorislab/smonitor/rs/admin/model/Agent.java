@@ -15,6 +15,8 @@
  */
 package org.lorislab.smonitor.rs.admin.model;
 
+import org.lorislab.smonitor.rs.model.ServerInfo;
+
 /**
  * The agent class.
  * 
@@ -29,5 +31,10 @@ public final class Agent {
     public String server;
     
     public boolean enabled;
-        
+    
+    public String error;
+    
+    public boolean request;
+     
+    public ServerInfo info;
 }

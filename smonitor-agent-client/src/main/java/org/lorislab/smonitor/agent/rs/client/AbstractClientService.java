@@ -28,7 +28,7 @@ public abstract class AbstractClientService<T> {
     /**
      * The agent monitor URL.
      */
-    private static final String AGENT_SERVLER = "/smonitor-agent";
+    private static final String AGENT_SERVLET = "/smonitor-agent";
     /**
      * The service.
      */
@@ -42,7 +42,7 @@ public abstract class AbstractClientService<T> {
      */
     public AbstractClientService(Class<T> clazz, String server, String key) {
         AgentClientExecutor executor = new AgentClientExecutor(key);
-        service = ProxyFactory.create(clazz, server + AGENT_SERVLER, executor);
+        service = ProxyFactory.create(clazz, server + AGENT_SERVLET, executor);
     }
 
     /**

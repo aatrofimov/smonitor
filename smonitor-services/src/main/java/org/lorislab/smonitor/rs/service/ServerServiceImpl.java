@@ -29,6 +29,7 @@ import org.lorislab.smonitor.rs.model.ServerInfo;
 import org.lorislab.smonitor.service.ServiceFactory;
 import org.lorislab.smonitor.rs.client.RSClientUtil;
 import org.lorislab.smonitor.agent.rs.client.service.ServerClientService;
+import org.lorislab.smonitor.agent.rs.exception.AgentException;
 
 /**
  *
@@ -50,9 +51,10 @@ public final class ServerServiceImpl implements ServerService {
         AgentData data = service.findByBuid(guid);
         if (data != null) {
             
-            ServerClientService serverService = new ServerClientService(data.getServer(), data.getKey());            
+                     
             Server server = null;
             try {
+                ServerClientService serverService = new ServerClientService(data.getServer(), data.getKey());   
                 server = serverService.getServer();
             } catch (Exception ex) {
                 RSClientUtil.handleException(guid, ex);
@@ -60,25 +62,24 @@ public final class ServerServiceImpl implements ServerService {
             
             if (server != null) {
                 result = new ServerInfo();
-                result.setGuid(guid);
-                result.setId(server.getId());
-                result.setName(server.getName());
+                result.guid = guid;
+                result.id = server.getId();
+                result.name = server.getName();
                 
-                List<ServerApplication> apps = new ArrayList<ServerApplication>();
+                result.applications = new ArrayList<ServerApplication>();
                 if (server.getHosts() != null) {
                     for (Host host : server.getHosts()) {
                         if (host.getApplications() != null) {
                             for (Application app : host.getApplications()) {
                                 ServerApplication sa = new ServerApplication();
-                                sa.setId(app.getId());
-                                sa.setName(app.getName());
-                                sa.setHost(app.getHost());
-                                apps.add(sa);
+                                sa.id = app.getId();
+                                sa.name = app.getName();
+                                sa.host = app.getHost();
+                                result.applications.add(sa);
                             }
                         }
                     }
                 }
-                result.setApplications(apps);
             } else {
                 LOGGER.log(Level.WARNING, "There is no server information for the {0}", data.getName());                
             }

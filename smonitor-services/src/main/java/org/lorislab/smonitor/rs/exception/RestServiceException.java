@@ -21,44 +21,12 @@ package org.lorislab.smonitor.rs.exception;
  */
 public final class RestServiceException {
     
-    private Enum<?> key;
+    public Enum<?> key;
     
-    private Object ref;
+    public Object ref;
     
-    private String message;
+    public String message;
 
-    private Object[] params;
-
-    public Object[] getParams() {
-        return params;
-    }
-
-    public void setRef(Object reference) {
-        this.ref = reference;
-    }
-    
-    public Object getReference() {
-        return this.ref;
-    }
-    
-    public void setParams(Object[] params) {
-        this.params = params;
-    }
-           
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setKey(Enum<?> key) {
-        this.key = key;
-    }
-
-    public Enum<?> getKey() {
-        return key;
-    }
+    public Object[] params;
         
 }

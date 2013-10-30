@@ -41,10 +41,10 @@ public final class RestServiceExceptionMapper implements ExceptionMapper<Service
     public Response toResponse(ServiceException exception) {
         RestServiceException entity = new RestServiceException();        
         ResourceMessage rm = exception.getResource();        
-        entity.setMessage(ResourceManager.getMessage(rm, Locale.ENGLISH));
-        entity.setKey(rm.getResourceKey());
-        entity.setRef(rm.getReference());        
-        entity.setParams(rm.getArguments());                
+        entity.message = ResourceManager.getMessage(rm, Locale.ENGLISH);
+        entity.key = rm.getResourceKey();
+        entity.ref = rm.getReference();        
+        entity.params = rm.getArguments();
         return Response.status(Status.BAD_REQUEST).entity(entity).type(MediaType.APPLICATION_JSON_TYPE).build();
 
     }
