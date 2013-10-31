@@ -26,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.lorislab.smonitor.rs.admin.model.Agent;
+import org.lorislab.smonitor.rs.admin.model.AgentWrapper;
 import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 
 /**
@@ -37,7 +38,7 @@ public interface AgentRestService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Agent> get() throws Exception;
+    public List<AgentWrapper> get() throws Exception;
        
     @GET
     @Path("{guid}")
@@ -46,7 +47,7 @@ public interface AgentRestService {
         
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    public Agent create() throws Exception;
+    public AgentWrapper create() throws Exception;
     
     @POST
     @Path("{guid}")

@@ -22,7 +22,7 @@ import org.lorislab.smonitor.rs.admin.model.Agent;
 import org.lorislab.smonitor.rs.admin.model.ChangeAgentKeyRequest;
 import org.lorislab.smonitor.datastore.model.AgentData;
 import org.lorislab.smonitor.datastore.service.AgentDataService;
-import org.lorislab.smonitor.base.exception.ServiceException;
+import org.lorislab.smonitor.rs.admin.model.AgentWrapper;
 import org.lorislab.smonitor.service.ServiceFactory;
 
 /**
@@ -38,12 +38,13 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public List<Agent> get() throws Exception {
-        List<Agent> result = new ArrayList<Agent>();
+    public List<AgentWrapper> get() throws Exception {
+        List<AgentWrapper> result = new ArrayList<AgentWrapper>();
         Collection<AgentData> items = service.findAll();
         if (items != null) {
-            for (AgentData item : items) {
-                Agent tmp = map(item);
+            for (AgentData item : items) {   
+                AgentWrapper tmp = new AgentWrapper();
+                tmp.agent = map(item);
                 result.add(tmp);
             }
         }
@@ -61,8 +62,10 @@ public final class AgentRestServiceImpl implements AgentRestService {
     }
 
     @Override
-    public Agent create() throws Exception {
-        return map(new AgentData());
+    public AgentWrapper create() throws Exception {
+        AgentWrapper result = new AgentWrapper();
+        result.agent = map(new AgentData());
+        return result;
     }
 
     @Override

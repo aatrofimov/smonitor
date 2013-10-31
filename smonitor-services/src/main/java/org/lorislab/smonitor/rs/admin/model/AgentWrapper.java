@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lorislab.smonitor.rs.admin.model;
 
 import org.lorislab.smonitor.rs.model.ServerInfo;
 
 /**
- * The agent class.
- * 
+ *
  * @author Andrej Petras
  */
-public final class Agent {
+public final class AgentWrapper {
     
-    public String guid;
+    public Agent agent;
     
-    public String name;
-
-    public String server;
+    public String error;
     
-    public boolean enabled;
+    public boolean request;
     
+    public int status = 0;
+     
+    public ServerInfo info;    
 }
