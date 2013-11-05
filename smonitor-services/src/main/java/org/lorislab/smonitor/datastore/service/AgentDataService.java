@@ -45,11 +45,20 @@ public class AgentDataService {
     
     public List<AgentData> findEnabledAgents(Set<String> guids) {
         List<AgentData> result = new ArrayList<AgentData>();
-        if (guids != null) {
+        if (guids != null && !guids.isEmpty()) {
             for (String guid : guids) {
                 AgentData tmp = map.get(guid);
                 if (tmp != null && tmp.isEnabled()) {
                     result.add(tmp);
+                }
+            }
+        } else {
+            Collection<AgentData> agents = findAll();
+            if (agents != null) {
+                for (AgentData agent: agents) {
+                    if (agent.isEnabled()) {
+                        result.add(agent);
+                    }
                 }
             }
         }

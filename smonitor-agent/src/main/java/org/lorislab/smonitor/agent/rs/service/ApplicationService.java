@@ -63,7 +63,7 @@ public interface ApplicationService {
      * @return the session.
      * @throws AgentException if the method fails.
      */
-    @POST
+    @GET
     @Path("session/get/{host}/{application}/{session}")
     @Produces(MediaType.APPLICATION_JSON)
     Session getSession(@PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws AgentException;

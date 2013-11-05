@@ -32,6 +32,7 @@ import org.lorislab.smonitor.service.ServiceFactory;
 import org.lorislab.smonitor.util.MapperUtil;
 import org.lorislab.smonitor.rs.client.RSClientUtil;
 import org.lorislab.smonitor.agent.rs.client.service.ApplicationClientService;
+import org.lorislab.smonitor.agent.rs.exception.AgentException;
 
 /**
  *
@@ -121,7 +122,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
         List<SessionInfo> result = new ArrayList<SessionInfo>();
         if (criteria != null) {
 
-            List<AgentData> agents = service.findEnabledAgents(criteria.getAgents());
+            List<AgentData> agents = service.findEnabledAgents(criteria.agents);
             if (agents != null) {
                 for (AgentData agent : agents) {
 
@@ -129,7 +130,7 @@ public final class ApplicationServiceImpl implements ApplicationService {
                         ApplicationClientService appService = new ApplicationClientService(agent.getServer(), agent.getKey());
                         try {
                             SessionCriteria sessionCriteria = new SessionCriteria();
-                            sessionCriteria.setApplications(criteria.getApplications());
+                            sessionCriteria.setApplications(criteria.applications);
 
                             List<Session> sessions = appService.findSessionByCriteria(sessionCriteria);
                             List<SessionInfo> infos = MapperUtil.create(agent, sessions);

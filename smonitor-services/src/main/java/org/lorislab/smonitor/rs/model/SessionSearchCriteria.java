@@ -23,24 +23,8 @@ import java.util.Set;
  */
 public final class SessionSearchCriteria {
     
-    private Set<String> agents;
+    public Set<String> agents;
     
-    private Set<String> applications;
-
-    public Set<String> getAgents() {
-        return agents;
-    }
-
-    public void setAgents(Set<String> agents) {
-        this.agents = agents;
-    }
-
-    public Set<String> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(Set<String> applications) {
-        this.applications = applications;
-    }
+    public Set<String> applications;
         
 }
