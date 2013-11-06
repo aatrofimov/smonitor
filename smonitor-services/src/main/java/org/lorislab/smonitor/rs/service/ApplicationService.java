@@ -38,19 +38,16 @@ public interface ApplicationService {
     @GET
     @Path("session/m/{guid}/{host}/{application}/{session}")     
     @Produces(MediaType.APPLICATION_JSON)    
-    @Consumes(MediaType.APPLICATION_JSON)     
     public SessionInfo getSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
                 
     @GET
     @Path("session/d/{guid}/{host}/{application}/{session}")     
-    @Produces(MediaType.APPLICATION_JSON)    
-    @Consumes(MediaType.APPLICATION_JSON)     
+    @Produces(MediaType.APPLICATION_JSON)     
     public SessionInfoDetails getSesssionDetails(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
 
     @DELETE
     @Path("session/m/{guid}/{host}/{application}/{session}")     
-    @Produces(MediaType.APPLICATION_JSON)    
-    @Consumes(MediaType.APPLICATION_JSON)     
+    @Produces(MediaType.APPLICATION_JSON)     
     public String deleteSesssion(@PathParam("guid") String guid, @PathParam("host") String host, @PathParam("application") String application, @PathParam("session") String id) throws Exception;
     
     @POST
